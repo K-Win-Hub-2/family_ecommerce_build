@@ -1269,41 +1269,6 @@ const sizes=[
             ""
           )}
 
-          {design_id == 1 ? (
-            <MainText>
-              <Left>
-                {" "}
-                <Text1>Familyarrow Brand</Text1>
-              </Left>
-              <Right>
-                {" "}
-                <Text1>Price Range : 22000 - 25500</Text1>
-              </Right>
-            </MainText>
-          ) : design_id == 2 ? (
-            <MainText>
-              <Left>
-                {" "}
-                <Text1>Branded Brand</Text1>
-              </Left>
-              <Right>
-                {" "}
-                <Text1>Price Range : 30000 - 65000</Text1>
-              </Right>
-            </MainText>
-          ) : (
-            <MainText>
-              <Left>
-                {" "}
-                <Text1>Eco Family Brand</Text1>
-              </Left>
-              <Right>
-                {" "}
-                <Text1>Price Range : 18000 - 20000</Text1>
-              </Right>
-            </MainText>
-          )}
-
           <Text>
             Choose Items that you want!
             <input type="hidden" id={"eid"} />
@@ -1589,7 +1554,7 @@ const sizes=[
                 </tbody>
               </table>
 
-              <Text>Your Preorder Itemsjjj</Text>
+              <Text>Your Preorder Items</Text>
               <div className="mt-4 mb-5" id="preorders">
                 <div className="row mt-2 text-center">
                   <div className="col-md-3">

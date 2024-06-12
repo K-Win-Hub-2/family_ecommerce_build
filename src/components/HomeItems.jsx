@@ -36,6 +36,8 @@ const HomeItems = ({ title, url }) => {
   const [items, setItems] = useState([]);
   const url1= useSelector(state => state.user.url);
 
+  console.log('this is items',items);
+
   useEffect(() => {
     const getItems = async () => {
       try {

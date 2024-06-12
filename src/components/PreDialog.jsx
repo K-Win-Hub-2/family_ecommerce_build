@@ -106,13 +106,13 @@ export default function PreDialog(props) {
         <Link to={`/preorder/1`}>
         <Image src={family}/>
         <Info2>
-        <Price style={{marginLeft:'47px',}}>Price Range</Price>
+        {/* <Price style={{marginLeft:'47px',}}>Price Range</Price> */}
         </Info2>
         <Info1>
-        <Price>22000-25500</Price>
+        {/* <Price>22000-25500</Price> */}
         </Info1>
         <Info>
-            <Btn onClick={props.close}>Make Orderuuu</Btn>
+            <Btn onClick={props.close}>Make Order</Btn>
         </Info>
         </Link>
         </Wrapper>
@@ -120,10 +120,10 @@ export default function PreDialog(props) {
         <Link to={`/preorder/2`}>
         <Image src={branded}/>
         <Info2>
-        <Price style={{marginLeft:'47px',}}>Price Range</Price>
+        {/* <Price style={{marginLeft:'47px',}}>Price Range</Price> */}
         </Info2>
         <Info1>
-        <Price>30000-65000</Price>
+        {/* <Price>30000-65000</Price> */}
         </Info1>
         <Info>
             <Btn onClick={props.close}>Make Order</Btn>
@@ -134,10 +134,10 @@ export default function PreDialog(props) {
         <Link to={`/preorder/3`}>
         <Image src={eco}/>
         <Info2>
-        <Price style={{marginLeft:'47px',}}>Price Range</Price>
+        {/* <Price style={{marginLeft:'47px',}}>Price Range</Price> */}
         </Info2>
         <Info1>
-        <Price>18000-20000</Price>
+        {/* <Price>18000-20000</Price> */}
         </Info1>
         <Info>
             <Btn onClick={props.close}>Make Order</Btn>
