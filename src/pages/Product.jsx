@@ -705,7 +705,7 @@ const Product = () => {
             {/* <Newsletter /> */}
             <Footer />
 
-            <CheckColor name={color} open={checkColor} close={() => setCheckColor(false)}/>
+            <CheckColor name={color} open={checkColor} close={() => setCheckColor(false)} item={item}/>
             <CheckSize gender={size} type={design} open={checkSize} close={() => setCheckSize(false)} />
             
             <InstockDialog open={isInstock} close={()=>setIsInstock(false)}/>

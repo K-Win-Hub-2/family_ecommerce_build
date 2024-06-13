@@ -29,7 +29,10 @@ const CheckColor = (props) => {
   const design = useSelector(state=>state.design);
   const color = props.name;
   const checkColor = design.colors[color];
-  
+  console.log('item',props.item);
+  const url= useSelector(state => state.user.url);
+  const imageUrl = url+`/ecommerce/items/${props.item.photo_path}`;
+  console.log('imageUrl',imageUrl);
   console.log(`Color Check ${checkColor}`);
     
   return (
@@ -38,7 +41,10 @@ const CheckColor = (props) => {
         <DialogTitle className='text-center'><Title>Check Color</Title></DialogTitle>
 
         <DialogContent >
-          <Div style={{backgroundColor:checkColor? checkColor : '#000000'}}></Div>
+          {/* <Div style={{backgroundColor:checkColor? checkColor : '#000000'}}></Div> */}
+          <Div >
+          <img src={imageUrl} alt={props.item.name} style={{ width: '100%', height: 'auto' }} />
+          </Div>
         </DialogContent>
 
         <DialogActions>
