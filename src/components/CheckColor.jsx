@@ -31,7 +31,7 @@ const CheckColor = (props) => {
   const checkColor = design.colors[color];
   console.log('item',props.item);
   const url= useSelector(state => state.user.url);
-  const imageUrl = url+`/ecommerce/items/`;
+  const imageUrl = url+`/ecommerce/color/defaultcolor.jpg`;
   console.log('imageUrl',imageUrl);
   console.log(`Color Check ${checkColor}`);
     
