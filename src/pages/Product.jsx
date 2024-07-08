@@ -23,6 +23,9 @@ import Swal from 'sweetalert2'
 import InstockDialog from '../components/InstockDialog'
 import { Card } from '@mui/material'
 
+import FilterColorWithUnitId from './filter-color.component';
+import FilterSizeWithUnitId from './filter-size.component';
+
 const Container = styled.div``
 const Wrapper = styled.div`
     padding: 50px;
@@ -299,7 +302,17 @@ const Product = () => {
     //     };
     //     getPromotionItems();
     //   },[]);
-    
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+
+    const handleColorChange = (color) => {
+        setSelectedColor(color);
+        console.log('Selected color:', color);
+    };
+    const handleSizeChange = (size) => {
+        setSelectedSize(size);
+        console.log('Selected Size:', size);
+    }
     useEffect(() => {
         const getProduct = () => {
             axios.get(url+"/api/unitbyid_api/" + id)
@@ -453,22 +466,22 @@ const Product = () => {
 
     const ChangeFabric = (val) =>{
         setFabric(val);
-        let html = '';
-        axios.get(url+'/api/ecommerce_order_type1/'+item.item_name+'/'+gendername+'/'+val)
-                .then((response) => {
+        // let html = '';
+        // axios.get(url+'/api/ecommerce_order_type1/'+item.item_name+'/'+gendername+'/'+val)
+        //         .then((response) => {
 
-                    html += `<Option>Choose Color</Option>`;
+        //             html += `<Option>Choose Color</Option>`;
 
-                    // Object.keys(colors).map(c => { // from design redux colors
-                    //     html += `<Option>`+ c +`</Option>`;
-                    //     console.log(c)
-                    // })
+        //             // Object.keys(colors).map(c => { // from design redux colors
+        //             //     html += `<Option>`+ c +`</Option>`;
+        //             //     console.log(c)
+        //             // })
                     
-                    Object.keys(response.data.colour).map(key => {
-                        html += `<Option>`+ response.data.colour[key]+`</Option>`;
-                    }) 
-                    document.getElementById('color').innerHTML = html;
-        })
+        //             Object.keys(response.data.colour).map(key => {
+        //                 html += `<Option>`+ response.data.colour[key]+`</Option>`;
+        //             }) 
+        //             document.getElementById('color').innerHTML = html;
+        // })
     }
 
     const ChangeColor = (val) =>{
@@ -601,9 +614,10 @@ const Product = () => {
                             <FilterTitle>Color</FilterTitle>
                             <DivF>
                                 <div>
-                                    <FilterColor onChange={(e) => ChangeColor(e.target.value)} id="color">
+                                    {/* <FilterColor onChange={(e) => ChangeColor(e.target.value)} id="color">
                                     <Opt>Choose Color</Opt>
-                                    </FilterColor>
+                                    </FilterColor> */}
+                                      <FilterColorWithUnitId units={units} onChange={handleColorChange} />
                                 </div>
                                 <div>
                                     <Check onClick={cheColor} style={{ display: 'inline-block' }}>Check</Check>
@@ -615,9 +629,10 @@ const Product = () => {
                             <FilterTitle>Size</FilterTitle>
                             <DivF>
                                 <div>
-                                    <FilterSize onChange={(e) => ChangeSize(e.target.value)} id="size">
+                                    {/* <FilterSize onChange={(e) => ChangeSize(e.target.value)} id="size">
                                     <Opt>Choose Size</Opt>
-                                    </FilterSize>
+                                    </FilterSize> */}
+                                    <FilterSizeWithUnitId units={units} onChange={handleSizeChange} />
                                 </div>
                                 <div>
                                     <Check onClick={cheSize} style={{ display: 'inline-block' }}>Check</Check>
@@ -705,8 +720,8 @@ const Product = () => {
             {/* <Newsletter /> */}
             <Footer />
 
-            <CheckColor name={color} open={checkColor} close={() => setCheckColor(false)} item={item}/>
-            <CheckSize gender={size} type={design} open={checkSize} close={() => setCheckSize(false)} />
+            <CheckColor name={selectedColor} open={checkColor} close={() => setCheckColor(false)} item={item}/>
+            <CheckSize gender={selectedSize} type={design} open={checkSize} close={() => setCheckSize(false)} />
             
             <InstockDialog open={isInstock} close={()=>setIsInstock(false)}/>
             {/* <CheckFabric open={checkFabric} close={() => setCheckFabric(false)} /> */}

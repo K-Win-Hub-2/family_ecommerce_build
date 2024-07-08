@@ -96,15 +96,20 @@ const Warm = styled.span`
 const Date = styled.span`
 `
 
+const defaultImageUrl = 'http://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png'; // Update this to your default image path
+
 const Item = ({ item, title }) => {
     const url = useSelector(state => state.user.url);
-
     const [orderprice, setOrderPrice] = useState();
     const [promoprice, setPromoPrice] = useState();
 
     useEffect(() => {
         fetchOrderPrice()
     }, []);
+
+    const handleImageError = (event) => {
+        event.target.src = defaultImageUrl;
+      };
 
     const fetchOrderPrice = async () => {
 
@@ -179,7 +184,8 @@ const Item = ({ item, title }) => {
 
         <Container>
             <Circle />
-            <Image src={url + `/ecommerce/items/${item.photo_path}`} />
+            <Image src={url + `/ecommerce/items/${item.photo_path}`} onError={handleImageError}
+            />
             <Info>
 
                 <Icon>
