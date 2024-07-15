@@ -304,11 +304,20 @@ const Product = () => {
     //   },[]);
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
+    const [filteredUnits, setFilteredUnits] = useState(units);
 
+
+    // const handleColorChange = (color) => {
+    //     console.log('this is color',color);
+    //     setSelectedColor(color);
+    //     console.log('Selected color:', color);
+    // };
     const handleColorChange = (color) => {
         setSelectedColor(color);
-        console.log('Selected color:', color);
-    };
+        // Filter units based on the selected color
+        const filtered = units.filter(unit => unit.colour_photo_path === color);
+        setFilteredUnits(filtered);
+      };
     const handleSizeChange = (size) => {
         setSelectedSize(size);
         console.log('Selected Size:', size);
@@ -632,10 +641,12 @@ const Product = () => {
                                     {/* <FilterSize onChange={(e) => ChangeSize(e.target.value)} id="size">
                                     <Opt>Choose Size</Opt>
                                     </FilterSize> */}
-                                    <FilterSizeWithUnitId units={units} onChange={handleSizeChange} />
+                                    {/* <FilterSizeWithUnitId units={units} onChange={handleSizeChange} /> */}
+                                    <FilterSizeWithUnitId units={filteredUnits} onChange={handleSizeChange} />
+
                                 </div>
                                 <div>
-                                    <Check onClick={cheSize} style={{ display: 'inline-block' }}>Check</Check>
+                                    {/* <Check onClick={cheSize} style={{ display: 'inline-block' }}>Check</Check> */}
                                 </div>
                             </DivF>
                         </Filter>
