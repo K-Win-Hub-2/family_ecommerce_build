@@ -104,7 +104,7 @@ const Login = () => {
                 username: username,
                 password: password
             }).then(function(response){
-                // console.log(response.data.user);
+                console.log(response);
                 if(response.data.status != 200){
                     setErrmsg(' Missing Username Or Password! ');
                     errRef.current.focus();

@@ -46,7 +46,7 @@ const CheckColor = (props) => {
         <DialogContent >
         {colorUrl ? (
             <Div>
-            <img src={colorUrl} alt={props.item.name} style={{ width: '100%', height: 'auto' }} />
+            <img src={colorUrl} alt={props.item?.name} style={{ width: '100%', height: 'auto' }} />
             </Div>
           ) : (
             <Div>
