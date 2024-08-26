@@ -42,7 +42,8 @@ const PromotionPhoto = () => {
     useEffect(()=>{
       const getProducts = async () =>{
         try{
-          const res = await axios.get(url+`/api/promotionphoto`);
+            console.log('url is the result',url);
+          const res = await axios.get(`http://familyuniformapp.medicalworld.com.mm/api/promotionphoto`);
           console.log(res.data);
           setProducts(res.data);
           
@@ -64,7 +65,7 @@ const PromotionPhoto = () => {
                                 {/* <div style={{maxHeight:'210px'}} key={el.id}> */}
                                 {/* <img  src={url+'/promotion_images/'+el.promotionphoto_photo} key={el.id} width="100%"/> */}
                                 <Slide>
-                                <img  src={url+'/promotion_images/'+el.promotionphoto_photo} style={{maxHeight:'210px'}}/>
+                                <img  src={'http://familyuniformapp.medicalworld.com.mm/promotion_images/'+el.promotionphoto_photo} style={{maxHeight:'210px'}}/>
                                 </Slide>
                                 {/* </div> */}
                                 {/* <h5 className="card-title text-center mt-2" style={{ opacity: 0.5,color:'#2b57b8'}}>{el.promotionphoto_title}</h5> */}

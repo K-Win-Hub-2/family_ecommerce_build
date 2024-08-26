@@ -123,7 +123,7 @@ const ProductList = () => {
   const navigate = useNavigate();
 
   const family = (val) => {
-    axios.get(url+"/api/category_all/"+val)
+    axios.get("http://familyuniformapp.medicalworld.com.mm/api/category_all/"+val)
         .then((response) => {
             setItems(response.data.items);
             setSubCat(response.data.subs);
@@ -151,14 +151,14 @@ const ProductList = () => {
   }
 
   const getItems = () => {
-    axios.get(url+"/api/item_api")
+    axios.get("http://familyuniformapp.medicalworld.com.mm/api/item_api")
         .then((response) => {
             setItems(response.data.items);
         })
   }
 
   const categories = () => {
-    axios.get(url+"/api/category_all")
+    axios.get("http://familyuniformapp.medicalworld.com.mm/api/category_all")
         .then((response) => {
             setCate(response.data);
             console.log(response.data);
@@ -166,7 +166,7 @@ const ProductList = () => {
   }
 
   const subcategories = () => {
-    axios.get(url+"/api/subcategory_api")
+    axios.get("http://familyuniformapp.medicalworld.com.mm/api/subcategory_api")
         .then((response) => {
             setSubCat(response.data.data);
         })
@@ -175,7 +175,7 @@ const ProductList = () => {
   const SearchItems = () => {
     setFil(0);
     setClick(true);
-    axios.post(url + '/api/searchitem', {
+    axios.post('http://familyuniformapp.medicalworld.com.mm/api/searchitem', {
       item: search
     }).then(res => {
       setItems(res.data);
@@ -188,7 +188,7 @@ const ProductList = () => {
 
   const handleFilters = (e) => {
     // alert(e.target.value);
-    axios.get(url+"/api/category_api/"+cat_id+'/'+e.target.value)
+    axios.get("http://familyuniformapp.medicalworld.com.mm/api/category_api/"+cat_id+'/'+e.target.value)
     .then((response) => {
         setItems(response.data.items);
         console.log(response.data.items);

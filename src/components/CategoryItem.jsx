@@ -46,7 +46,7 @@ const CategoryItem = ({item}) => {
   return (
     <Container style={{maxHeight: '250px'}}>
         <Link to={`/products/${item.id}/${item.category_name}`}>
-        <Image src={url+`/ecommerce/brands/${item.photo_path}`}/>
+        <Image src={`http://familyuniformapp.medicalworld.com.mm/ecommerce/brands/${item.photo_path}`}/>
         {/* <Image src={`http://localhost:8000/ecommerce/brands/${item.photo_path}`}/>  */}
         <Info>
             <Button>Details</Button>

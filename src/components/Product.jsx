@@ -136,7 +136,7 @@ const Product = ({ item }, props) => {
         const getItem = async () =>{
           try{
 
-            const res = await axios.get(url+`/api/item_api/${item.id}`);
+            const res = await axios.get(`http://familyuniformapp.medicalworld.com.mm/api/item_api/${item.id}`);
             console.log('hello');
             // console.log(res.data.id);
             setItemss(res.data.id);

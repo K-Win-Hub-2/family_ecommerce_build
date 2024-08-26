@@ -84,7 +84,7 @@ const ItemOne = ({item}) => {
   return (
     <Container>
         <Circle/>
-        <Image src={url+`/ecommerce/items/${item.photo_path}`}/>
+        <Image src={`http://familyuniformapp.medicalworld.com.mm/ecommerce/items/${item.photo_path}`}/>
         <Info>
             
             <Icon>

@@ -38,7 +38,7 @@ const FacebookNewsFeed = () => {
     useEffect(()=>{
       const getProducts = async () =>{
         try{
-          const res = await axios.get(url+`/api/facebook`);
+          const res = await axios.get(`http://familyuniformapp.medicalworld.com.mm/api/facebook`);
           console.log(res.data);
           setProducts(res.data);
         }catch(err){}
@@ -55,7 +55,7 @@ const FacebookNewsFeed = () => {
                     products.slice(0,5).map((el)=>(
                         <div className="card" style={{width: '25%',marginLeft:'20px'}} key={el.id}>
                             <div style={{maxHeight: '200px',minHeight: '200px', overflow: 'hidden'}}>
-                                <img src={url+'/facebook_images/'+el.facebook_photo} class="card-img-top" alt="..." />
+                                <img src={'http://familyuniformapp.medicalworld.com.mm/facebook_images/'+el.facebook_photo} class="card-img-top" alt="..." />
                             </div>
                             <div className="card-body" style={{position: 'relative', minHeight: '230px'}}>
                                 <h5 className="card-title">{el.facebook_title}</h5>
