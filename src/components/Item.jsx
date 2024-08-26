@@ -113,7 +113,7 @@ const Item = ({ item, title }) => {
 
     const fetchOrderPrice = async () => {
 
-        await axios.get(`http://familyuniformapp.medicalworld.com.mm/api/orderprice_api/${item.id}`)
+        await axios.get(`${url}/api/orderprice_api/${item.id}`)
 
             .then(res => {
                 // alert(res.data.order_price);
@@ -127,7 +127,7 @@ const Item = ({ item, title }) => {
 
     const fetchPromoPrice = async () => {
 
-        await axios.get(`http://familyuniformapp.medicalworld.com.mm/api/promoprice_api/${item.id}`)
+        await axios.get(`${url}/api/promoprice_api/${item.id}`)
 
             .then(res => {
                 setPromoPrice(res.data);
@@ -184,7 +184,7 @@ const Item = ({ item, title }) => {
 
         <Container>
             <Circle />
-            <Image src={`http://familyuniformapp.medicalworld.com.mm/ecommerce/items/${item.photo_path}`} onError={handleImageError}
+            <Image src={url + `/ecommerce/items/${item.photo_path}`} onError={handleImageError}
             />
             <Info>
 

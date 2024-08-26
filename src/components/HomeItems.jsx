@@ -42,7 +42,7 @@ const HomeItems = ({ title, url }) => {
     const getItems = async () => {
       try {
         // const res = await axios.get("http://localhost:8000/api/" + url,);
-        const res = await axios.get("http://familyuniformapp.medicalworld.com.mm/api/" + url,);
+        const res = await axios.get(url1+"/api/" + url,);
         setItems(res.data);
         // console.log("res data data is",res.data);
       } catch (err) { }

@@ -324,7 +324,7 @@ const Product = () => {
     }
     useEffect(() => {
         const getProduct = () => {
-            axios.get("http://familyuniformapp.medicalworld.com.mm/api/unitbyid_api/" + id)
+            axios.get(url+"/api/unitbyid_api/" + id)
             // axios.get("http://localhost:8000/api/unitbyid_api/" + id)
                 .then((response) => {
                     setItem(response.data.item);
