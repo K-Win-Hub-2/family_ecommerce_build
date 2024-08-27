@@ -182,10 +182,8 @@ const Order = () => {
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
   const pre = useSelector((state) => state.design.orders);
-  console.log("Pre Order:",pre);
   const preattach = useSelector((state) => state.design.attachs);
   const photo = useSelector((state) => state.design.paymentscreenshot);
-  console.log(useSelector((state) => state.design.paymentscreenshot));
   const username = useSelector((state) => state.user);
   const edittestname = useSelector((state) => state.design.edit_testname);
   const edittestqty = useSelector((state) => state.design.edit_testqty);
@@ -227,9 +225,7 @@ const Order = () => {
     let html = "";
     const res =  await axios.get(url + "/api/designapi/" + design_id)
     .then(res=>{
-      setloading(false)
-
-      console.log("design One Data list",res.data.design);
+      setloading(false);
      const designData =  Object.entries(res.data.design).map(e=> e[1])
       setDesigns(designData);
       cacheData = cache(designData)
@@ -243,15 +239,13 @@ const Order = () => {
 
   useEffect(()=>{
     cacheData ? setDesigns(cacheData) : getDesigns(design_id)
-  },[])
-  console.log("DD",designs);
+  },[]);
   // if (design_id == 1) {
   //   const getDesigns = async () => {
   //     try {
   //       let html = "";
   //       const res = await axios.get(url + "/api/designapi/" + design_id)
   //       .then(res=>{
-  //         console.log("design One Data list",res.data.design);
   //         setDesigns(res.data.design);
   //     })
         
@@ -268,7 +262,6 @@ const Order = () => {
   //     try {
   //       let html = "";
   //       const res = await axios.get(url + "/api/design_api/" + design_id);
-  //       console.log(res.data.design);
   //       Object.keys(res.data.design).map((key) => {
   //         html += `<Option>` + res.data.design[key] + `</Option>`;
   //       });
@@ -284,7 +277,6 @@ const Order = () => {
   //     try {
   //       let html = "";
   //       const res = await axios.get(url + "/api/design_api/" + design_id);
-  //       console.log(res.data.design);
   //       Object.keys(res.data.design).map((key) => {
   //         html += `<Option>` + res.data.design[key] + `</Option>`;
   //       });
@@ -329,7 +321,6 @@ const Order = () => {
   //     // alert(document.getElementById('item_name').innerHTML+' '+document.getElementById('gen_name').innerHTML);
   //     axios.get(url+'/api/ecommerce_order_type/'+design_name+'/'+gname)
   //                 .then((response) => {
-  //                     console.log(response.data.fabric);
   //                     if(response.data.fabric.length == 0){
   //                         Swal.fire({
   //                             title:  "Warning!",
@@ -348,30 +339,22 @@ const Order = () => {
   // const addit = () => {
   //   const spec = document.getElementById("type").value;
   //   document.getElementById("item_name").innerHTML = spec;
-  //   console.log("design id",spec);
   //   setDesignName(spec);
   // };
   const addGender = (gender) => {
-
-    console.log("gender",gender);
     // const selectedGenderId = event.target.value;
     // document.getElementById("gen_name").innerHTML = selectedGenderId;
-
     // console.log("Selected gender ID:", selectedGenderId);
     setGenderName(gender);
     // setGenderName(gender);
 
     filterSizesByGender(gender.id);
   };
-  console.log("cahceis", cacheData)
   const addDesign = (design) => {
-    
-    console.log("DES data list",design);
     setDesignName(design);
     // const selectedGenderId = event.target.value;
     // document.getElementById("gen_name").innerHTML = selectedGenderId;
 
-    // console.log("Selected gender ID:", selectedGenderId);
     // setGenderName(gender);
     // filterSizesByGender(gender.id);
   };
@@ -380,17 +363,13 @@ const Order = () => {
     setFilteredSizes(filteredSizes);
   };
   const addFabric = (fabric) => {
-    console.log("fabric",fabric);
     // const spec = event.target.value;
     // document.getElementById("fab_name").innerHTML = spec;
-    // console.log("Selected fabric ID:", spec);
     setFabricName(fabric);
   };
   const addColor = (color) => {
-    // console.log("colors",color);
     // const spec = event.target.value;
     // document.getElementById("col_name").innerHTML = spec;
-    // console.log("Selected color ID:", spec);
     setColorName(color);
   };
   const addSize = (size) => {
@@ -414,7 +393,6 @@ const Order = () => {
   //     let html = '';
   //     axios.get(url+'/api/ecommerce_order_type/'+design_name+'/'+gendername+'/'+spec)
   //             .then((response) => {
-  //                 console.log(response.data.colour);
   //                     Object.keys(response.data.colour).map(key => {
   //                         html += `<Option>`+ response.data.colour[key]+`</Option>`;
   //                      })
@@ -441,7 +419,6 @@ const Order = () => {
 //           spec
 //       )
 //       .then((response) => {
-//         console.log(response.data.size);
 //         Object.keys(response.data.size).map((key) => {
 //           html += `<Option>` + response.data.size[key] + `</Option>`;
 //         });
@@ -523,7 +500,6 @@ const Order = () => {
     dispatch(removeAttach({ id }));
   };
   // const addToCart = (data) => {
-  //  console.log("addtocr",data)
   //  let datas = JSON.parse(localStorage.getItem("addToCart")) || []
   //  datas.push(data)
   //  localStorage.setItem("addToCart", JSON.stringify(datas))
@@ -536,7 +512,6 @@ const Order = () => {
   }, []);
   
     const addToCart = (data) => {
-    // console.log("addtocrt", data);
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
     storedItems.length == 0 ? data["id"] = 1 : data["id"] = storedItems[storedItems.length -1 ].id + 1
     const updatedItems = [...storedItems, data];
@@ -546,8 +521,7 @@ const Order = () => {
   const remove = (id) => {
     // alert(id);
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
-    let saveItem= storedItems.filter(items => items.id != id)
-    // console.log("pppp",saveItem);
+    let saveItem= storedItems.filter(items => items.id != id);
     localStorage.setItem('addToCart',JSON.stringify(saveItem));
     setCartItems(saveItem); 
     // JSON.parse
@@ -632,6 +606,7 @@ const Order = () => {
       address: username.address,
       orders: items,
     };
+    console.log('formData',formdata);
    const response = await axios.post(url + "/api/ecommerce_preorder_store", formdata)
    if(response.data){
       Swal.fire({
@@ -649,7 +624,6 @@ const Order = () => {
    }
     // let tot_qty = 0;
 
-    // // console.log("totoal",tot_qty);
     // if (username.name == "") {
     //   Swal.fire({
     //     title: "Warning!",
@@ -704,7 +678,6 @@ const Order = () => {
     const res = axios .post(url + "/api/ecommerce_preorder_store", formdata)
               .then(function (response) {
           alert('success store');
-        // console.log("PreOdddd",response);
         dispatch(resetOrder());
         navigate("/order_list");
       })
@@ -742,7 +715,6 @@ const Order = () => {
         type: val,
       })
       .then((response) => {
-        console.log(response.data["message"]);
         //Success Message in Sweetalert modal
         Swal.fire({
           title: response.data["message"],
@@ -813,7 +785,6 @@ const Order = () => {
               config
             )
             .then((response) => {
-              console.log(response.data["message"]);
               //Success Message in Sweetalert modal
               Swal.fire({
                 title: response.data["message"],
@@ -1404,7 +1375,6 @@ const sizes=[
 
                         {
                        designs.map((design) => {
-                        // console.log("vall",value,index)
                         return (
                          <option
                             key={design.id}
@@ -1524,13 +1494,12 @@ const sizes=[
                       <Select {...register("size_id")} id={"siz_name"}>
         <option value="">Select Size</option>
         {
-        filteredSizes.map((size) => (
+        sizes.map((size) => (
           <option key={size.id} value={size.id} onClick={()=>addSize(size)}>
             {size.size_name}
           </option>
         )
         )
-        // console.log("siz data",filteredSizes)
         }
       </Select>
                       &nbsp;&nbsp;&nbsp;
@@ -1541,10 +1510,10 @@ const sizes=[
                       <br></br>
                     </td>
                     <td>
-                      <Qty id={"qty"} {...register('quantity')}  placeholder="0" onKeyUp={changeprice} />
+                      <Qty id={"qty"} {...register('quantity')}  placeholder="0" onKeyUp={changeprice}/>
                     </td>
                     <td>
-                      <Qty id={"price"} {...register('price')} placeholder="0" />
+                      <Qty id={"price"} {...register('price')} placeholder="0" disabled/>
                     </td>
                     <td >
                       <Delete onClick={handleSubmit(data => addToCart(data))}>ADD</Delete>

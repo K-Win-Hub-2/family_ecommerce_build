@@ -114,7 +114,7 @@ export const Tabs = styled.div`
 const MenuItem = styled.div`
     font-size: 19px;
     display: inline;
-    margin-left : 200px;
+    /* margin-left : 200px; */
    
 `
 const link = {
@@ -126,7 +126,7 @@ export const Tab = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  width: 40%;
+  width: 30%;
   position: relative;
 
   margin-right: 0.1em;
@@ -247,13 +247,27 @@ const OrderList = () => {
         <Tab onClick={handleClick} active={active === 1} id={1}>
            Pre Order List
         </Tab>
+        {/* <Tab> */}
+        {active === 0 && 
+            <Link to="/track_order_list" style={link}>
+            <MenuItem className='btn btn-primary'>Track Order</MenuItem>
+            </Link>
+        }
+        
+        {active === 1 &&
+            <Link to="/track_preorder_list" style={link}>
+            <MenuItem className='btn btn-primary'>Track PreOrder</MenuItem>
+            </Link>
+        }
+        
+        {/* </Tab> */}
         </Tabs>
 
         <>
         <Content active={active === 0}> <br />
-        <Link to="/track_order_list" style={link}>
+        {/* <Link to="/track_order_list" style={link}>
         <MenuItem className='btn btn-primary'>Track Order</MenuItem>
-      </Link>
+      </Link> */}
         <Wrapper>
         
             <Table style={{marginBottom: "160px"}}>
@@ -300,9 +314,9 @@ const OrderList = () => {
         </Wrapper>
         </Content>
         <Content active={active === 1}> <br />
-        <Link to="/track_preorder_list" style={link}>
+        {/* <Link to="/track_preorder_list" style={link}>
                             <MenuItem className='btn btn-primary'>Track PreOrder</MenuItem>
-        </Link>
+        </Link> */}
         <Wrapper>
        
                         

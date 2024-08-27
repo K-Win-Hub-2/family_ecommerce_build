@@ -135,7 +135,7 @@ const OrderList = () => {
         await axios.get(url+'/api/ecommerce_order_detail/'+id)
         .then(res=>{
             console.log("ordrData is:",res.data.orders);
-            setInputs({
+            {res.data.orders && setInputs({
                 id: res.data.orders.id,
                 order_code: res.data.orders.order_code,
                 order_date: res.data.orders.order_date,
@@ -148,7 +148,8 @@ const OrderList = () => {
                 order_status: res.data.orders.order_status,
                 payment_channel: res.data.orders.payment_channel,
                 delivery_fee: res.data.orders.delivery_fee,
-            });
+            })}
+
             setOInputs(res.data.counting_units);
             setAttachs(res.data.attachs);
             setEcounting(res.data.units);

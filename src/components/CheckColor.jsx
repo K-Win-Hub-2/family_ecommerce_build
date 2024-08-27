@@ -38,6 +38,10 @@ const CheckColor = (props) => {
   console.log('props.name',props.name);
   console.log('colorurl',colorUrl);
     
+  const handleImageError = (e) => {
+    e.target.src = imageUrl;
+  };
+
   return (
     <div>
         <Dialog open={props.open} onClose={props.close}>
@@ -46,7 +50,8 @@ const CheckColor = (props) => {
         <DialogContent >
         {colorUrl ? (
             <Div>
-            <img src={colorUrl} alt={props.item?.name} style={{ width: '100%', height: 'auto' }} />
+            <img src={colorUrl} alt={props.item?.name} style={{ width: '100%', height: 'auto' }} onError={handleImageError} 
+ />
             </Div>
           ) : (
             <Div>

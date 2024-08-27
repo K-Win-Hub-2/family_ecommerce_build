@@ -321,6 +321,8 @@ const Product = () => {
     const handleSizeChange = (size) => {
         setSelectedSize(size);
         console.log('Selected Size:', size);
+        setPrice(units[0].order_price);
+        setStock(units[0].current_quantity);
     }
     useEffect(() => {
         const getProduct = () => {
@@ -589,9 +591,11 @@ const Product = () => {
                     }
                     <RowContainer>
                         <PriceLabel>Price: </PriceLabel>
-                        <Price id='price'> &nbsp;MMK</Price>
+                        <Price>{price}</Price>
+                        {/* <Price id='price'> &nbsp;MMK</Price> */}
                         <StockLabel>Stock: </StockLabel>
-                        <Stock id='stock'> &nbsp;PCS</Stock>
+                        {/* <Stock id='stock'> &nbsp;PCS</Stock> */}
+                        <Stock>{stock}</Stock>
                     </RowContainer>
                     <FilterContainer>
                     <Filter className='float-left'>
