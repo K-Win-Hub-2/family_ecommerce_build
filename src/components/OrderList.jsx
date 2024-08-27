@@ -287,7 +287,10 @@ const OrderList = () => {
                         <Tr key={order.id}>
                             <Td>{++index}</Td>
                             <Td>{order.order_code}</Td>
-                            <Td>{order.customer_name}</Td>
+                            <Td>
+                              {order.customer_name === null ? "Default Name" : order.customer_name}
+                            </Td>
+                            
                             <Td>{order.deliver_address}</Td>
                             <Td>{order.order_date}</Td>
                             

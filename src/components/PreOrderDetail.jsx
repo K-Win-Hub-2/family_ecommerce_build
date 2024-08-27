@@ -157,6 +157,10 @@ const PreOrderDetail = () => {
         });
     }
 
+    let grandTotal = 0;
+    let discountTotal = 0;
+    let finalPriceTotal = 0;
+
     return (
 
         <div>
@@ -225,7 +229,7 @@ const PreOrderDetail = () => {
             {
                 
                 <Table>
-                <Tr>
+                  <Tr>
                     <Th>No</Th>
                     <Th>Fabric</Th>
                     <Th>Gender</Th>
@@ -234,30 +238,58 @@ const PreOrderDetail = () => {
                     <Th>Qty</Th>
                     <Th>Price</Th>
                     <Th>Total Price</Th>
- 
-                </Tr>
-                {
-                    // console.log("UUU",oinputs)
-                    oinputs && oinputs.length != 0 ?  oinputs.map((oinput, index) => (
-    
-                        <Tr key={oinput.id}>
-                            <Td>{++index}</Td>
+                    <Th>Discount Value</Th>
+                    <Th>Final Price</Th>
+                  </Tr>
+                  {oinputs && oinputs.length !== 0 ? (
+                    <>
+                      {oinputs.map((oinput, index) => {
+                        const totalPrice = oinput.price * oinput.quantity;
+                        const finalPrice = totalPrice - oinput.discount_value;
+
+                        // Add these values to the cumulative totals
+                        grandTotal += totalPrice;
+                        discountTotal += oinput.discount_value;
+                        finalPriceTotal += finalPrice;
+
+                        return (
+                          <Tr key={oinput.id}>
+                            <Td>{index + 1}</Td>
                             <Td>{oinput.fabric}</Td>
                             <Td>{oinput.gender}</Td>
                             <Td>{oinput.colour}</Td>
                             <Td>{oinput.size}</Td>
                             <Td>{oinput.quantity}</Td>
-                            <Td>{oinput.price}</Td>
-                            <Td>{oinput.total_price}</Td>
+                            <Td>{oinput.price === null ? 0 : oinput.price}</Td>
+                            <Td>{totalPrice}</Td>
+                            <Td>{oinput.discount_value}</Td>
+                            <Td>{finalPrice}</Td>
+                          </Tr>
+                        );
+                      })}
 
+                      {/* Totals Row */}
+                      <Tr>
+                        <Td colSpan={8}></Td>
+                        <Td><strong>Grand Total</strong></Td>
+                        <Td>{grandTotal}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td colSpan={8}></Td>
+                        <Td><strong>Discount Total</strong></Td>
+                        <Td>{discountTotal}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td colSpan={8}></Td>
+                        <Td><strong>Final Price Total</strong></Td>
+                        <Td>{finalPriceTotal}</Td>
+                      </Tr>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </Table>
 
-                        </Tr> 
-                    
-                    )):""
-                }
-                
-                
-            </Table> 
             }
            
         </Wrapper>

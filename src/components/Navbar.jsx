@@ -15,6 +15,7 @@ import PreDialog from '../components/PreDialog'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { showSearch } from '../redux/designRedux';
+import LoginAlert from './LoginAlert';
 // import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
@@ -87,6 +88,21 @@ const Logo = styled.h1`
     display: block;
     text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(206,89,55,0);
     ${mobile({ fontSize: "24px" })}
+<<<<<<< Tabnine <<<<<<<
+/**//+
+ * A dialog component for pre-ordering products.//+
+ * It displays a list of brands with their images and allows users to make pre-orders.//+
+ * //+
+ * @param {Object} props - The properties passed to the component.//+
+ * @param {boolean} props.open - Indicates whether the dialog is open or closed.//+
+ * @param {function} props.close - A function to close the dialog.//+
+ * //+
+ * @returns {JSX.Element} - The PreDialog component with the specified properties.//+
+ *///+
+export default function PreDialog(props) {//+
+    // ... existing code ...//+
+}//+
+>>>>>>> Tabnine >>>>>>>
 `
 
 const Right = styled.div`
@@ -172,6 +188,8 @@ const Navbar = (props) => {
     const dispatch = useDispatch();
     const [showDialog, setShowDialog] = useState(false);
     const pcs = useSelector(state=>state.cart.total_pcs);
+
+    const userName = useSelector(state=>state.user.name);
 
     window.onscroll = function () {
         if (document.documentElement.scrollTop > 100) {
@@ -345,7 +363,11 @@ const Navbar = (props) => {
                     </Right>
                 </Wrapper>
             )}
-            <PreDialog open={showDialog} close={() => setShowDialog(false)} />
+            {isUser ? (
+                <PreDialog open={showDialog} close={() => setShowDialog(false)} />
+            ) : (
+                <LoginAlert open={showDialog} close={() => setShowDialog(false)} />
+            )}
         </Container>
     )
 }
