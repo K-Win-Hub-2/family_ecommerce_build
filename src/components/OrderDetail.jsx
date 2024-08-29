@@ -213,53 +213,57 @@ const OrderList = () => {
                 </RBox>
             </BigBox>
             {
-                attachs.length > 0 ? 
-                <Table>
-                <Tr>
-                    <Th>No</Th>
-                    <Th>Item Name</Th>
-                    <Th>Qty</Th>
-                    <Th>Price</Th>
-                    <Th>Description</Th>
-                </Tr>
-                {attachs.map((attach, index) => (
-                    <Tr key={attach.id}>
-                    <Td>{++index}</Td>
-                    <Td><img src={url+`/preorder/${attach.item_photo}`} alt="" height='auto' width='170px'/></Td>
-                    <Td>{attach.quantity}</Td>
-                    <Td>{attach.price}</Td>
-                    <Td>{attach.description}</Td>
-                </Tr> 
-                ))} 
-            </Table>  :
-                <Table>
-                <Tr>
-                    <Th>No</Th>
-                    <Th>Item Name</Th>
-                    <Th>Color</Th>
-                    <Th>Size</Th>
-                    <Th>Qty</Th>
-                    <Th>Price</Th>
-                </Tr>
-                {
-                    oinputs.map((oinput, index) => (
-                        ecounting.map((ec, i) => (
-                            oinput.id == ec.counting_unit_id ?
-                        <Tr key={oinput.id}>
-                            <Td>{++index}</Td>
-                            <Td>{oinput.unit_name}</Td>
-                            <Td>{color[i]}</Td>
-                            <Td>{size[i]}</Td>
-                            <Td>{ec.quantity}</Td>
-                            <Td>{ec.price}</Td>
-                        </Tr> : null
-                    ))
-                    ))
-                }
-                
-                
-            </Table> 
+                attachs && attachs.length > 0 ? (
+                    <Table>
+                        <Tr>
+                            <Th>No</Th>
+                            <Th>Item Name</Th>
+                            <Th>Qty</Th>
+                            <Th>Price</Th>
+                            <Th>Description</Th>
+                        </Tr>
+                        {attachs.map((attach, index) => (
+                            <Tr key={attach.id}>
+                                <Td>{index + 1}</Td> {/* Use index + 1 instead of ++index */}
+                                <Td>
+                                    <img src={`${url}/preorder/${attach.item_photo}`} alt="" height="auto" width="170px" />
+                                </Td>
+                                <Td>{attach.quantity}</Td>
+                                <Td>{attach.price}</Td>
+                                <Td>{attach.description}</Td>
+                            </Tr>
+                        ))}
+                    </Table>
+                ) : (
+                    <Table>
+                        <Tr>
+                            <Th>No</Th>
+                            <Th>Item Name</Th>
+                            <Th>Color</Th>
+                            <Th>Size</Th>
+                            <Th>Qty</Th>
+                            <Th>Price</Th>
+                        </Tr>
+                        {
+                                oinputs && oinputs.map((oinput, index) => (
+                                ecounting.map((ec, i) => (
+                                    oinput.id === ec.counting_unit_id ? (
+                                        <Tr key={oinput.id}>
+                                            <Td>{index + 1}</Td> {/* Use index + 1 instead of ++index */}
+                                            <Td>{oinput.unit_name}</Td>
+                                            <Td>{color[i]}</Td>
+                                            <Td>{size[i]}</Td>
+                                            <Td>{ec.quantity}</Td>
+                                            <Td>{ec.price}</Td>
+                                        </Tr>
+                                    ) : null
+                                ))
+                            ))
+                        }
+                    </Table>
+                )
             }
+
            
         </Wrapper>
         </Div>

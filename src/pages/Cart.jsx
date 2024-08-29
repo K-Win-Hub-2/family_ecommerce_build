@@ -6,13 +6,17 @@ import Announcement from '../components/Announcement'
 import Footer from '../components/Footer'
 import { Add, Remove } from '@mui/icons-material'
 import {mobile} from "../responsive"
-import { removeProduct,resetPcs } from "../redux/cartRedux"
+import { addProduct,
+    removeProduct,
+    updateQuantity,
+    resetPcs } from "../redux/cartRedux"
 import { useDispatch,useSelector } from 'react-redux'
 import axios from 'axios'
 import CheckoutDialog from '../components/CheckoutDialog'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import Paidinfodialog from '../components/PaidInfoDialog'
+import Paidinfodialog from '../components/PaidInfoDialog';
+
 
 const Container = styled.div``
 const Wrapper = styled.div`
@@ -187,57 +191,155 @@ const Cart = () => {
  
     }
 
-    const handleQuantityInc = (id) =>{   
-        const qty = parseInt(document.getElementById('qty'+id).innerHTML) + 1;
-        document.getElementById('qty'+id).innerHTML = qty;
-        const price = parseInt(document.getElementById('pri'+id).value) * qty;
-        document.getElementById('price'+id).innerHTML = price;
-        const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) + 1;
-        const subtotal = parseInt(document.getElementById('subtotal').innerHTML) + parseInt(document.getElementById('pri'+id).value);
-        const total = subtotal;
-        document.getElementById('total_pcs').innerHTML = total_pcs;
-        document.getElementById('subtotal').innerHTML = subtotal;
-        document.getElementById('total').innerHTML = total;
-        dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    // const handleQuantityInc = (id) =>{   
+    //     const qty = parseInt(document.getElementById('qty'+id).innerHTML) + 1;
+    //     document.getElementById('qty'+id).innerHTML = qty;
+    //     const price = parseInt(document.getElementById('pri'+id).value) * qty;
+    //     document.getElementById('price'+id).innerHTML = price;
+    //     const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) + 1;
+    //     const subtotal = parseInt(document.getElementById('subtotal').innerHTML) + parseInt(document.getElementById('pri'+id).value);
+    //     const total = subtotal;
+    //     document.getElementById('total_pcs').innerHTML = total_pcs;
+    //     document.getElementById('subtotal').innerHTML = subtotal;
+    //     document.getElementById('total').innerHTML = total;
+    //     dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    // };
+
+    // const handleQuantityDec = (id) =>{
+        
+    //     const qty = parseInt(document.getElementById('qty'+id).innerHTML) - 1;
+    //     if(qty == 0){
+    //         const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
+    //         const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - parseInt(document.getElementById('pri'+id).value);
+    //         const total = subtotal;
+    //         document.getElementById('total_pcs').innerHTML = total_pcs;
+    //         document.getElementById('subtotal').innerHTML = subtotal;
+    //         document.getElementById('total').innerHTML = total;
+    //         dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    //         dispatch(removeProduct({id}));
+    //     }else{
+    //         document.getElementById('qty'+id).innerHTML = qty;
+    //         const price = parseInt(document.getElementById('pri'+id).value) * qty;
+    //         document.getElementById('price'+id).innerHTML = price;
+    //         const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
+    //         const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - parseInt(document.getElementById('pri'+id).value);
+    //         const total = subtotal;
+    //         document.getElementById('total_pcs').innerHTML = total_pcs;
+    //         document.getElementById('subtotal').innerHTML = subtotal;
+    //         document.getElementById('total').innerHTML = total;
+    //         dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    //     }
+    // };
+
+    // const removeCart = (id) => {
+    //         const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - document.getElementById('qty'+id).innerHTML;
+    //         const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - document.getElementById('price'+id).innerHTML;
+    //         const total = subtotal;
+    //         document.getElementById('total_pcs').innerHTML = total_pcs;
+    //         document.getElementById('subtotal').innerHTML = subtotal;
+    //         document.getElementById('total').innerHTML = total;
+    //         dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    //     dispatch(removeProduct({id}));
+    // }
+
+    // const handleQuantityInc = (id) => {
+    //     // Get current quantity and price per item
+    //     const currentQty = parseInt(document.getElementById('qty' + id).innerHTML);
+    //     const pricePerItem = parseInt(document.getElementById('pri' + id).value);
+
+    //     // Calculate the new quantity and price
+    //     const newQty = currentQty + 1;
+    //     const newPrice = pricePerItem * newQty;
+
+    //     // Update the DOM
+    //     document.getElementById('qty' + id).innerHTML = newQty;
+    //     document.getElementById('price' + id).innerHTML = newPrice;
+
+    //     // Update total pieces and subtotal
+    //     const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) + 1;
+    //     const subtotal = parseInt(document.getElementById('subtotal').innerHTML) + pricePerItem;
+    //     document.getElementById('total_pcs').innerHTML = total_pcs;
+    //     document.getElementById('subtotal').innerHTML = subtotal;
+    //     document.getElementById('total').innerHTML = subtotal;
+
+    //     // Dispatch the updated totals to Redux
+    //     dispatch(resetPcs({ total_pcs, total: subtotal }));
+    // };
+
+
+    // const handleQuantityDec = (id) => {
+    //     const currentQty = parseInt(document.getElementById('qty' + id).innerHTML);
+    //     const pricePerItem = parseInt(document.getElementById('pri' + id).value);
+
+    //     if (currentQty > 1) {
+    //         // Decrease quantity and update the price
+    //         const newQty = currentQty - 1;
+    //         const newPrice = pricePerItem * newQty;
+
+    //         // Update the DOM
+    //         document.getElementById('qty' + id).innerHTML = newQty;
+    //         document.getElementById('price' + id).innerHTML = newPrice;
+
+    //         // Update total pieces and subtotal
+    //         const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
+    //         const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - pricePerItem;
+    //         document.getElementById('total_pcs').innerHTML = total_pcs;
+    //         document.getElementById('subtotal').innerHTML = subtotal;
+    //         document.getElementById('total').innerHTML = subtotal;
+
+    //         // Dispatch the updated totals to Redux
+    //         dispatch(resetPcs({ total_pcs, total: subtotal }));
+    //     } else {
+    //         // If quantity reaches 0, remove the item from the cart
+    //         handleRemoveProduct(id);
+    //     }
+    // };
+
+    // const handleRemoveProduct = (id) => {
+    //     const qty = parseInt(document.getElementById('qty' + id).innerHTML);
+    //     const price = parseInt(document.getElementById('price' + id).innerHTML);
+
+    //     // Update the totals after removing the product
+    //     const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - qty;
+    //     const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - price;
+
+    //     // Update the DOM
+    //     document.getElementById('total_pcs').innerHTML = total_pcs;
+    //     document.getElementById('subtotal').innerHTML = subtotal;
+    //     document.getElementById('total').innerHTML = subtotal;
+
+    //     // Dispatch the removal to Redux
+    //     dispatch(resetPcs({ total_pcs, total: subtotal }));
+    //     dispatch(removeProduct({ id }));
+    // };
+
+
+
+    const handleQuantityInc = (id) => {
+        const currentQty = cart.products.find(product => product.unitid === id)?.quantity || 0;
+        dispatch(updateQuantity({ id, quantity: currentQty + 1 }));
     };
 
-    const handleQuantityDec = (id) =>{
-        
-        const qty = parseInt(document.getElementById('qty'+id).innerHTML) - 1;
-        if(qty == 0){
-            const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
-            const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - parseInt(document.getElementById('pri'+id).value);
-            const total = subtotal;
-            document.getElementById('total_pcs').innerHTML = total_pcs;
-            document.getElementById('subtotal').innerHTML = subtotal;
-            document.getElementById('total').innerHTML = total;
-            dispatch(resetPcs({total_pcs : total_pcs,total : total}));
-            dispatch(removeProduct({id}));
-        }else{
-            document.getElementById('qty'+id).innerHTML = qty;
-            const price = parseInt(document.getElementById('pri'+id).value) * qty;
-            document.getElementById('price'+id).innerHTML = price;
-            const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
-            const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - parseInt(document.getElementById('pri'+id).value);
-            const total = subtotal;
-            document.getElementById('total_pcs').innerHTML = total_pcs;
-            document.getElementById('subtotal').innerHTML = subtotal;
-            document.getElementById('total').innerHTML = total;
-            dispatch(resetPcs({total_pcs : total_pcs,total : total}));
+    const handleQuantityDec = (id) => {
+        const currentQty = cart.products.find(product => product.unitid === id)?.quantity || 0;
+        if (currentQty > 1) {
+            dispatch(updateQuantity({ id, quantity: currentQty - 1 }));
+        } else {
+            dispatch(removeProduct(id));
         }
     };
 
-    const removeCart = (id) => {
-            const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - document.getElementById('qty'+id).innerHTML;
-            const subtotal = parseInt(document.getElementById('subtotal').innerHTML) - document.getElementById('price'+id).innerHTML;
-            const total = subtotal;
-            document.getElementById('total_pcs').innerHTML = total_pcs;
-            document.getElementById('subtotal').innerHTML = subtotal;
-            document.getElementById('total').innerHTML = total;
-            dispatch(resetPcs({total_pcs : total_pcs,total : total}));
-        dispatch(removeProduct({id}));
-    }
-    
+
+      const removeCart = (id) => {
+        const product = cart.products.find(product => product.unitid === id);
+        if (product) {
+          dispatch(removeProduct(id));
+          // No need to update total_pcs and total directly; it's handled by the reducer
+        }
+      };
+
+
+    console.log('cart is ',cart);
   return (
     <Container>
         <ColorNav/>

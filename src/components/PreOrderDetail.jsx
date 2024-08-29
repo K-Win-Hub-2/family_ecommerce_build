@@ -135,6 +135,8 @@ const PreOrderDetail = () => {
         await axios.get(url+'/api/ecommerce_preorder_detail/'+id)
         .then(res=>{
             console.log("PreordrData is:",res.data);
+            if (res.data && res.data.length > 0) {
+                const orderDetail = res.data[0];
             setInputs({
                 id: res.data[0].id,
                 order_code: res.data[0].order_code,
@@ -150,6 +152,7 @@ const PreOrderDetail = () => {
 
             });
             setOInputs(res.data);
+        }
             // setAttachs(res.data.attachs);
             // setEcounting(res.data.units);
             // setColor(res.data.color);

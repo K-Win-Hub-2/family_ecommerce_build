@@ -223,46 +223,51 @@ const OrderHistory = () => {
             <Title>Your Orders Detail</Title>
             <Description>This is where your order list shown</Description>
             <BigBox>
-    {orders.map(order => (
-        <React.Fragment key={order.id}>
-            <LBox>
-                <Left>
-                    <P>NO :</P>
-                    <P>Customer Name :</P>
-                    <P>Order Phone :</P>
-                    <P>Order Address :</P>
-                    <P>Order Date :</P>
-                    <P>Delivery Fee :</P>
-                </Left>
-                <Right>
-                    <P>{order.id}</P>
-                    <P>{order.customer_name || username.name}</P>
-                    <P>{order.customer_phone}</P>
-                    <P>{order.deliver_address}</P>
-                    <P>{order.order_date}</P>
-                    <P>{order.delivery_fee}</P>
-                </Right>
-            </LBox>
-            <RBox>
-                <Left>
-                    <P>Order No :</P>
-                    <P>Total Quantity :</P>
-                    <P>Total Amount :</P>
-                    <P>Payment Type :</P>
-                    <P>Payment Channel :</P>
-                    <P>Order Status :</P>
-                </Left>
-                <Right>
-                    <P>{order.order_code}</P>
-                    <P>{order.total_quantity}</P>
-                    <P>{order.total_amount}</P>
-                    <P>{order.payment_type}</P>
-                    <P>{order.payment_channel}</P>
-                    <Span>{order.order_status}</Span>
-                </Right>
-            </RBox>
-        </React.Fragment>
-    ))}
+            {orders.length < 0 ? (
+        orders.map(order => (
+            <React.Fragment key={order.id}>
+                <LBox>
+                    <Left>
+                        <P>NO :</P>
+                        <P>Customer Name :</P>
+                        <P>Order Phone :</P>
+                        <P>Order Address :</P>
+                        <P>Order Date :</P>
+                        <P>Delivery Fee :</P>
+                    </Left>
+                    <Right>
+                        <P>{order.id}</P>
+                        <P>{order.customer_name || username.name}</P>
+                        <P>{order.customer_phone}</P>
+                        <P>{order.deliver_address}</P>
+                        <P>{order.order_date}</P>
+                        <P>{order.delivery_fee}</P>
+                    </Right>
+                </LBox>
+                <RBox>
+                    <Left>
+                        <P>Order No :</P>
+                        <P>Total Quantity :</P>
+                        <P>Total Amount :</P>
+                        <P>Payment Type :</P>
+                        <P>Payment Channel :</P>
+                        <P>Order Status :</P>
+                    </Left>
+                    <Right>
+                        <P>{order.order_code}</P>
+                        <P>{order.total_quantity}</P>
+                        <P>{order.total_amount}</P>
+                        <P>{order.payment_type}</P>
+                        <P>{order.payment_channel}</P>
+                        <Span>{order.order_status}</Span>
+                    </Right>
+                </RBox>
+            </React.Fragment>
+        ))
+    ) : (
+        <p>No orders available.</p>
+    )}
+
 </BigBox>
 
             {/* {

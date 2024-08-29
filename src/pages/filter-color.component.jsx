@@ -1,39 +1,27 @@
-// const FilterColorWithUnitId = ({units, onChange}) => {
-//   console.log('units', units);
-//     return (
-//         <select onChange={(e) => onChange(e.target.value)} id="color" className="ml-2 p-1">
-//           <option value="">Choose Color</option>
-//           {units.map((color) => (
-//             <option key={color.id} value={color.colour_photo_path}>
-//               {color.colour_name}
-//             </option>
-//           ))}
-//         </select>
-//       );
-// }
+import React from 'react';
 
-// export default FilterColorWithUnitId;
-
-const FilterColorWithUnitId = ({units, onChange}) => {
-  console.log('units', units);
+const FilterColorWithUnitId = ({ units, onChange }) => {
+  console.log('FilterColorWithUnitId', units);
 
   // Use a Set to store unique colors
   const uniqueColors = new Set();
-  const filteredUnits = units.filter(unit => {
+  const filteredUnits = Array.isArray(units) ? units.filter(unit => {
     if (uniqueColors.has(unit.colour_name)) {
       return false;
     } else {
       uniqueColors.add(unit.colour_name);
       return true;
     }
-  });
+  }) : [];
+
+  console.log('filteredUnits', filteredUnits);
 
   return (
-    <select onChange={(e) => onChange(e.target.value)} id="color" className="ml-2 p-1">
-      <option value="">Choose Color</option>
+    <select onChange={(e) => onChange(e.target.value)} id="color" className="ml-2 p-1" disabled={filteredUnits.length === 0}>
+      <option value="">{filteredUnits.length === 0 ? 'No Colors Available' : 'Choose Color'}</option>
       {filteredUnits.map((color) => (
-        <option key={color.id} value={color.colour_photo_path}>
-          {color.colour_name}
+        <option key={color} value={color}>
+          {color}
         </option>
       ))}
     </select>

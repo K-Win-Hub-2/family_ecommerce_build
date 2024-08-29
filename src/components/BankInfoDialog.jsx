@@ -19,6 +19,8 @@ import wave from "../files/wave.png";
 import waveqr from "../files/waveqr.jpg";
 import kbzpayqr from "../files/kbzpayqr.jpg";
 import cbpayqr from "../files/cbpayqr.jpg";
+import ayasaving from "../files/ayabank.png";
+import cbspecial from "../files/cbspecial.jpg";
 import axios from "axios";
 const Bank = styled.div`
   width: 100%;
@@ -49,13 +51,26 @@ const QR = styled.img`
   width: 50%;
 `;
 
+const getBankQr = (bankName) => {
+  switch (bankName) {
+    case "K Pay":
+      return kbzpayqr;
+    case "CB Pay":
+      return cbpayqr;
+    default:
+      return null;
+  }
+};
+
 export default function BankInfoDialog(props) {
+  
+
   const [KBZBank, isKBZBank] = useState(false);
   const [AYABank, isAYABank] = useState(false);
   const [CBPay, isCBPay] = useState(false);
   const [KBZPay, isKBZPay] = useState(false);
   const [Wave, isWave] = useState(false);
-  const [getBank, setBank] = useState();
+  const [getBank, setBank] = useState([]);
   const [bankDetailData, setBankDetailData] = useState(null);
   const url = useSelector((state) => state.user.url);
   const location = useLocation();
@@ -88,7 +103,31 @@ export default function BankInfoDialog(props) {
   useEffect(() => {
     getBankDetail();
   }, []);
+console.log('getBank',getBank);
+const updatedResponseArray = getBank.map(item => {
+  switch (item.bank_name) {
+      case "CB Special":
+          return { ...item, bank_logo: cbspecial };
+      case "AYA Special":
+          return { ...item, bank_logo: ayasaving };
+      case "KBZ":
+          return { ...item, bank_logo: kbzbank };
+      case "CB Pay":
+          return { ...item, bank_logo: cbpay };
+      case "K Pay":
+          return { ...item, bank_logo: kbzpay };
+      case "AYA (Current)":
+          return { ...item, bank_logo: aya };
+      case "AYA (Saving)":
+          return { ...item, bank_logo: ayasaving };
+      default:
+          return item; // Return the item as is if no match is found
+  }
+});
 
+const bankLogo = getBankQr(bankDetailData?.bank_name);
+console.log('bankDetailData',bankDetailData);
+console.log(bankLogo,'bankLogo');
   return (
     <div>
       <Dialog open={props.open} onClose={props.close}>
@@ -104,8 +143,8 @@ export default function BankInfoDialog(props) {
             {
               //  console.log('get bank',getBank)
 
-              getBank &&
-                getBank.map((bank) => (
+              updatedResponseArray &&
+              updatedResponseArray.map((bank) => (
                   <div>
                     <div>
                       <BankLogo
@@ -142,7 +181,7 @@ export default function BankInfoDialog(props) {
                   Owner: <Imp>{bankDetailData.account_holder_name} </Imp>
                 </DialogContentText>
                 <QRBox>
-                  <QR src={bankDetailData.qr_photo} />
+                  <QR src={bankLogo} />
                 </QRBox>
               </DialogContent>
             </div>

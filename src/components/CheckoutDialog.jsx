@@ -14,6 +14,7 @@ import axios from "axios";
 import { resetProduct } from "../redux/cartRedux";
 import BankInfoDialog from "./BankInfoDialog";
 import PaidInfoDialog from "./PaidInfoDialog";
+import PaymentDialog from "./PaymentDialog";
 
 const Form = styled.form`
   display: flex;
@@ -356,6 +357,9 @@ export default function CheckoutDialog(props) {
         close={() => setshowBankInfo(false)}
         setBankId={setBankId}
       />
+      {/* <PaymentDialog open={showBankInfo}
+      close={() => setshowBankInfo(false)}
+      setBankId={setBankId}/> */}
       {/* <PaidInfoDialog total={props.total} open={showPaidInfo} close={() => setshowPaidInfo(false)} /> */}
     </div>
   );

@@ -346,11 +346,11 @@ const OrderList = () => {
                             
                             <Td><Span>{preorder.order_status}</Span></Td>
                             <Td>{preorder.total_quantity}</Td>
-                            <Td>{preorder.total_amount}</Td>
+                            <Td>{preorder.total_amount == null ? 0 : preorder.total_amount}</Td>
                             <Td>
                             <div class="d-flex align-items-center">
                             <Link to={{ pathname:'/preorder_detail/'+preorder.id }}>
-                                <TableButton>Detail00</TableButton>
+                                <TableButton>Detail</TableButton>
                             </Link>
                             <TableButton1 onClick={()=>onInvoiceClicked(preorder.id)}>Invoice</TableButton1>    
 

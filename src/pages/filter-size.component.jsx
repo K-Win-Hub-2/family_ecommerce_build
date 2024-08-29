@@ -1,11 +1,11 @@
 const FilterSizeWithUnitId = ({units, onChange}) => {
     return (
         <div>
-            <select onChange={(e) => onChange(e.target.value)} id="color" className="ml-2 p-1">
-              <option value="">Choose Size</option>
+            <select onChange={(e) => onChange(e.target.value)} id="color" className="ml-2 p-2" disabled={units.length === 0}>
+              <option value="">{units.length === 0 ? 'No Size Available' : 'Choose Size'}</option>
               {units.map((color) => (
-                <option key={color.id} value={color.size_name}>
-                  {color.size_name}
+                <option key={color} value={color}>
+                  {color}
                 </option>
               ))}
             </select>

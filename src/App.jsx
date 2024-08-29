@@ -2,7 +2,7 @@ import Cart from "./pages/Cart";
 import HomePage from "./pages/Home";
 import Login from "./pages/Login";
 import Pay from "./pages/Pay";
-import Product from "./pages/Product";
+import Product from "./pages/product/product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import OrderDetail from "./components/OrderDetail";
