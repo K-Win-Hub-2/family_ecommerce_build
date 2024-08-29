@@ -209,7 +209,7 @@ const Order = () => {
   const [colourname, setColorName] = useState("");
   const [sizename, setSizeName] = useState("");
   const [filteredSizes, setFilteredSizes] = useState([]);
-  const [loading,setloading]=useState(true);
+  const [loading,setLoading]=useState(true);
   const url = useSelector((state) => state.user.url);
   const [eid, setEid] = useState(0);
   const {
@@ -220,22 +220,46 @@ const Order = () => {
  const [cartItems, setCartItems] = useState([]);
  let cacheData ;
  
- const getDesigns = async(design_id) => {
-  try {
-    let html = "";
-    const res =  await axios.get(url + "/api/designapi/" + design_id)
-    .then(res=>{
-      setloading(false);
-     const designData =  Object.entries(res.data.design).map(e=> e[1])
-      setDesigns(designData);
-      cacheData = cache(designData)
-  })
+//  const getDesigns = async(design_id) => {
+//   try {
+//     let html = "";
+//     const res =  await axios.get(url + "/api/designapi/" + design_id)
+//     .then(res=>{
+//       setloading(false);
+//      const designData =  Object.entries(res.data.design).map(e=> e[1])
+//       setDesigns(designData);
+//       cacheData = cache(designData)
+//   })
     
   
 
+//     document.getElementById("type").innerHTML = html;
+//   } catch (err) {}
+// };
+
+const getDesigns = async (design_id) => {
+  try {
+    const res = await axios.get(`${url}/api/designapi/${design_id}`);
+    setLoading(false);
+
+    // Extract and set design data
+    const designData = Object.entries(res.data.design).map(e => e[1]);
+    setDesigns(designData);
+
+    // Assuming you want to generate HTML from designData
+    let html = designData.map(design => {
+      // Create HTML string based on your design data structure
+      return `<div>${design.name}</div>`; // Adjust based on your design object
+    }).join('');
+
+    // Update the DOM with the generated HTML
     document.getElementById("type").innerHTML = html;
-  } catch (err) {}
+  } catch (err) {
+    console.error("Error fetching designs:", err);
+    setLoading(false);
+  }
 };
+
 
   useEffect(()=>{
     cacheData ? setDesigns(cacheData) : getDesigns(design_id)
