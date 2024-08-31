@@ -779,7 +779,7 @@ const getDesigns = async (design_id) => {
         attachs: el.files,
         qty: el.testqty,
         description: el.description,
-        price: el.testprice,
+        price: 25000,
         totqty: totqty,
         totamount: totamt,
         id: id,
@@ -1183,6 +1183,7 @@ const sizes=[
         "created_at": "2022-04-07 07:52:21",
         "updated_at": "2022-04-07 07:52:21"
     }]
+    console.log('cartItems',cartItems);
   return (
   loading ?
    <div className="">Loading...</div> 
@@ -1319,7 +1320,7 @@ const sizes=[
                   </tr>
                 </tbody>
               </table>
-              <Text>Your Preorder Items999</Text>
+              <Text>Your Preorder Items</Text>
               <div className="mt-4 mb-5" id="preorders">
                 <div className="row mt-2 text-center">
                   <div className="col-md-3">
@@ -1537,7 +1538,7 @@ const sizes=[
                       <Qty id={"qty"} {...register('quantity')}  placeholder="0" onKeyUp={changeprice}/>
                     </td>
                     <td>
-                      <Qty id={"price"} {...register('price')} placeholder="0" disabled/>
+                      <Qty id={"price"} {...register('price')} placeholder="0" />
                     </td>
                     <td >
                       <Delete onClick={handleSubmit(data => addToCart(data))}>ADD</Delete>
@@ -1602,7 +1603,7 @@ const sizes=[
                 }
                 
               </div>
-              <Save onClick={() => savepreorder()}>Make Orderyy</Save>
+              <Save onClick={() => savepreorder()}>Make Order</Save>
             </>
           )}
         </Div>

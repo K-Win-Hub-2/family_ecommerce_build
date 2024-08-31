@@ -131,7 +131,7 @@ const OrderHistory = () => {
     const [color, setColor] = useState([]);
     const [size, setSize] = useState([]);
     const url= useSelector(state => state.user.url);
-    const [orders, setOrders] = useState([]);
+    const [order, setOrders] = useState([]);
     const [preorders, setPreorders] = useState([]);
     const username = useSelector(state=>state.user);
     const customer_id=username.id;
@@ -176,8 +176,8 @@ const OrderHistory = () => {
             .then(res => {
                 const sortedInstockOrders = res.data.instock.sort((a, b) =>  new Date(b.created_at)-new Date(a.created_at));
                 const latestOrder = sortedInstockOrders[0];
-                console.log("Latest order:", latestOrder);
-                setOrders([latestOrder]);
+                // console.log("Latest order:", latestOrder);
+                setOrders(latestOrder);
                 setLoading(false);
             })
             .catch(error => {
@@ -185,7 +185,6 @@ const OrderHistory = () => {
             });
     }
     const navigate = useNavigate();
-
     const Orderlist = () =>{
         // console.log('or id',id);
         navigate("/order_list/");
@@ -223,9 +222,8 @@ const OrderHistory = () => {
             <Title>Your Orders Detail</Title>
             <Description>This is where your order list shown</Description>
             <BigBox>
-            {orders.length < 0 ? (
-        orders.map(order => (
-            <React.Fragment key={order.id}>
+            {/* {orders.map(order => ( */}
+            <React.Fragment>
                 <LBox>
                     <Left>
                         <P>NO :</P>
@@ -263,10 +261,7 @@ const OrderHistory = () => {
                     </Right>
                 </RBox>
             </React.Fragment>
-        ))
-    ) : (
-        <p>No orders available.</p>
-    )}
+        {/* ))} */}
 
 </BigBox>
 
