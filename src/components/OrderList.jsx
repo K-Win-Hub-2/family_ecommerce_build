@@ -340,7 +340,7 @@ const OrderList = () => {
                         <Tr key={preorder.id}>
                             <Td>{++index}</Td>
                             <Td>{preorder.order_code}</Td>
-                            <Td>{preorder.customer_name}</Td>
+                            <Td>{preorder.customer_name === null ? "Default Name" : preorder.customer_name}</Td>
                             <Td>{preorder.deliver_address}</Td>
                             <Td>{preorder.order_date}</Td>
                             

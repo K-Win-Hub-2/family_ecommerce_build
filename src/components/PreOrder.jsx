@@ -189,7 +189,8 @@ const Order = () => {
   const edittestqty = useSelector((state) => state.design.edit_testqty);
   const editdescription = useSelector((state) => state.design.edit_description);
   const editfile = useSelector((state) => state.design.edit_file);
-  const edittestprice = useSelector((state) => state.design.edit_testprice);
+  // const edittestprice = useSelector((state) => state.design.edit_testprice);
+  const edittestprice = 0;
   const [checkColor, setCheckColor] = useState(false);
   const navigate = useNavigate();
   const current = new Date();
@@ -212,11 +213,16 @@ const Order = () => {
   const [loading,setLoading]=useState(true);
   const url = useSelector((state) => state.user.url);
   const [eid, setEid] = useState(0);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      price: 0 // Set the initial value of price to 0
+    }
+  });
  const [cartItems, setCartItems] = useState([]);
  let cacheData ;
  
@@ -779,7 +785,7 @@ const getDesigns = async (design_id) => {
         attachs: el.files,
         qty: el.testqty,
         description: el.description,
-        price: 25000,
+        price: 0,
         totqty: totqty,
         totamount: totamt,
         id: id,
@@ -1538,7 +1544,7 @@ const sizes=[
                       <Qty id={"qty"} {...register('quantity')}  placeholder="0" onKeyUp={changeprice}/>
                     </td>
                     <td>
-                      <Qty id={"price"} {...register('price')} placeholder="0" />
+                      <Qty id={"price"} {...register('price')} placeholder="0" disabled/>
                     </td>
                     <td >
                       <Delete onClick={handleSubmit(data => addToCart(data))}>ADD</Delete>
@@ -1582,10 +1588,10 @@ const sizes=[
                         <span>{p.quantity}</span>
                       </div>
                       <div className="col-md-2">
-                        <span>{p.price}</span>
+                        <span>0</span>
                       </div>
                       <div className="col-md-2">
-                        <span>{p.quantity * p.price}</span>
+                        <span>{p.quantity * 0}</span>
                       </div>
                       <div className="col-md-3">
                         <span>
