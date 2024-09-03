@@ -238,9 +238,11 @@ const Product = () => {
     const [filteredColors, setFilteredColors] = useState([]);
     const [filteredSizes, setFilteredSizes] = useState([]);
     const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
+    const design_name = location.pathname.split("/")[2];
     const cheColor = () => {
         setCheckColor(true);
     }
+    console.log('units is the ',units);
     const handleSizeChange = (size) => {
         const filtered = primaryStoreUnit.filter(unit => unit.size_name === size);
         setSelectedSize(size);
@@ -340,24 +342,48 @@ const Product = () => {
         });
     };
 
+    // const handleClick = () => {
+    //     if(stock == 0){
+    //         setIsInstock(true);
+    //         let testname = item.item_name+' '+gendername+' '+fabric+' '+color+' '+size;
+    //         let testqty = quantity;
+    //         let testprice = price;
+    //         let orderid  = unitid;
+    //         // alert(testname,testqty);
+    //         dispatch(addOrder({orderid,testname,testqty,testprice}));
+    //     }else{
+    //         dispatch(addProduct({ unitid, unitname, unitcode, unitimg, color, size, fabric, quantity, price }));
+    //         Swal.fire({
+    //             title:  "Success!",
+    //             text: "Successfully Add to Cart.",
+    //             type: 'success',    
+    //             });
+    //     }
+    // }
+
     const handleClick = () => {
-        if(stock == 0){
+        if (stock === 0) {
             setIsInstock(true);
-            let testname = item.item_name+' '+gendername+' '+fabric+' '+color+' '+size;
-            let testqty = quantity;
-            let testprice = price;
-            let orderid  = unitid;
-            // alert(testname,testqty);
-            dispatch(addOrder({orderid,testname,testqty,testprice}));
-        }else{
+            const testname = `${item.item_name} ${gendername} ${fabric} ${color} ${size}`;
+            const testqty = quantity;
+            const testprice = price;
+            const orderid = unitid;
+        
+            // Dispatch the order action with the necessary details
+            dispatch(addOrder({ orderid, testname, testqty, testprice }));
+        } else {
+            // Dispatch the addProduct action to add the product to the cart
             dispatch(addProduct({ unitid, unitname, unitcode, unitimg, color, size, fabric, quantity, price }));
+        
+            // Show a success message
             Swal.fire({
-                title:  "Success!",
-                text: "Successfully Add to Cart.",
-                type: 'success',    
-                });
+                title: "Success!",
+                text: "Successfully added to cart.",
+                icon: 'success',
+            });
         }
     }
+
 
     const change_photo = () => {
         const hel = document.getElementById('hel').src;
@@ -446,7 +472,7 @@ const Product = () => {
                 <Desc>Minimum Order Quantity : 30</Desc>
                 <Desc>Lead Time : 2 weeks</Desc>
                 {
-                preorderFlag == 1 ? <Link to={'/order/'+item.item_name}><Button>Make Order</Button></Link> : 'Preorder Unavaliable!'
+                preorderFlag == 1 ? <Link to={'/order/'+item.item_name} state={{units}}><Button>Make Order</Button></Link> : 'Preorder Unavaliable!'
                 }
                 <RowContainer>
                     <PriceLabel>Price: </PriceLabel>

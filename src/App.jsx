@@ -13,7 +13,8 @@ import TrackPreOrderList from "./components/TrackPreOrderList";
 
 import OrderHistory from "./components/OrderHistory";
 
-import Order from "./components/Order";
+// import Order from "./components/Order";
+import Order from "./components/order/order";
 import PreOrder from "./components/PreOrder";
 import { useSelector } from "react-redux";
 import About from "./pages/About";

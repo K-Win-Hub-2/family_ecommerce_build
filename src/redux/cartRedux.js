@@ -200,12 +200,82 @@ import { createSlice } from "@reduxjs/toolkit";
 // cartSlice.js
 // import { createSlice } from "@reduxjs/toolkit";
 
+// const cartSlice = createSlice({
+//     name: "cart",
+//     initialState: {
+//         products: [],
+//         total_pcs: 0,
+//         quantity: 0,
+//         total: 0,
+//         discount_value: 0,
+//         discount_type: '',
+//         name: '',
+//         phone: '',
+//         deliver_address: '',
+//         payment_type: '',
+//         payment_channel: '',
+//         remark: '',
+//     },
+//     reducers: {
+//         addProduct: (state, action) => {
+//             const { id, quantity, price } = action.payload;
+//             const product = state.products.find(p => p.unitid === id);
+//             if (product) {
+//                 product.quantity = quantity;
+//                 product.price = price;
+//             } else {
+//                 state.products.push(action.payload);
+//             }
+//             // Recalculate totals
+//             state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
+//             state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+//         },
+//         updateQuantity: (state, action) => {
+//             const { id, quantity } = action.payload;
+//             const product = state.products.find(p => p.unitid === id);
+//             if (product) {
+//                 product.quantity = quantity;
+//                 // Recalculate totals
+//                 state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
+//                 state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+//             }
+//         },
+//         removeProduct: (state, action) => {
+//             const id = action.payload;
+//             state.products = state.products.filter(product => product.unitid !== id);
+//             // Recalculate totals
+//             state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
+//             state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+//         },
+//         addCheckOutInfo: (state, action) => {
+//             state.name = action.payload.name;
+//             state.phone = action.payload.phone;
+//             state.deliver_address = action.payload.deliver_address;
+//             state.payment_type = action.payload.payment_type;
+//             state.payment_channel = action.payload.payment_channel;
+//             state.remark = action.payload.remark;
+//         },
+//         resetProduct: (state) => {
+//             state.products = [];
+//             state.total_pcs = 0;
+//             state.quantity = 0;
+//             state.total = 0;
+//         },
+//         resetPcs: (state, action) => {
+//             state.total_pcs = action.payload.total_pcs;
+//             state.total = action.payload.total;
+//         },
+//     },
+// });
+
+// export const { addProduct, updateQuantity, removeProduct, resetPcs, addCheckOutInfo, resetProduct  } = cartSlice.actions;
+// export default cartSlice.reducer;
+
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
         products: [],
         total_pcs: 0,
-        quantity: 0,
         total: 0,
         discount_value: 0,
         discount_type: '',
@@ -217,15 +287,24 @@ const cartSlice = createSlice({
         remark: '',
     },
     reducers: {
+        // Helper function to recalculate totals
+        recalculateTotals: (state) => {
+            state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
+            state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+        },
         addProduct: (state, action) => {
-            const { id, quantity, price } = action.payload;
-            const product = state.products.find(p => p.unitid === id);
+            const { unitid, quantity, price } = action.payload;
+            const product = state.products.find(p => p.unitid === unitid);
+
             if (product) {
-                product.quantity = quantity;
-                product.price = price;
+                // Update the quantity and price if the product already exists
+                product.quantity += quantity;
+                product.price = price;  // Optionally update the price, depending on your logic
             } else {
+                // If the product does not exist, add it to the products array
                 state.products.push(action.payload);
             }
+
             // Recalculate totals
             state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
             state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
@@ -236,16 +315,14 @@ const cartSlice = createSlice({
             if (product) {
                 product.quantity = quantity;
                 // Recalculate totals
-                state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
-                state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+                cartSlice.caseReducers.recalculateTotals(state);
             }
         },
         removeProduct: (state, action) => {
             const id = action.payload;
             state.products = state.products.filter(product => product.unitid !== id);
             // Recalculate totals
-            state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
-            state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+            cartSlice.caseReducers.recalculateTotals(state);
         },
         addCheckOutInfo: (state, action) => {
             state.name = action.payload.name;
@@ -258,7 +335,6 @@ const cartSlice = createSlice({
         resetProduct: (state) => {
             state.products = [];
             state.total_pcs = 0;
-            state.quantity = 0;
             state.total = 0;
         },
         resetPcs: (state, action) => {
@@ -270,4 +346,3 @@ const cartSlice = createSlice({
 
 export const { addProduct, updateQuantity, removeProduct, resetPcs, addCheckOutInfo, resetProduct  } = cartSlice.actions;
 export default cartSlice.reducer;
-
