@@ -15,32 +15,27 @@ const ProductRow = ({
   handleSubmit,
   addToCart
 }) => {
+
+  // Example URL-encoded string
+  const encodedItemName = item_name;
+
+  // Step 1: Decode the URL-encoded string
+  const decodedItemName = decodeURIComponent(encodedItemName);
+
+  // Step 2: Format the decoded string
+  // Convert to lowercase and remove spaces
+  const formattedItemName = decodedItemName.toLowerCase().replace(/\s+/g, '');
   // Initialize state with the passed design name and empty selections for other filters
-  const [selectedDesign, setSelectedDesign] = useState(designNameFromUnits || '');
+  const [selectedDesign, setSelectedDesign] = useState(formattedItemName || '');
   const [selectedGender, setSelectedGender] = useState('');
   const [filteredGenders, setFilteredGenders] = useState([]);
   const [filteredFabrics, setFilteredFabrics] = useState([]);
   const [filteredColors, setFilteredColors] = useState([]);
   const [filteredSizes, setFilteredSizes] = useState([]);
 
+  console.log('this is the designNameFromUnits',designNameFromUnits);
   // Extract unique design names from the units data
   const uniqueDesigns = [...new Set(units.map(unit => unit.design_name))];
-
-  console.log('designNameFromUnits',designNameFromUnits);
-  console.log('uniqueDesigns',uniqueDesigns);
-
-// Example URL-encoded string
-const encodedItemName = item_name;
-
-// Step 1: Decode the URL-encoded string
-const decodedItemName = decodeURIComponent(encodedItemName);
-
-// Step 2: Format the decoded string
-// Convert to lowercase and remove spaces
-const formattedItemName = decodedItemName.toLowerCase().replace(/\s+/g, '');
-console.log('formattedItemName',formattedItemName);
-
-
 
   useEffect(() => {
     // Update selected design if designNameFromUnits changes
@@ -81,10 +76,6 @@ console.log('formattedItemName',formattedItemName);
       <tr className="text-center">
         <td>
           <span id="item_name">{selectedDesign}</span>&nbsp;
-          <span id="gen_name">{selectedGender}</span>&nbsp;
-          <span id="fab_name"></span>&nbsp;
-          <span id="col_name"></span>&nbsp;
-          <span id="siz_name"></span>
         </td>
         <td>
           <label className="px-2">Design</label>
@@ -94,8 +85,8 @@ console.log('formattedItemName',formattedItemName);
             value={selectedDesign} // Set the initial selected value
             onChange={(e) => {
               const designName = e.target.value;
-              setSelectedDesign(designName); // Update selected design
-              addDesign(designName); // Call the addDesign function with the selected design
+              setSelectedDesign(formattedItemName || designName); // Update selected design
+              addDesign(formattedItemName || designName); // Call the addDesign function with the selected design
             }}
           >
             <option value="">Select Design</option>

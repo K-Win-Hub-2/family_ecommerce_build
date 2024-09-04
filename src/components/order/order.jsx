@@ -22,7 +22,6 @@ import Swal from "sweetalert2";
 import BankInfoDialog from "../BankInfoDialog";
 import PaidInfoDialog from "../PaidInfoDialog";
 import CheckColor from "../../components/CheckColor";
-import ProductRow from "./product-row";
 
 const Div = styled.div`
   margin-top: 30px;
@@ -173,10 +172,23 @@ const Right = styled.div`
 
 const Order = () => {
   const location = useLocation();
-  const design_id = location.pathname.split("/")[2];
-  const item_name = location.pathname.split("/")[2];
   const units = location.state.units;
   console.log('units the the state units',units);
+  const uniqueDesigns = [...new Set(units.map(unit => unit.design_name))];
+  console.log('this is the uniqueDesigns',uniqueDesigns);
+  const item_name = location.pathname.split("/")[2];
+// Example URL-encoded string
+const encodedItemName = item_name;
+
+// Step 1: Decode the URL-encoded string
+const decodedItemName = decodeURIComponent(encodedItemName);
+
+// Step 2: Format the decoded string
+// Convert to lowercase and remove spaces
+const formattedItemName = decodedItemName.toLowerCase().replace(/\s+/g, '');
+// Initialize state with the passed design name and empty selections for other filters
+console.log('formattedItemName',formattedItemName);
+  const design_id = location.pathname.split("/")[2];
   let [count, setCount] = useState(1);
   const [paymentchannel, setPaymentChannel] = useState("");
   const [paymenttype, setPaymentType] = useState("");
@@ -217,17 +229,39 @@ const Order = () => {
   const [loading,setLoading]=useState(true);
   const url = useSelector((state) => state.user.url);
   const [eid, setEid] = useState(0);
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
+  const { register, handleSubmit,reset,setValue , formState: { errors } } = useForm({
     defaultValues: {
       price: 0 // Set the initial value of price to 0
     }
   });
  const [cartItems, setCartItems] = useState([]);
  let cacheData ;
+ 
+//  const getDesigns = async(design_id) => {
+//   try {
+//     let html = "";
+//     const res =  await axios.get(url + "/api/designapi/" + design_id)
+//     .then(res=>{
+//       setloading(false);
+//      const designData =  Object.entries(res.data.design).map(e=> e[1])
+//       setDesigns(designData);
+//       cacheData = cache(designData)
+//   })
+    
+  
+
+//     document.getElementById("type").innerHTML = html;
+//   } catch (err) {}
+// };
 
 const getDesigns = async (design_id) => {
   try {
-    const res = await axios.get(`${url}/api/designapi/${design_id}`);
+    const res = await axios.get(`${url}/api/designapi/1`);
     setLoading(false);
 
     // Extract and set design data
@@ -252,6 +286,52 @@ const getDesigns = async (design_id) => {
   useEffect(()=>{
     cacheData ? setDesigns(cacheData) : getDesigns(design_id)
   },[]);
+  // if (design_id == 1) {
+  //   const getDesigns = async () => {
+  //     try {
+  //       let html = "";
+  //       const res = await axios.get(url + "/api/designapi/" + design_id)
+  //       .then(res=>{
+  //         setDesigns(res.data.design);
+  //     })
+        
+
+  //       document.getElementById("type").innerHTML = html;
+  //     } catch (err) {}
+  //   };
+  //   getDesigns();
+  // }
+
+
+  // if (design_id == 2) {
+  //   const getDesigns = async () => {
+  //     try {
+  //       let html = "";
+  //       const res = await axios.get(url + "/api/design_api/" + design_id);
+  //       Object.keys(res.data.design).map((key) => {
+  //         html += `<Option>` + res.data.design[key] + `</Option>`;
+  //       });
+
+  //       document.getElementById("type").innerHTML = html;
+  //     } catch (err) {}
+  //   };
+  //   getDesigns();
+  // }
+
+  // if (design_id == 3) {
+  //   const getDesigns = async () => {
+  //     try {
+  //       let html = "";
+  //       const res = await axios.get(url + "/api/design_api/" + design_id);
+  //       Object.keys(res.data.design).map((key) => {
+  //         html += `<Option>` + res.data.design[key] + `</Option>`;
+  //       });
+
+  //       document.getElementById("type").innerHTML = html;
+  //     } catch (err) {}
+  //   };
+  //   getDesigns();
+  // }
   const bankInfo = () => {
     setshowBankInfo(true);
   };
@@ -264,31 +344,179 @@ const getDesigns = async (design_id) => {
     setCheckColor(true);
   };
 
-  
+  // const choosegen = (val) => {
+  //     let html='';let genn;
+  //     if(val == 1){
+  //         const spec = 'm';
+  //         document.getElementById('gen_name').innerHTML = spec;
+  //         genn = 'male';
+  //     }
+  //     if(val == 2){
+  //         const spec = 'f';
+  //         document.getElementById('gen_name').innerHTML = spec;
+  //         genn = 'female';
+  //     }
+  //     if(val == 3){
+  //         const spec = 'un';
+  //         document.getElementById('gen_name').innerHTML = spec;
+  //         genn = 'unisex';
+  //     }
+  //     const gname = document.getElementById('gen_name').innerHTML;
+
+  //     setGenderName(gname);
+  //     // alert(document.getElementById('item_name').innerHTML+' '+document.getElementById('gen_name').innerHTML);
+  //     axios.get(url+'/api/ecommerce_order_type/'+design_name+'/'+gname)
+  //                 .then((response) => {
+  //                     if(response.data.fabric.length == 0){
+  //                         Swal.fire({
+  //                             title:  "Warning!",
+  //                             text: "This Design has no for "+genn+'.',
+  //                             type: 'error',
+  //                             });
+  //                     }else{
+  //                         Object.keys(response.data.fabric).map(key => {
+  //                             html += `<Option>`+ response.data.fabric[key]+`</Option>`;
+  //                          })
+
+  //                     document.getElementById('types').innerHTML = html;
+  //              }
+  //         })
+  // }
+  // const addit = () => {
+  //   const spec = document.getElementById("type").value;
+  //   document.getElementById("item_name").innerHTML = spec;
+  //   setDesignName(spec);
+  // };
   const addGender = (gender) => {
+    // const selectedGenderId = event.target.value;
+    // document.getElementById("gen_name").innerHTML = selectedGenderId;
+    // console.log("Selected gender ID:", selectedGenderId);
     setGenderName(gender);
+    // setGenderName(gender);
+
     filterSizesByGender(gender.id);
   };
   const addDesign = (design) => {
     setDesignName(design);
+    // const selectedGenderId = event.target.value;
+    // document.getElementById("gen_name").innerHTML = selectedGenderId;
+
+    // setGenderName(gender);
+    // filterSizesByGender(gender.id);
   };
   const filterSizesByGender = (id) => {
     const filteredSizes = sizes.filter(size => size.gender_id == id);
     setFilteredSizes(filteredSizes);
   };
   const addFabric = (fabric) => {
+    // const spec = event.target.value;
+    // document.getElementById("fab_name").innerHTML = spec;
     setFabricName(fabric);
   };
   const addColor = (color) => {
+    // const spec = event.target.value;
+    // document.getElementById("col_name").innerHTML = spec;
     setColorName(color);
   };
   const addSize = (size) => {
     setSizeName(size);
+    // setCartItems(size.size_name);
+    // localStorage.setItem('addToCart', size.id);
+    // localStorage.setItem('addToCart', size.size_name);
+    // ...
+    // localStorage.setItem('size_name', size.size_name);
   };
  
   const handleChange = (event) => {
     const selectedGenderId = event.target.value;
+    // Do something with the selected gender ID
   };
+
+  // const additem = () =>{
+  //     const spec = document.getElementById('types').value;
+  //     document.getElementById('fab_name').innerHTML = ' '+spec;
+  //     setFabricName(spec);
+  //     let html = '';
+  //     axios.get(url+'/api/ecommerce_order_type/'+design_name+'/'+gendername+'/'+spec)
+  //             .then((response) => {
+  //                     Object.keys(response.data.colour).map(key => {
+  //                         html += `<Option>`+ response.data.colour[key]+`</Option>`;
+  //                      })
+
+  //                 document.getElementById('types1').innerHTML = html;
+  //     })
+  //     // alert(document.getElementById('item_name').innerHTML+' '+document.getElementById('gen_name').innerHTML+' '+document.getElementById('fab_name').innerHTML);
+  // }
+//   const additem1 = () => {
+//     const spec = document.getElementById("types1").value;
+//     document.getElementById("col_name").innerHTML = spec;
+//     setColourName(spec);
+//     let html = "";
+//     axios
+//       .get(
+//         url +
+//           "/api/ecommerce_order_type/" +
+//           design_name +
+//           "/" +
+//           gendername +
+//           "/" +
+//           fabricname +
+//           "/" +
+//           spec
+//       )
+//       .then((response) => {
+//         Object.keys(response.data.size).map((key) => {
+//           html += `<Option>` + response.data.size[key] + `</Option>`;
+//         });
+
+//         document.getElementById("types2").innerHTML = html;
+//       });
+//   };
+
+//   const additem2 = () => {
+//     const spec = document.getElementById("types2").value;
+//     document.getElementById("siz_name").innerHTML = spec;
+//     setSizeName(spec);
+//   };
+
+  // const qtychange = () => {
+  //   if (document.getElementById("qty").value == "") {
+  //     Swal.fire({
+  //       title: "Warning!",
+  //       text: "Please Enter Quantity.",
+  //       type: "error",
+  //     });
+  //   } else {
+  //     let testname =
+  //       design_name.design_name +
+  //       " " +
+  //       gendername.gender_name +
+  //       " " +
+  //       fabricname.fabric_name +
+  //       " " +
+  //       colourname.colour_name +
+  //       " " +
+  //       sizename.size_name;
+  //     let testqty = document.getElementById("qty").value;
+  //     let testprice = document.getElementById("price").value;
+      // setCount(++count);
+      // let orderid = count;
+  //     // alert(testname,testqty);
+  //     dispatch(addOrder({ orderid, testname, testqty, testprice }));
+  //     document.getElementById("item_name").innerHTML = design_name;
+  //     document.getElementById("gen_name").innerHTML = "";
+  //     document.getElementById("fab_name").innerHTML = "";
+  //     document.getElementById("col_name").innerHTML = "";
+  //     document.getElementById("siz_name").innerHTML = "";
+  //     document.getElementById("qty").value = "";
+  //     document.getElementById("price").value = "";
+  //     // document.getElementById("types").innerHTML = "";
+  //     // document.getElementById("types1").innerHTML = "";
+  //     // document.getElementById("types2").innerHTML = "";
+      
+  //   }
+  // };
+
 
   const attach = () => {
     if (document.getElementById("qty1").value == "") {
@@ -317,23 +545,72 @@ const getDesigns = async (design_id) => {
   const removeattach = (id) => {
     dispatch(removeAttach({ id }));
   };
+  // const addToCart = (data) => {
+  //  let datas = JSON.parse(localStorage.getItem("addToCart")) || []
+  //  datas.push(data)
+  //  localStorage.setItem("addToCart", JSON.stringify(datas))
+  // }
+
    useEffect(() => {
+    // Fetch data from localStorage when component mounts
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
     setCartItems(storedItems);
   }, []);
+
+  useEffect(() => {
+    console.log('this is the formatted value from design',formattedItemName);
+    const initialDesignId = designs.find(design => design.design_name === formattedItemName)?.id || "";
+    setValue("design_id", initialDesignId);
+  }, [formattedItemName, setValue,designs]);
+
   
-    const addToCart = (data) => {
+//     const addToCart = (data) => {
+//     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
+//     storedItems.length == 0 ? data["id"] = 1 : data["id"] = storedItems[storedItems.length -1 ].id + 1
+//     const updatedItems = [...storedItems, data];
+//     localStorage.setItem('addToCart', JSON.stringify(updatedItems));
+//     setCartItems(updatedItems); // Update component state
+//   };
+const addToCart = (data) => {
+    // Retrieve existing cart items from localStorage
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
-    storedItems.length == 0 ? data["id"] = 1 : data["id"] = storedItems[storedItems.length -1 ].id + 1
+    
+    // Assign a unique ID to the new item
+    data["id"] = storedItems.length === 0 ? 1 : storedItems[storedItems.length - 1].id + 1;
+    
+    // Add the new item to the list
     const updatedItems = [...storedItems, data];
+    
+    // Store the updated cart items in localStorage
     localStorage.setItem('addToCart', JSON.stringify(updatedItems));
-    setCartItems(updatedItems); // Update component state
+    
+    // Update component state with the new list of cart items
+    setCartItems(updatedItems);
+    
+    // Reset the form fields, including the Select value
+    reset({
+      design_id: "" ,
+      gender_id: "",
+      fabric_id: "",
+      colour_id: "",
+      size_id: ""
+    });
   };
+  
   const remove = (id) => {
+    // alert(id);
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
     let saveItem= storedItems.filter(items => items.id != id);
     localStorage.setItem('addToCart',JSON.stringify(saveItem));
     setCartItems(saveItem); 
+    // JSON.parse
+
+
+    
+    // const updatedItems = storedItems.(item => item.id !== id);
+  
+    // localStorage.setItem('addToCart', JSON.stringify(updatedItems));
+    //   setCartItems(updatedItems);
   };
   
 
@@ -424,6 +701,48 @@ const getDesigns = async (design_id) => {
               }
             });
    }
+    // let tot_qty = 0;
+
+    // if (username.name == "") {
+    //   Swal.fire({
+    //     title: "Warning!",
+    //     text: "You need to make register or sign in first.",
+    //     type: "success",
+    //   });
+    // } else {
+    //   if (val == 1) {
+    //     // alert("Hello")
+    //     cartItems.map((el) => {
+    //       tot_qty += parseInt(el.quantity);
+         
+    //     });
+    //     //  alert(tot_qty);
+    //     if (tot_qty < 30) {
+    //       Swal.fire({
+    //         title: "Warning!",
+    //         text: "Minimun Order Quantity must be 30.",
+    //         type: "success",
+    //       });
+    //     } else {
+    //       storepreorder();
+    //       sendmail(val);
+    //     }
+    //   }
+    //   if (val == 2) {
+    //     preattach.map((el) => {
+    //       tot_qty += parseInt(el.testqty);
+    //     });
+    //     if (tot_qty < 30) {
+    //       Swal.fire({
+    //         title: "Warning!",
+    //         text: "Minimun Order Quantity must be 30.",
+    //         type: "success",
+    //       });
+    //     } else {
+    //       storeattach();
+    //     }
+    //   }
+    // }
   };
 
   const storepreorder = () => {
@@ -445,6 +764,23 @@ const getDesigns = async (design_id) => {
         alert("fail store");
       });
   };
+
+  // const storepreorder=()=>{
+  //   const response =  axios.post(url + "/api/ecommerce_preorder_store", {
+  //     customer_id: username.id,
+  //     customer_name: username.name,
+  //     customer_phone: username.phone,
+  //     customer_address: username.address,
+  //     design_id:design_name.id
+      
+      
+     
+      
+     
+     
+     
+  //   });
+  // }
   const sendmail = (val) => {
     axios
       .post(url + "/api/send/invoice_email", {
@@ -569,23 +905,23 @@ const getDesigns = async (design_id) => {
     setFile(URL.createObjectURL(f));
     setFiles(f);
   };
-    const genders = [
-        {
-        id: "2",
-        gender_name: "female",
-        },
-        {
-        id: "3",
-        gender_name: "male",
-        },
-    ];
-    const fabrics = [
-        {
-        id: "1",
-        fabric_name: "familyarrow",
-        },
-    ];
-    const colors = [
+  const genders = [
+    {
+      id: "2",
+      gender_name: "female",
+    },
+    {
+      id: "3",
+      gender_name: "male",
+    },
+  ];
+  const fabrics = [
+    {
+      id: "1",
+      fabric_name: "familyarrow",
+    },
+  ];
+  const colors = [
     {
         "id": 133,
         "colour_name": "ar8",
@@ -772,8 +1108,8 @@ const getDesigns = async (design_id) => {
         "colour_description": "Pink",
         "color_hex_code": "0xff490012"
     }
-    ]
-    const sizes=[
+  ]
+  const sizes=[
     {
         "id": 1,
         "size_name": "xsf",
@@ -901,7 +1237,8 @@ const getDesigns = async (design_id) => {
         "gender_id": 3,
         "created_at": "2022-04-07 07:52:21",
         "updated_at": "2022-04-07 07:52:21"
-    }]
+  }]
+    console.log('cartItems',cartItems);
   return (
   loading ?
    <div className="">Loading...</div> 
@@ -1099,29 +1436,159 @@ const getDesigns = async (design_id) => {
                     <th scope="col"></th>
                   </tr>
                 </thead>
-                <ProductRow
-                units={units}
-                designNameFromUnits={design_name}
-                item_name={item_name}
-                gendername={gendername}
-                fabricname={fabricname}
-                colourname={colourname}
-                sizename={sizename}
-                genders={genders}
-                fabrics={fabrics}
-                colors={colors}
-                sizes={sizes}
-                register={register}
-                addDesign={addDesign}
-                addGender={addGender}
-                addFabric={addFabric}
-                addColor={addColor}
-                addSize={addSize}
-                cheColor={cheColor}
-                changeprice={changeprice}
-                handleSubmit={handleSubmit}
-                addToCart={addToCart}
-                />
+                <tbody id="addrow">
+                  <tr className="text-center" id="">
+                    <td>
+                      <span id="item_name">{design_name.design_name}  </span>&nbsp;
+                      <span id="gen_name"> {gendername.gender_name}</span>&nbsp;
+                      <span id="fab_name">{fabricname.fabric_name} </span>
+                      &nbsp;<span id="col_name">{colourname.colour_name} </span>&nbsp;
+                      <span id="siz_name">{sizename.size_name} </span>
+                      {formattedItemName}
+                    </td>
+                    <td>
+                      {/* <Lable className="px-2">Design</Lable>
+                      <Select id={"type"} onClick={addit}></Select> */}
+                      <Lable className="px-2">Design</Lable>
+                      <Select {...register("design_id")} id={"item_name"} 
+                    //   value={designs.find(design => design.design_name === formattedItemName)?.id || ""}
+                      >
+                        <option value="">Select Design</option>
+                        {
+                       designs.map((design) => {
+                            return (
+                            <option key={design.id} value={design.id} onClick={()=>addDesign(design)}>
+                                {design.design_name}
+                            </option>
+                                    )
+                                }
+                            )
+                        }
+                      </Select>
+                      &nbsp;&nbsp;&nbsp;
+                      
+
+                      
+                      {/* <Btn ><Add/></Btn><br></br><br></br> */}
+                      {/* 
+                    <Input  type="radio" name="genderdata" id='r1' ></Input>
+                    <Lable className='px-2'>Male</Lable>
+                    <Input  type="radio" name="genderdata" id='r2'></Input>
+                    <Lable className='px-2'>Female</Lable>
+                    <Input  type="radio" name="genderdata" id='r3' ></Input>
+                    <Lable className='px-2'>Unisex</Lable><br></br><br></br> */}
+                      {/* <Lable className='px-2'>Gender</Lable>
+                    <Select id={'types'}> 
+                     </Select>&nbsp;&nbsp;&nbsp;
+                     <Btn onClick={additem}><Add/></Btn><br></br><br></br> */}{" "}
+                      <br /> <br />
+                      {/* <Select name="genderdata" id="genderSelect">
+    <option value="">Select Gender</option>
+   
+    {
+    genders.map(gender => (
+        <option key={gender.id} value={gender.gender_name} onClick={addGender}>{gender.gender_name}</option>
+        
+    ))}
+</Select> */}
+                      <Lable className="px-2">Gender</Lable>
+                      <Select {...register("gender_id")} id={"gen_name"}>
+                        <option value="">Select Gender</option>
+                        {genders.map((gender) => (
+                          <option
+                            key={gender.id}
+                            value={gender.id}
+                            onClick={()=>addGender(gender)}
+                          >
+                            {gender.gender_name}
+                          </option>
+                        ))}
+                      </Select>
+                      &nbsp;&nbsp;&nbsp;
+                      <br></br>
+                      <br></br>
+                      <Lable className="px-2">Fabric</Lable>
+                      <Select {...register("fabric_id")} id={"fab_name"}>
+                        <option value="">Select Fabric</option>
+
+                        {fabrics.map((fabric) => (
+                          <option
+                            key={fabric.id}
+                            value={fabric.id}
+                            onClick={()=>addFabric(fabric)}
+                          >
+                            {fabric.fabric_name}
+                          </option>
+                        ))}
+                      </Select>
+                      &nbsp;&nbsp;&nbsp;
+                      {/* <Btn onClick={addFabric}><Add/>
+                     </Btn> */}
+                      <br></br>
+                      <br></br>
+                      <Lable className="px-2" style={{ marginLeft: "55px" }}>
+                        Color
+                      </Lable>
+                      {/* <Select id={"types1"}></Select> */}
+                      <Select {...register("colour_id")} id={"col_name"}>
+                        <option value="">Select Color</option>
+
+                        {colors.map((color) => (
+                          <option
+                            key={color.id}
+                            value={color.id}
+                            onClick={()=>addColor(color)}
+                          >
+                            {color.colour_name}
+                          </option>
+                        ))}
+                      </Select>
+                      &nbsp;&nbsp;&nbsp;
+                      {/* <Btn onClick={additem1}>
+                        <Add />
+                      </Btn> */}
+
+                      <Check
+                        onClick={cheColor}
+                        style={{ display: "inline-block" }}
+                      >
+                        Check
+                      </Check>
+                      <br></br>
+                      <br></br>
+
+                      <Lable className="px-2">Size</Lable>
+                      {/* <Select id={"types2"}></Select> */}
+                      <Select {...register("size_id")} id={"siz_name"}>
+        <option value="">Select Size</option>
+        {
+        sizes.map((size) => (
+          <option key={size.id} value={size.id} onClick={()=>addSize(size)}>
+            {size.size_name}
+          </option>
+        )
+        )
+        }
+      </Select>
+                      &nbsp;&nbsp;&nbsp;
+                      {/* <Btn onClick={additem2}>
+                        <Add />
+                      </Btn> */}
+                      <br></br>
+                      <br></br>
+                    </td>
+                    <td>
+                      <Qty id={"qty"} {...register('quantity')}  placeholder="0" onKeyUp={changeprice}/>
+                    </td>
+                    <td>
+                      <Qty id={"price"} {...register('price')} placeholder="0" disabled/>
+                    </td>
+                    <td >
+                      <Delete onClick={handleSubmit(data => addToCart(data))}>ADD</Delete>
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
               </table>
 
               <Text>Your Preorder Items</Text>

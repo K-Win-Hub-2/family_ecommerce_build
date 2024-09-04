@@ -1059,8 +1059,8 @@ const getDesigns = async (design_id) => {
         "colour_description": "Pink",
         "color_hex_code": "0xff490012"
     }
-]
-const sizes=[
+  ]
+  const sizes=[
     {
         "id": 1,
         "size_name": "xsf",
@@ -1188,7 +1188,7 @@ const sizes=[
         "gender_id": 3,
         "created_at": "2022-04-07 07:52:21",
         "updated_at": "2022-04-07 07:52:21"
-    }]
+  }]
     console.log('cartItems',cartItems);
   return (
   loading ?
