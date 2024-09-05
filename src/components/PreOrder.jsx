@@ -542,9 +542,12 @@ const getDesigns = async (design_id) => {
   }, []);
   
     const addToCart = (data) => {
+    console.log('this is the data from addToCart',data);
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
+    console.log('this is the storedItems',storedItems);
     storedItems.length == 0 ? data["id"] = 1 : data["id"] = storedItems[storedItems.length -1 ].id + 1
     const updatedItems = [...storedItems, data];
+    console.log('this is the updatedItems',updatedItems);
     localStorage.setItem('addToCart', JSON.stringify(updatedItems));
     setCartItems(updatedItems); // Update component state
   };

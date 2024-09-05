@@ -572,14 +572,16 @@ const getDesigns = async (design_id) => {
 //     setCartItems(updatedItems); // Update component state
 //   };
 const addToCart = (data) => {
+    console.log('this is the data from addToCart',data);
     // Retrieve existing cart items from localStorage
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
-    
+    console.log('this is the storedItems',storedItems);
     // Assign a unique ID to the new item
     data["id"] = storedItems.length === 0 ? 1 : storedItems[storedItems.length - 1].id + 1;
     
     // Add the new item to the list
     const updatedItems = [...storedItems, data];
+    console.log('this is the updatedItems',updatedItems);
     
     // Store the updated cart items in localStorage
     localStorage.setItem('addToCart', JSON.stringify(updatedItems));
@@ -593,7 +595,8 @@ const addToCart = (data) => {
       gender_id: "",
       fabric_id: "",
       colour_id: "",
-      size_id: ""
+      size_id: "",
+      price: 0
     });
   };
   
