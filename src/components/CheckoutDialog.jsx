@@ -141,6 +141,8 @@ export default function CheckoutDialog(props) {
       reader.readAsDataURL(file);
     }
   };
+  console.log('cart is the answer',cart);
+
   const orderSave = async () => {
     try {
       const response = await axios.post(url + "/api/ecommerce_order_store", {
@@ -155,8 +157,8 @@ export default function CheckoutDialog(props) {
         paymentchannel: paymentchannel,
         remark: remark,
         products: cart.products,
-        // quantity: cart.total_pcs,
-        quantity: cart.quantity,
+        quantity: cart.total_pcs,
+        // quantity: cart.quantity,
         amount: cart.total,
         screenshot: screenshot,
         bank_id: bank_id,
