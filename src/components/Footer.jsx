@@ -134,6 +134,7 @@ const Footer = () => {
                     <ListItem><Link to="/register" style={{textDecoration: 'none', color: '#32549b'}}>Regitster</Link></ListItem>
                     <ListItem><Link to="/cart" style={{textDecoration: 'none', color: '#32549b'}}>My Cart</Link></ListItem>
                     <ListItem><Link to="/user-profile" style={{textDecoration: 'none', color: '#32549b'}}>My Account</Link></ListItem>
+                    <ListItem><Link to="/privacy-policy" style={{textDecoration: 'none', color: '#32549b'}}>Privacy & Policy</Link></ListItem>
                 </List>
             </Center>
             <Right>

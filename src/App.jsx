@@ -29,6 +29,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Invoice from "./components/Invoice";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 
 const App = () => {
@@ -59,6 +60,7 @@ const App = () => {
         <Route path="/contact-us" element={<Contact/>}/>
         <Route path="/about-us" element={<About/>}/>
         <Route path="/user-profile" element={<Profile/>}/>
+        <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
       </Routes>
     </Router>
   );
