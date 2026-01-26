@@ -3,13 +3,16 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Main from '../components/Main'
 import CheckBot from '../components/ChatBot'
+import ChatBot from '../pages/bot/ChatBot'
 
 const HomePage = () => {
   
   return (
     <div>
-        <Navbar/>
-        <Main/>
+      {/* <ChatBot /> */}
+      <Navbar/>
+      <Main />
+      
         <Footer/>
     </div>
   )

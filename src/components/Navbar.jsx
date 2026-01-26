@@ -271,7 +271,7 @@ const Navbar = (props) => {
 
 
     return (
-        <Container className="fixed-top">
+        <Container className="">
             {isScroll ? (
                 <ColorNav />
             ) : (

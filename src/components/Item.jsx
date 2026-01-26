@@ -15,7 +15,7 @@ const Info = styled.div`
     top: 0;
     left: 0;
     background-color: rgba(0,0,0,0.2);
-    z-index: 3;
+    z-index: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,7 +55,7 @@ const Circle = styled.div`
 const Image = styled.img`
     width: 100%;
     max-height: 300px;
-    z-index:2;
+    z-index:0;
 `
 const Icon = styled.div`
     width: 40px;

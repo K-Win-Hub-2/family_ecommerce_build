@@ -5,7 +5,8 @@ import HomeItems from '../components/HomeItems'
 import Newsletter from '../components/Newsletter'
 import Products from '../components/Products'
 import Slider from '../components/Slider'
-import { ChatBot } from './ChatBot'
+// import { ChatBot } from './ChatBot'
+import ChatBot from './../pages/bot/ChatBot'
 import SeasonalDiscountNews from './SeasonalDiscountNews'
 import FacebookNewsFeed from '../components/FacebookNewsFeed';
 import PromotionPhoto from './PromotionPhoto'
@@ -13,10 +14,13 @@ import PromotionPhoto from './PromotionPhoto'
 const Main = () => {
     
   return (
+    <>
+    
     <div>
         {/* <Announcement/> */}
         <Slider/>
-        <ChatBot />
+      {/* <ChatBot /> */}
+        
         <PromotionPhoto/>
         <Categories/>
         <HomeItems title="Promotion" url="promotionitem_api"/>
@@ -26,9 +30,12 @@ const Main = () => {
         <HomeItems title="Hot Sale Items" url="hotsaleitem_api"/>
         {/* <SeasonalDiscountNews/> */}
         
-        <FacebookNewsFeed/>
+      <FacebookNewsFeed />
+      
         
-    </div>
+      </div>
+      <ChatBot />
+      </>
   )
 }
 
