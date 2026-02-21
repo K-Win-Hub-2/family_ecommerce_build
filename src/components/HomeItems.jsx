@@ -15,18 +15,31 @@ const MainContainer = styled.div`
   margin-top: 30px;
 `
 
+// const Container = styled.div`
+//     display: flex;
+//     padding: 20px;
+//     justify-content: space-between;
+//     ${mobile({ padding: "0px", flexDirection: "column" })}
+// `
+
 const Container = styled.div`
-    display: flex;
-    padding: 20px;
-    justify-content: space-between;
-    ${mobile({ padding: "0px", flexDirection: "column" })}
-`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+
+  ${mobile({
+    gridTemplateColumns: "repeat(2, 1fr)",
+    padding: "10px"
+  })}
+`;
 
 const SectionTitle = styled.h2`
     font-weight: bold;
     font-size:30px;
-    margin-top: 20px;
-    margin-left: 20px;
+    // margin-top: 20px;
+    // margin-left: 20px;
+    text-align: center;
     color: #2b57b8;
     ${mobile({ fontSize: "14px" })}
 `
@@ -53,7 +66,7 @@ const HomeItems = ({ title, url }) => {
 
   return ( 
     <div>
-      <MainContainer style={{boxShadow: '1px 4px 10px 1px rgba(0, 0, 0, 0.2)'}}>
+      <MainContainer>
         <SectionTitle>{title}</SectionTitle>
         <Container>
           {items.map(item => (

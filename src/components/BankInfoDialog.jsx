@@ -12,7 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import styled from "styled-components";
 import kbzbank from "../files/kbzbank.png";
-import aya from "../files/aya.jpg";
+import aya from "../files/aya.png";
 import cbpay from "../files/cbpay.jpg";
 import kbzpay from "../files/kbzpay.png";
 import wave from "../files/wave.png";

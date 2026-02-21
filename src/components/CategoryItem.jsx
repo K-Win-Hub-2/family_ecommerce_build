@@ -44,14 +44,14 @@ const Button = styled.button`
 const CategoryItem = ({item}) => {
     const url= useSelector(state => state.user.url);
   return (
-    <Container style={{maxHeight: '250px'}}>
-        <Link to={`/products/${item.id}/${item.category_name}`}>
+    <Container style={{maxHeight: '150px'}}>
+        {/* <Link to={`/products/${item.id}/${item.category_name}`}> */}
         <Image src={url+`/ecommerce/brands/${item.photo_path}`}/>
         {/* <Image src={`http://localhost:8000/ecommerce/brands/${item.photo_path}`}/>  */}
-        <Info>
+        {/* <Info>
             <Button>Details</Button>
-        </Info>
-        </Link>
+        </Info> */}
+        {/* </Link> */}
     </Container>
   )
 }

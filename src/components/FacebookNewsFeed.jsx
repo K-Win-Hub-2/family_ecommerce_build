@@ -24,7 +24,8 @@ const FeedBox = styled.div`
 const SectionTitle = styled.h2`
     font-weight: bold;
     font-size:30px;
-    margin-left: 20px;
+    // margin-left: 20px;
+    text-align: center;
     color: #2b57b8;
 `
 
@@ -53,14 +54,14 @@ const FacebookNewsFeed = () => {
             <FeedBox>
                 {
                     products.slice(0,5).map((el)=>(
-                        <div className="card" style={{width: '25%',marginLeft:'20px'}} key={el.id}>
-                            <div style={{maxHeight: '200px',minHeight: '200px', overflow: 'hidden'}}>
+                        <div className="card" style={{width: '25%',marginLeft:'20px',border:'2px solid #2b57b8',borderRadius:"20px"}} key={el.id}>
+                            <div style={{maxHeight: '200px',minHeight: '200px',borderRadius:'20px', overflow: 'hidden'}}>
                                 <img src={url+'/facebook_images/'+el.facebook_photo} class="card-img-top" alt="..." />
                             </div>
                             <div className="card-body" style={{position: 'relative', minHeight: '230px'}}>
-                                <h5 className="card-title">{el.facebook_title}</h5>
+                                <h4 className="card-title" style={{color:"#2b57b8", fontWeight:"bold"}}>{el.facebook_title}</h4>
                                 <p className="card-text">{el.facebook_description}</p>
-                                <a href={el.facebook_link} className="btn btn-primary" style={{position: "absolute", bottom: "15px"}}>See In Facebook</a>
+                                <a href={el.facebook_link} className="btn" style={{position: "absolute", bottom: "15px",backgroundColor:"#2b57b8",color:"#fff",borderRadius:"20px"}}>See In Facebook</a>
                             </div>
                         </div>  
                     ))

@@ -13,7 +13,7 @@ const HomePage = () => {
       <Navbar/>
       <Main />
       
-        <Footer/>
+      <Footer/>
     </div>
   )
   

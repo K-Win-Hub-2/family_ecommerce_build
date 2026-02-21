@@ -9,7 +9,7 @@ import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 //  import html2pdf from "..//html2pdf.node";
 import Footer from '../components/Footer'
-import ColorNav from '../components/ColorNav'
+import Navbar from '../components/Navbar';
 
 const Form = styled.form`
   display: flex;
@@ -136,7 +136,7 @@ export default function Invoice() {
   return (
     <>
       <>
-      <ColorNav/> <br /> <br /> <br />
+      <Navbar/> <br /> <br /> <br />
          <div className="card printableArea px-5 container mt-10">
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <div className="col-md-12 text-center">

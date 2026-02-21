@@ -3,6 +3,7 @@ import Badge from '@mui/material/Badge';
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { mobile } from "../responsive"
@@ -17,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { showSearch } from '../redux/designRedux';
 import LoginAlert from './LoginAlert';
 // import ClipLoader from 'react-spinners/ClipLoader';
+import LogoPhoto from '../files/logo.png';
+import { NavLink } from 'react-router-dom';
 
 const Container = styled.div`
     transition: 1s ease;
@@ -25,16 +28,27 @@ const Container = styled.div`
     background-color: transparent;
     ${mobile({ height: "50px" })}
 `
+// const Wrapper = styled.div`
+//     padding: 10px 20px;
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     transition: 0.7s ease;
+//     background: rgb(255,255,255);
+//     background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.18953518907563027) 100%);
+//     ${mobile({ padding: "10px 0px" })}
+// `
+
 const Wrapper = styled.div`
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.7s ease;
-    background: rgb(255,255,255);
-    background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.18953518907563027) 100%);
-    ${mobile({ padding: "10px 0px" })}
-`
+  height: 70px;
+  background-color: #2b57b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+`;
+
+
 const WrapperOne = styled.div`
     display: flex;
     justify-content: space-between;
@@ -43,12 +57,20 @@ const WrapperOne = styled.div`
     ${mobile({ padding: "10px 0px" })}
 `
 
+// const Left = styled.div`
+//     flex: 1;
+//     display: flex;
+//     align-items: center;
+//     margin-bottom: 40px;
+// `
+
 const Left = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+
 const LeftOne = styled.div`
     flex: 1;
     display: flex;
@@ -62,58 +84,87 @@ const Language = styled.span`
     ${mobile({ display: "none" })}
 `
 
+// const SearchContainer = styled.div`
+//     border: 1px solid lightgray;
+//     display: flex;
+//     align-items: center;
+//     margin-left: 25px;
+//     padding: 5px;
+// `
+
+
 const SearchContainer = styled.div`
-    border: 1px solid lightgray;
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-    padding: 5px;
-`
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 30px;
+  padding: 6px 15px;
+  width: 280px;
+`;
 
 const Input = styled.input`
     border: none;
     ${mobile({ width: "50px" })}
 `
 
+// const Center = styled.div`
+//     flex: 1;
+//     display: inline;
+//     text-align: center;
+// `
+
 const Center = styled.div`
-    flex: 1;
-    display: inline;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 30px;
 `
+
+// const Logo = styled.h1`
+//     font-weight: bold;
+//     font-size:30px;
+//     color : white;
+//     display: block;
+//     text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(206,89,55,0);
+//     ${mobile({ fontSize: "24px" })}
+// <<<<<<< Tabnine <<<<<<<
+// /**//+
+//  * A dialog component for pre-ordering products.//+
+//  * It displays a list of brands with their images and allows users to make pre-orders.//+
+//  * //+
+//  * @param {Object} props - The properties passed to the component.//+
+//  * @param {boolean} props.open - Indicates whether the dialog is open or closed.//+
+//  * @param {function} props.close - A function to close the dialog.//+
+//  * //+
+//  * @returns {JSX.Element} - The PreDialog component with the specified properties.//+
+//  *///+
+// export default function PreDialog(props) {//+
+//     // ... existing code ...//+
+// }//+
+// >>>>>>> Tabnine >>>>>>>
+// `
 
 const Logo = styled.h1`
-    font-weight: bold;
-    font-size:30px;
-    color : white;
-    display: block;
-    text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(206,89,55,0);
-    ${mobile({ fontSize: "24px" })}
-<<<<<<< Tabnine <<<<<<<
-/**//+
- * A dialog component for pre-ordering products.//+
- * It displays a list of brands with their images and allows users to make pre-orders.//+
- * //+
- * @param {Object} props - The properties passed to the component.//+
- * @param {boolean} props.open - Indicates whether the dialog is open or closed.//+
- * @param {function} props.close - A function to close the dialog.//+
- * //+
- * @returns {JSX.Element} - The PreDialog component with the specified properties.//+
- *///+
-export default function PreDialog(props) {//+
-    // ... existing code ...//+
-}//+
->>>>>>> Tabnine >>>>>>>
-`
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+`;
+
+// const Right = styled.div`
+//     flex: 1;
+//     display: flex;
+//     align-items: ;
+//     justify-content: flex-end;
+//     margin-bottom: 40px;
+//     margin-left : 20px;
+//     ${mobile({ flex: 2, justifyContent: "center" })}
+// `
 
 const Right = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: ;
-    justify-content: flex-end;
-    margin-bottom: 40px;
-    margin-left : 20px;
-    ${mobile({ flex: 2, justifyContent: "center" })}
-`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
 const RightOne = styled.div`
     flex: 1;
     display: flex;
@@ -123,14 +174,46 @@ const RightOne = styled.div`
     ${mobile({ flex: 2, justifyContent: "center" })}
 `
 
+// const MenuItem = styled.div`
+//     font-size: 19px;
+//     color: #2b57b8;
+//     cursor: pointer;
+//     display: inline;
+//     margin-left : 20px;
+//     ${mobile({ fontSize: "12px" })}
+// `
+
 const MenuItem = styled.div`
-    font-size: 19px;
-    color: #2b57b8;
-    cursor: pointer;
-    display: inline;
-    margin-left : 20px;
-    ${mobile({ fontSize: "12px" })}
-`
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 6px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: white;
+    transition: 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+
+  &.active ${MenuItem}::after {
+    width: 100%;
+  }
+`;
+
 
 const A = styled.a`
 
@@ -158,15 +241,25 @@ const NavbarDropdownContent = styled.div`
   z-index: 1;
 `;
 
+// const SInput = styled.input`
+//     width: 230px;
+//     height: 35px;
+//     background-color: #eeeeee;
+//     border: 1px solid #2b57b8;
+//     outline:none;
+//     border-radius: 4px;
+//     margin-right: 10px;
+// `
+
+
 const SInput = styled.input`
-    width: 230px;
-    height: 35px;
-    background-color: #eeeeee;
-    border: 1px solid #2b57b8;
-    outline:none;
-    border-radius: 4px;
-    margin-right: 10px;
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
 `
+
+
 const SSubmit = styled.button`
     color: white;
     height: 35px;
@@ -181,6 +274,20 @@ const Sm = styled.small`
   font-size : 11px;
   font-weight : bold;
 `
+
+const LoginButton = styled.button`
+  background: transparent;
+  border: 1.5px solid white;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+
+  &:hover {
+    background: white;
+    color: #2b57b8;
+  }
+`;
 
 const Navbar = (props) => {
     const [isScroll, setIsScroll] = useState(false);
@@ -271,98 +378,106 @@ const Navbar = (props) => {
 
 
     return (
-        <Container className="">
+        <Container className="fixed-top">
             {isScroll ? (
-                <ColorNav />
-            ) : (
+                // <ColorNav />
                 <Wrapper>
                     <Left>
-                        <Language style={link}><LocationOnIcon />Yangon</Language>
-
-                        <Language style={link}><PhoneInTalkIcon />09 448833457<br/><PhoneInTalkIcon/>09 448833467</Language>
-                        
-                        <NavbarDropdown>
-                            <Language style={link}>English</Language>
-                            <NavbarDropdownContent>
-                                <Link to="/" style={link}>Myanmar</Link>
-                            </NavbarDropdownContent>
-                        </NavbarDropdown>
-                        {/* <SearchContainer>
-                                <Input placeholder="search"/>
-                                <SearchIcon style={{color:"gray",fonSize: 10}}/>
-                            </SearchContainer> */}       
-                    </Left>
-                    <Center>
+                        <img src={LogoPhoto} width="90" height="90"/>
                         <Logo>Medical World</Logo>
-                        <Link to="/" style={link}>
+                    </Left>
+
+                    <Center>
+
+                        <StyledNavLink to="/">
                             <MenuItem>Home</MenuItem>
-                        </Link>
-                        <Link to="/about-us" style={link}>
-                            <MenuItem>AboutUs</MenuItem>
-                        </Link>
-                        {isUser ? (<Link to="/order_list" style={link}>
-                            <MenuItem>OrderList</MenuItem>
-                        </Link>) : (
-                            <Link to="/register" style={link}>
-                                <MenuItem>Register</MenuItem>
-                            </Link>)}
-                               
-                        <A onClick={showPreorder} style={link}>
-                            <MenuItem>PreOrder</MenuItem>
-                        </A>
-                        <Link to="/contact-us" style={link}>
-                            <MenuItem>ContactUs</MenuItem>
-                        </Link>
-                        {/* <Link to="/track_order_list" style={link}>
-                            <MenuItem>Track Order</MenuItem>
-                        </Link> */}
-                        {/* <Link to="/track_preorder_list" style={link}>
-                            <MenuItem>Track PreOrder</MenuItem>
-                        </Link> */}
-                        
-                        {/* {isUser ? (' ') : (
-                            <Link to="/login" style={link}>
-                                <MenuItem>SignIn</MenuItem>
-                            </Link>)} */}
+                        </StyledNavLink>
 
+                        <StyledNavLink to="/about-us">
+                            <MenuItem>About Us</MenuItem>
+                        </StyledNavLink>
 
+                        <StyledNavLink to="/shop">
+                            <MenuItem>Shop</MenuItem>
+                        </StyledNavLink>
 
+                        <StyledNavLink to="/preorder">
+                            <MenuItem>Preorder</MenuItem>
+                        </StyledNavLink>
+
+                        <StyledNavLink to="/contact-us">
+                            <MenuItem>Contact Us</MenuItem>
+                        </StyledNavLink>
                     </Center>
 
                     <Right>
-                        <MenuItem>
-                            {
-                                showsearch ?
-                                <Searchbox>
-                                    <SInput placeholder='' onChange={(e) => setSearch(e.target.value)}></SInput>
-                                    <SearchIcon onClick={SearchItems} style={link} />
-                                    {/* <SSubmit onClick={SearchItems} style={link}>Submit</SSubmit> */}
-                                </Searchbox> : ''
-                            }
-                            {
-                                showsearch ?
-                                '' : <SearchIcon onClick={ShowSearch} style={link} />
-                            }
-                        </MenuItem>
-                        <Link to="/cart" style={link}>
-                            <MenuItem>
-                                <ShoppingCartIcon />
-                                <Sm className='text-primary'>{pcs}</Sm>
-                            </MenuItem>
-                        </Link>
-                        {isUser ? (
-                            <Link to='/' style={link} onClick={logout}>
-                                <MenuItem>LogOut</MenuItem>
-                            </Link>
-                        ) : (
-                            <Link to="/login" style={link}>
-                                <MenuItem>SignIn</MenuItem>
-                            </Link>)
-                        }
-                        
+
+                        <SearchContainer>
+                        <SInput placeholder="Search for products..." />
+                        <SearchIcon style={{ color: "#888" }} />
+                        </SearchContainer>
+
+                        <ShoppingCartIcon style={{ color: "white" }} />
+
+                        <AccountCircleIcon style={{color: "white"}}/>
+
+                        <LoginButton>
+                            LogIn
+                        </LoginButton>
+
                     </Right>
+
                 </Wrapper>
-            )}
+            ) : 
+                <Wrapper>
+                    <Left>
+                        <img src={LogoPhoto} width="90" height="90"/>
+                        <Logo>Medical World</Logo>
+                    </Left>
+
+                    <Center>
+
+                        <StyledNavLink to="/">
+                            <MenuItem>Home</MenuItem>
+                        </StyledNavLink>
+
+                        <StyledNavLink to="/about-us">
+                            <MenuItem>About Us</MenuItem>
+                        </StyledNavLink>
+
+                        <StyledNavLink to="/shop">
+                            <MenuItem>Shop</MenuItem>
+                        </StyledNavLink>
+
+                        <StyledNavLink to="/preorder">
+                            <MenuItem>Preorder</MenuItem>
+                        </StyledNavLink>
+
+                        <StyledNavLink to="/contact-us">
+                            <MenuItem>Contact Us</MenuItem>
+                        </StyledNavLink>
+                    </Center>
+
+                    <Right>
+
+                        <SearchContainer>
+                        <SInput placeholder="Search for products..." />
+                        <SearchIcon style={{ color: "#888" }} />
+                        </SearchContainer>
+
+                        <ShoppingCartIcon style={{ color: "white" }} />
+
+                        <AccountCircleIcon style={{color: "white"}}/>
+
+                        <LoginButton>
+                            LogIn
+                        </LoginButton>
+
+                    </Right>
+
+                </Wrapper>
+
+            }
             {isUser ? (
                 <PreDialog open={showDialog} close={() => setShowDialog(false)} />
             ) : (

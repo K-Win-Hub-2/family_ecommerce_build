@@ -9,7 +9,8 @@ import Slider from '../components/Slider'
 import ChatBot from './../pages/bot/ChatBot'
 import SeasonalDiscountNews from './SeasonalDiscountNews'
 import FacebookNewsFeed from '../components/FacebookNewsFeed';
-import PromotionPhoto from './PromotionPhoto'
+import PromotionPhoto from './PromotionPhoto';
+import Review from './Review';
 
 const Main = () => {
     
@@ -21,16 +22,16 @@ const Main = () => {
         <Slider/>
       {/* <ChatBot /> */}
         
-        <PromotionPhoto/>
-        <Categories/>
-        <HomeItems title="Promotion" url="promotionitem_api"/>
+        {/* <PromotionPhoto/> */}
+        <HomeItems title="Promotion Items" url="promotionitem_api"/>
        
-        <HomeItems title="New Arrival" url="newitem_api"/>
+        {/* <HomeItems title="New Arrival" url="newitem_api"/> */}
         {/* <HomeItems title="Promotion Items" url="promotionitem_api"/> */}
-        <HomeItems title="Hot Sale Items" url="hotsaleitem_api"/>
+        {/* <HomeItems title="Hot Sale Items" url="hotsaleitem_api"/> */}
         {/* <SeasonalDiscountNews/> */}
-        
-      <FacebookNewsFeed />
+        <Categories/>
+        <Review/>
+        <FacebookNewsFeed />
       
         
       </div>

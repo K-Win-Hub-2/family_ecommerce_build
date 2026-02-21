@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ColorNav from "../components/ColorNav";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 import YoutubeSlider from "../components/YoutubeSlider";
 
 import profile from "../files/about.jpg";
-import board1 from "../files/board/board1.jpg";
-import board2 from "../files/board/board2.jpg";
-import board3 from "../files/board/board3.jpg";
-import board4 from "../files/board/board4.jpg";
-import board5 from "../files/board/board5.jpg";
+import board1 from "../files/about.jpg";
+import board2 from "../files/about.jpg";
+import board3 from "../files/about.jpg";
+import board4 from "../files/about.jpg";
+import board5 from "../files/about.jpg";
 
 import pho1 from "../files/factory/pho1.png";
 import pho2 from "../files/factory/pho2.png";
@@ -84,6 +84,7 @@ const Wrapper = styled.div`
 const Title = styled.h5`
     font-size: 30px;
     font-weight: bold;
+    text-align: center;
     color: #2b57b8;
 `
 const SubTitle = styled.h2`
@@ -95,6 +96,57 @@ const SubTitle = styled.h2`
 const Content = styled.div`
     
 `
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  justify-items: center;
+  padding: 20px 0;
+`;
+
+const DirectorCard = styled.div`
+  width: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  border: 3px solid #1c6ea4;
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-6px);
+  }
+`;
+
+const ImageBox = styled.div`
+  height: 220px;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+`;
+
+
+const InfoBox = styled.div`
+  background: #1c6ea4;
+  padding: 18px 10px;
+  text-align: center;
+  color: white;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+`;
+
+
+const Name = styled.h4`
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const Role = styled.p`
+  margin: 5px 0 0;
+  font-size: 14px;
+`;
+
 const Flex = styled.div`
     display:  flex;
     align-items: center;
@@ -272,7 +324,7 @@ const About = () => {
 
         <div>
             <div>
-                <ColorNav />
+                <Navbar />
             </div>
             <Section>
                 <Wrapper style={{paddingTop: "60px"}}>
@@ -298,6 +350,7 @@ const About = () => {
                     </Content>
                 </Wrapper>
             </Section>
+
             <Section>
                 <Wrapper>
                     <Title style={{padding: "50px 0px 30px 100px"}}>OUR HISTORY</Title>
@@ -319,7 +372,8 @@ const About = () => {
                     </Content>
                 </Wrapper>
             </Section>
-            <Section style={{padding: "0px 100px" , background: "linear-gradient(to right, rgba(28, 73, 170, 0.5), rgba(5, 59, 175, 0.8))", marginTop: "50px"}}>
+
+            {/* <Section style={{padding: "0px 100px" , background: "linear-gradient(to right, rgba(28, 73, 170, 0.5), rgba(5, 59, 175, 0.8))", marginTop: "50px"}}>
                 <Wrapper>
                     <Title style={{padding: "30px 0px 10px 0px", textAlign: "center", color: "#ffffff"}}>BOARD OF DIRECTORS</Title>
                     <SubTitle>Medical World Company Limited</SubTitle>
@@ -335,7 +389,66 @@ const About = () => {
                         </Flex>
                     </Content>
                 </Wrapper>
-            </Section>
+            </Section> */}
+
+            <Section
+  style={{
+    padding: "0px 100px",
+    // background:
+    //   "linear-gradient(to right, rgba(28,73,170,0.5), rgba(5,59,175,0.8))",
+    background:"white",
+    marginTop: "30px",
+  }}
+>
+  <Wrapper>
+    <Title>BOARD OF DIRECTORS</Title>
+    <SubTitle>Medical World Company Limited</SubTitle>
+
+    <CardGrid>
+      <DirectorCard>
+        <ImageBox src={board1} />
+        <InfoBox>
+          <Name>U HTET AUNG</Name>
+          <Role>Managing Director</Role>
+        </InfoBox>
+      </DirectorCard>
+
+      <DirectorCard>
+        <ImageBox src={board2} />
+        <InfoBox>
+          <Name>DAW KHIN THANDAR KO</Name>
+          <Role>Director</Role>
+        </InfoBox>
+      </DirectorCard>
+
+      <DirectorCard>
+        <ImageBox src={board3} />
+        <InfoBox>
+          <Name>DAW KHIN SANDAR KO</Name>
+          <Role>Director</Role>
+        </InfoBox>
+      </DirectorCard>
+
+      <DirectorCard>
+        <ImageBox src={board4} />
+        <InfoBox>
+          <Name>U WIN KO KO</Name>
+          <Role>Director</Role>
+        </InfoBox>
+      </DirectorCard>
+
+      <DirectorCard>
+        <ImageBox src={board5} />
+        <InfoBox>
+          <Name>DR. AYE AYE AUNG</Name>
+          <Role>Director</Role>
+        </InfoBox>
+      </DirectorCard>
+    </CardGrid>
+  </Wrapper>
+</Section>
+
+
             <Section>
                 <Wrapper>
                     <Title style={{padding: "50px 0px 30px 0px", textAlign: "center"}}>OUR VISION, MISSION AND OBJECTIVE</Title>

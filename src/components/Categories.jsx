@@ -12,7 +12,7 @@ const MainContainer = styled.div`
 
 const Container = styled.div`
     display: flex;
-    padding: 20px;
+    padding: 10px;
     justify-content: space-between;
     ${mobile({padding: "0px",flexDirection: "column"})}
 `
@@ -21,7 +21,8 @@ const SectionTitle = styled.span`
     margin-top: 20px;
     font-weight: bold;
     font-size:30px;
-    margin-left: 20px;
+    // margin-left: 20px;
+    text-align: center;
     color: #2b57b8;
     ${mobile({fontSize: "14px"})}
 `
