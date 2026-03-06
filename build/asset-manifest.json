@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5a424cf0.css",
-    "main.js": "/static/js/main.3765e607.js",
+    "main.css": "/static/css/main.ce317ea1.css",
+    "main.js": "/static/js/main.07e01c30.js",
     "static/media/factory.mp4": "/static/media/factory.71beff15516a06d0d966.mp4",
     "static/media/slider1.mp4": "/static/media/slider1.75e5d385067dbc08d5df.mp4",
     "static/media/pho9.png": "/static/media/pho9.da2794caa412f4abe0d1.png",
@@ -51,26 +51,17 @@
     "static/media/kembangan_general_hospital.jpg": "/static/media/kembangan_general_hospital.de668125f8c750c963f3.jpg",
     "static/media/shoe.jpg": "/static/media/shoe.d4431526041d4938ac50.jpg",
     "static/media/ministry_of_health.jpg": "/static/media/ministry_of_health.c2491528a545338e50a9.jpg",
-    "static/media/board4.jpg": "/static/media/board4.1b83c4462cf18b0ca208.jpg",
-    "static/media/board1.jpg": "/static/media/board1.5ac98fac3f9f51fcc8a5.jpg",
-    "static/media/board3.jpg": "/static/media/board3.4a0bf69919a3e0b00551.jpg",
     "static/media/wave.png": "/static/media/wave.7e14ef2a2ca6cb3876be.png",
     "static/media/khaing_yadanar_hospital.jpg": "/static/media/khaing_yadanar_hospital.a61654aab477d4b47efd.jpg",
-    "static/media/board2.jpg": "/static/media/board2.c69c250c1eaf222172c9.jpg",
     "static/media/moe_kaung_treasure.jpg": "/static/media/moe_kaung_treasure.00b9afd4823a2d0bfb9f.jpg",
-    "static/media/board5.jpg": "/static/media/board5.7896113e089f9ccd57e1.jpg",
     "static/media/shwe_yaung_lin_hospital.jpg": "/static/media/shwe_yaung_lin_hospital.91a89eba1a46d731f9d4.jpg",
     "static/media/dagon_medicare_hospital.jpg": "/static/media/dagon_medicare_hospital.ae133894abcc8fa8d7d6.jpg",
     "static/media/tawwin_malikha_hospital.jpg": "/static/media/tawwin_malikha_hospital.71278ec0dae96731b0ef.jpg",
-    "static/media/kbzpay.png": "/static/media/kbzpay.d266de55d21d668c758e.png",
-    "static/media/master.png": "/static/media/master.6cb01545cb332a8b74b7.png",
     "static/media/cbpay.jpg": "/static/media/cbpay.b74c91aac6525285e001.jpg",
     "static/media/pinlon_group_of_hospitality.png": "/static/media/pinlon_group_of_hospitality.a14f52ebefb30d1ca4e6.png",
     "static/media/asia_royal_2.jpg": "/static/media/asia_royal_2.1dfac34975f29ff59cf1.jpg",
-    "static/media/visa.jpg": "/static/media/visa.0f1013437000dd57b1e2.jpg",
     "static/media/hlaing_taw_win.jpg": "/static/media/hlaing_taw_win.3fd8f858467702efe8ae.jpg",
     "static/media/cbspecial.jpg": "/static/media/cbspecial.910ccc362aa0495a7d2f.jpg",
-    "static/media/kbzbank.png": "/static/media/kbzbank.c52286dfd451429a066c.png",
     "static/media/manipal_sml.jpg": "/static/media/manipal_sml.57e5bb3d9f0ee18bb549.jpg",
     "static/media/asia_royal.jpg": "/static/media/asia_royal.b1c99c5392f069a8fe8d.jpg",
     "static/media/aryu_international_hospital.png": "/static/media/aryu_international_hospital.e4f815bbdc9e323949e5.png",
@@ -80,11 +71,11 @@
     "static/media/ingyinphyu_dental_clinic.jpg": "/static/media/ingyinphyu_dental_clinic.57eac9d9a50669673dfc.jpg",
     "static/media/city_hospital.png": "/static/media/city_hospital.7d2caba434f49c88fdff.png",
     "index.html": "/index.html",
-    "main.5a424cf0.css.map": "/static/css/main.5a424cf0.css.map",
-    "main.3765e607.js.map": "/static/js/main.3765e607.js.map"
+    "main.ce317ea1.css.map": "/static/css/main.ce317ea1.css.map",
+    "main.07e01c30.js.map": "/static/js/main.07e01c30.js.map"
   },
   "entrypoints": [
-    "static/css/main.5a424cf0.css",
-    "static/js/main.3765e607.js"
+    "static/css/main.ce317ea1.css",
+    "static/js/main.07e01c30.js"
   ]
 }

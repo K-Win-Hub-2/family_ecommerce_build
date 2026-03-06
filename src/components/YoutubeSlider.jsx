@@ -63,18 +63,18 @@ const YoutubeSlider = () => {
             
             <FeedBox>    
               
-            <div className="card" style={{width: '33%',marginLeft:'20px'}}>
-                <div style={{maxHeight: '260px',minHeight: '260px', overflow: 'hidden'}}>
+            <div className="card" style={{width: '33%',marginLeft:'20px',borderRadius: '20px'}}>
+                <div style={{maxHeight: '260px',minHeight: '260px', borderRadius:'20px', overflow: 'hidden'}}>
                 <iframe width='100%' height="260" src={utube1} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div> 
-            <div className="card" style={{width: '33%',marginLeft:'20px'}}>
-                <div style={{maxHeight: '260px',minHeight: '260px', overflow: 'hidden'}}>
+            <div className="card" style={{width: '33%',marginLeft:'20px', borderRadius: '20px'}}>
+                <div style={{maxHeight: '260px',minHeight: '260px', overflow: 'hidden', borderRadius: '20px'}}>
                 <iframe width='100%'  height="260" src={utube2} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div> 
-            <div className="card" style={{width: '33%',marginLeft:'20px'}}>
-                <div style={{maxHeight: '260px',minHeight: '260px', overflow: 'hidden'}}>
+            <div className="card" style={{width: '33%',marginLeft:'20px', borderRadius: '20px'}}>
+                <div style={{maxHeight: '260px',minHeight: '260px', overflow: 'hidden', borderRadius: '20px'}}>
                 <iframe width='100%'  height="260" src={utube3} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div> 

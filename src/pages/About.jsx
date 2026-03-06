@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../components/Navbar";
@@ -7,12 +7,14 @@ import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 import YoutubeSlider from "../components/YoutubeSlider";
 
-import profile from "../files/about.jpg";
-import board1 from "../files/about.jpg";
-import board2 from "../files/about.jpg";
-import board3 from "../files/about.jpg";
-import board4 from "../files/about.jpg";
-import board5 from "../files/about.jpg";
+import profile from "../slider-images/about.png";
+import client from "../slider-images/human.jpg";
+import group from "../slider-images/aboutgp.jpg";
+import board1 from "../slider-images/human.jpg";
+import board2 from "../slider-images/human.jpg";
+import board3 from "../slider-images/human.jpg";
+import board4 from "../slider-images/human.jpg";
+import board5 from "../slider-images/human.jpg";
 
 import pho1 from "../files/factory/pho1.png";
 import pho2 from "../files/factory/pho2.png";
@@ -37,6 +39,9 @@ import pho20 from "../files/factory/pho20.png";
 import pho21 from "../files/factory/pho21.png";
 import pho22 from "../files/factory/pho22.png";
 import factoryV from "../files/factory.mp4";
+
+import about from "../slider-images/aboutus.png";
+import aboutFactory from "../slider-images/factory.png";
 
 import aryu from "../files/p_logo/aryu_international_hospital.png";
 import asiaRoyal from "../files/p_logo/asia_royal.jpg";
@@ -73,17 +78,211 @@ import mmedical from "../files/p_logo/myanmar_medical_association_centre.jpg";
 
 import map from "../files/map.png";
 
+import { FaBullseye, FaEye, FaGem, FaPlug, FaBriefcase, FaTemperatureHigh,  FaIndustry, FaLayerGroup, FaPalette, FaVial, FaClock, FaUsers, FaHandHoldingUsd, FaCheckCircle, FaShippingFast, FaTshirt  } from "react-icons/fa";
+
+
 const Section = styled.div`
-    width: 100%
-    min-height: 100vh;
-`
+  width: 100%;
+  background: #f7f9fc;
+  overflow: hidden;
+`;
+
+const Hero = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 100px 40px 100px;
+`;
+
+const slideText = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-120px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const slideImage = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(120px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const Left = styled.div`
+  flex: 1;
+  animation: ${slideText} 1.2s ease forwards;
+`;
+
+const HeroTitle = styled.h1`
+  font-size: 60px;
+  font-weight: 700;
+  color: #2b57b8;
+`;
+
+const HeroDesc = styled.p`
+  font-size: 25px;
+  margin: 20px 0;
+  color: #555;
+  line-height: 28px;
+  max-width: 500px;
+`;
+
+
+const DoctorWrapper = styled.div`
+  position: relative;
+  width: 800px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
+const DoctorCard = styled.div`
+  width: 600px;
+  height: 350px;
+  background: #1c6ea4;
+  border-radius: 25px;
+  animation: ${slideImage} 1.4s ease forwards;
+  transform: translateY(50px);
+`;
+
+const DoctorImage = styled.img`
+  position: absolute;
+  bottom: 0;         
+  width: 800px;
+  height: auto;
+  object-fit: contain;
+  z-index: 2;
+  animation: ${slideImage} 1.4s ease forwards;
+  transform: translateY(50px);
+`;
+
+const Right = styled.div`
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+`;
+
+
+const ClientBadge = styled.div`
+  position: absolute;
+  top: 180px;
+  left: -80px;
+  background: #1c6ea4;
+  color: white;
+  padding: 15px 20px;
+  border: 1px solid #48f542;
+  border-radius: 15px;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  animation: ${slideImage} 1.4s ease forwards;
+  transform: translateY(50px);
+`;
+
+const ClientWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ClientImage = styled.img`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #fff;
+  margin-left: -20px;
+
+  &:nth-child(1){ z-index: 4; }
+  &:nth-child(2){ z-index: 3; }
+  &:nth-child(3){ z-index: 2; }
+  &:nth-child(4){ z-index: 1; }
+
+  &:first-child {
+    margin-left: 0;
+  }
+`;
+
+
+const ContentSection = styled.div`
+  position: relative;
+  padding: 140px 100px 80px 100px;
+  color: white;
+  overflow: hidden;
+  // background: #156ea8; /* fallback color */
+`;
+
+const AboutWave = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 900px;
+
+  z-index: 0;       
+  pointer-events: none;
+`;
+
+const ContentFlex = styled.div`
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  gap: 60px;
+`;
+
+
+const ImageCard = styled.div`
+  flex: 1;
+  margin-top: -140px; 
+
+  img {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    object-fit: cover;
+  }
+`;
+
+const TextBox = styled.div`
+  flex: 1;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  gap: 60px;
+  align-items: center;
+`;
+
+
+const ContentTitle = styled.h2`
+  font-size: 60px;
+  margin-bottom: 20px;
+`;
+
+const Description = styled.p`
+  font-size: 25px;
+  line-height: 30px;
+`;
+
 const Wrapper = styled.div`
     width: 100%
     height: auto;
 `
-const Title = styled.h5`
-    font-size: 30px;
-    font-weight: bold;
+const Title = styled.h1`
+    font-size: 42px;
+    font-weight: 700;
     text-align: center;
     color: #2b57b8;
 `
@@ -93,14 +292,14 @@ const SubTitle = styled.h2`
     color: #ffffff;
     text-align: center;
 `
-const Content = styled.div`
+// const Content = styled.div`
     
-`
+// `
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
   justify-items: center;
   padding: 20px 0;
 `;
@@ -147,32 +346,32 @@ const Role = styled.p`
   font-size: 14px;
 `;
 
-const Flex = styled.div`
-    display:  flex;
-    align-items: center;
-    justify-content: center;
-`
-const BoxOne = styled.div`
-    width: 60%;
-    height: 370px;
-`
-const BoxTwo = styled.div`
-    width: 40%;
-    height: 370px;
-    text-align: center;
-    padding: 20px;
-    background-color: #ffffff;
-    overflow: hidden;
-`
-const ContentTitle = styled.h6`
-    font-size: 21px;
-    font-weight: bold;
-    color: #2b57b8;
-`
-const Description = styled.p`
-    font-size: 15px;
-    margin-top:14px;
-`
+// const Flex = styled.div`
+//     display:  flex;
+//     align-items: center;
+//     justify-content: center;
+// `
+// const BoxOne = styled.div`
+//     width: 60%;
+//     height: 370px;
+// `
+// const BoxTwo = styled.div`
+//     width: 40%;
+//     height: 370px;
+//     text-align: center;
+//     padding: 20px;
+//     background-color: #ffffff;
+//     overflow: hidden;
+// `
+// const ContentTitle = styled.h6`
+//     font-size: 21px;
+//     font-weight: bold;
+//     color: #2b57b8;
+// `
+// const Description = styled.p`
+//     font-size: 15px;
+//     margin-top:14px;
+// `
 const Button = styled.a`
     font-size: 16px;
     padding: 5px 20px;
@@ -239,26 +438,26 @@ const SmallImgBox = styled.div`
     min-height: 120px;
     margin-left: 20px;
 `
-const Left = styled.div`
-    width: auto;
-    display: flex;
-    align-item: center;
-    justify-content: center;
-    flex-direction: column;
-`
+// const Left = styled.div`
+//     width: auto;
+//     display: flex;
+//     align-item: center;
+//     justify-content: center;
+//     flex-direction: column;
+// `
 const Center = styled.div`
     display: flex;
     align-item: center;
     justify-content: center;
     margin-top: 50px;
 `
-const Right = styled.div`
-    width: auto;
-    display: flex;
-    align-item: end;
-    justify-content: end;
-    flex-direction: column;
-`
+// const Right = styled.div`
+//     width: auto;
+//     display: flex;
+//     align-item: end;
+//     justify-content: end;
+//     flex-direction: column;
+// `
 const ShowP = styled.span`
     color: #32549b;
     background-color: #ffffff;
@@ -297,7 +496,378 @@ const PBox = styled.div`
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
+  gap: 100px;
 `
+const MSection = styled.div`
+  padding: 60px 0;
+  background: #f5f8fc;
+`;
+
+const MWrapper = styled.div`
+  width: 90%;
+  margin: auto;
+`;
+
+const MTitle = styled.h1`
+  font-size: 42px;
+  color: #2b57b8;
+  text-align: center;
+  margin-bottom: 50px;
+  font-weight: 700;
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  flex-wrap: wrap;
+`;
+
+const Card = styled.div`
+  width: 320px;
+  padding: 40px 25px;
+  background: #eaf2f8;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid #8bc34a;
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-8px);
+  }
+`;
+
+const ActiveCard = styled(Card)`
+  background: #0f6ea8;
+  color: white;
+  border: 2px solid #8bc34a;
+`;
+
+const IconBox = styled.div`
+  width: 60px;
+  height: 60px;
+  background: #0f6ea8;
+  color: white;
+  margin: auto;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+`;
+
+const IconBoxWhite = styled(IconBox)`
+  background: white;
+  color: #0f6ea8;
+`;
+
+const CardTitle = styled.h3`
+  color: #0f6ea8;
+  margin-bottom: 15px;
+`;
+
+const CardTitleWhite = styled(CardTitle)`
+  color: white;
+`;
+
+const CardText = styled.p`
+  font-size: 18px;
+  line-height: 1.6;
+`;
+
+const CardTextWhite = styled(CardText)`
+  color: white;
+`;
+
+const RSection = styled.section`
+  background: #0b79b7;
+  padding: 50px 40px;
+  color: white;
+  text-align: center;
+`;
+
+const RTitle = styled.h1`
+  font-size: 42px;
+  margin-bottom: 60px;
+`;
+
+const Timeline = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const Item = styled.div`
+  position: relative;
+  width: 280px;
+`;
+
+const Year = styled.h3`
+  margin-bottom: 20px;
+  font-weight: 500;
+`;
+
+const Line = styled.div`
+  width: 2px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 0 auto;
+`;
+
+const Icon = styled.div`
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #5cc66a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin: -10px auto 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+`;
+
+const RCard = styled.div`
+  background: #0e8ed0;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: left;
+  font-size: 18px;
+  line-height: 1.5;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+
+  p {
+    margin: 6px 0;
+  }
+`;
+
+const IconCircle = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #5cc66a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin: -10px auto 20px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+
+  svg {
+    color: white;
+  }
+`;
+
+
+const ASection = styled.section`
+  padding: 70px 40px;
+  background: #1c6ea4;
+  display: flex;
+  justify-content: center;
+`;
+
+const AContainer = styled.div`
+  max-width: 1300px;
+  width: 100%;
+  display: flex;
+  gap: 100px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const InfoCard = styled.div`
+  flex: 1;
+  background: #f0f4f7;
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 28px;
+  color: #1e5285;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-6px);
+    background: #cfd2d4;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+
+  svg {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 30px;
+    margin: 0;
+  }
+`;
+
+const List = styled.ul`
+  padding: 0;
+  margin: 0;
+
+  li {
+    list-style-type: disc;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  svg {
+    margin-top: 3px;
+    min-width: 14px;
+  }
+`;
+
+
+const clientLogos = [
+  aryu, asiaRoyal, ssc, pinlon, grandHantha, osc,
+  panhlaing, khaing, ami, asiaRoyal2, aungyadana, city,
+  dLux, dagonMedicare, hlaingTW, ingyinphyu, sos, eye,
+  kankaw, kembangan, khaing, mandalar, minipal, moeKaung,
+  victoria, shweLamin, shweYaung, tawwin, thuka, violin
+];
+
+const scroll = keyframes`
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+`;
+
+const Slider = styled.div`
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+`;
+
+const SlideTrack = styled.div`
+  display: flex;
+  width: max-content;
+  animation: ${scroll} 80s linear infinite;
+`;
+
+const LogoBox = styled.div`
+  width: 140px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 25px;
+  flex-shrink: 0;
+`;
+
+const CImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: 1s;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+`;
+
+
+const PSection = styled.section`
+  position: relative;
+  padding: 80px 120px;
+  // background: white;
+  overflow: hidden;
+`;
+
+const PWrapper = styled.div`
+  max-width: 1600px;
+  margin: auto;
+  position: relative;
+  z-index: 2;
+`;
+
+const Top = styled.div`
+  display: flex;
+  gap: 60px;
+  align-items: center;
+`;
+
+const PLeft = styled.div`
+  flex: 1;
+`;
+
+const MainImage = styled.img`
+  width: 100%;
+  max-width: 500px;
+  border-radius: 22px;
+  border: 4px solid white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+`;
+
+const PRight = styled.div`
+  flex: 1;
+  color: #2b57b8;
+`;
+
+const PTitle = styled.h1`
+  font-size: 42px; 
+  margin-bottom: 20px;
+  font-weight :  700;
+`;
+
+const PDescription = styled.p`
+  font-size: 24px;
+  line-height: 1.8;
+  font-weight: 500;
+`;
+
+const ThumbnailRow = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+`;
+
+const Thumb = styled.img`
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 3px solid white;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.05);
+  }
+`;
+
+
+const BottomCurve = styled.img`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 350px;
+
+  z-index: 0;
+  pointer-events: none;
+  }
+`;
+
 
 const About = () => {
 
@@ -326,50 +896,227 @@ const About = () => {
             <div>
                 <Navbar />
             </div>
+            {/* Banner */}
             <Section>
-                <Wrapper style={{paddingTop: "60px"}}>
-                    {/* <Title style={{padding: "30px 0px 20px 100px"}}>ABOUT US</Title> */}
-                    <Content style={{padding: "70px 100px" , background: "linear-gradient(to right, rgba(28, 73, 170, 0.5), rgba(5, 59, 175, 0.8))"}}>
-                        <Flex>
-                            <BoxOne style={{ overflow: "hidden" }} >
-                                <img src={profile} style={{ width: "100%",objectFit:"contain" }} />
-                            </BoxOne>
-                            <BoxTwo>
-                                <ContentTitle>About Medical World</ContentTitle>
-                                <Description style={{lineHeight: '31px',}}>Medical World Co., Ltd, founded in 2015, is a manufacturing and
-                                distribution company of uniforms and accessories. Over the past 7
-                                years, Medical World Co. Ltd, has been providing uniforms and
-                                accessories for Government Departments and Private Business
-                                Sectors. One of our best services, consultation service regarding
-                                uniform designs is offered. Customizable service for business
-                                logos imprinted on the uniform is also offered using modernized
-                                machines.</Description>
-                                <Button>Learn More</Button>
-                            </BoxTwo>
-                        </Flex>
-                    </Content>
-                </Wrapper>
+              <Wrapper>
+                <Hero>
+                  <Left>
+                    <HeroTitle>
+                      We Craft Brand <br />
+                      and Digital Experiences
+                    </HeroTitle>
+
+                    <HeroDesc>
+                      We leverage our in-house manufacturing capabilities to deliver high-volume production with precision and scale. By optimizing our supply chain, we offer a convenient, cost-effective solution that saves you both money and energy.
+                    </HeroDesc>
+
+                    {/* <Button>Learn More</Button> */}
+                  </Left>
+
+                  <Right>
+                    <DoctorWrapper>
+                      <DoctorImage src={profile} alt="doctor" />
+
+                      <DoctorCard />
+
+                      <ClientBadge>
+                        <h4>250+ Satisfied Clients</h4>
+                                          
+                        <ClientWrapper>
+                          <ClientImage src={client} alt="client" />
+                          <ClientImage src={client} alt="client" />
+                          <ClientImage src={client} alt="client" />
+                          <ClientImage src={client} alt="client" />
+                        </ClientWrapper>
+                      </ClientBadge>
+                    </DoctorWrapper>
+                  </Right>
+                </Hero>
+
+                <ContentSection>
+
+                  <AboutWave src={about}/>
+
+                  <ContentFlex>
+                    <ImageCard>
+                      <img src={group} alt="about" />
+                    </ImageCard>
+
+                    <TextBox>
+                      <ContentTitle>About Our Medical World</ContentTitle>
+
+                      <Description>
+                        Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories. Over the past 7 years, Medical World Co. Ltd, has been providing uniforms and accessories for Government Departments and Private Business Sectors. One of our best services, consultation service regarding
+                      </Description>
+                    </TextBox>
+                  </ContentFlex>
+
+                </ContentSection>
+
+              </Wrapper>
             </Section>
 
-            <Section>
+            {/* Vision */}
+            <MSection>
+              <MWrapper>
+                <MTitle>
+                  OUR VISION, MISSION AND OBJECTIVE
+                </MTitle>
+
+                <CardContainer>
+
+                  <Card>
+                    <IconBox>
+                      <FaBullseye />
+                    </IconBox>
+                    <CardTitle>Mission</CardTitle>
+                    <CardText>
+                      Quality is our Virtue.
+                    </CardText>
+                  </Card>
+
+                  <ActiveCard>
+                    <IconBoxWhite>
+                      <FaEye />
+                    </IconBoxWhite>
+                    <CardTitleWhite>Vision</CardTitleWhite>
+                    <CardTextWhite>
+                      Flexibility and Responsibilities.
+                    </CardTextWhite>
+                  </ActiveCard>
+
+                  <Card>
+                    <IconBox>
+                      <FaGem />
+                    </IconBox>
+                    <CardTitle>Objective</CardTitle>
+                    <CardText>
+                      Leading in the Local Market and Exporting Abroad.
+                    </CardText>
+                  </Card>
+
+                </CardContainer>
+              </MWrapper>
+            </MSection>
+
+            {/* Director */}
+            <Section
+            style={{
+                padding: "0px 100px",
+                // background:
+                //   "linear-gradient(to right, rgba(28,73,170,0.5), rgba(5,59,175,0.8))",
+                background:"white",
+                marginTop: "30px",
+            }}
+            >
+            <Wrapper>
+                <Title>BOARD OF DIRECTORS</Title>
+                <SubTitle>Medical World Company Limited</SubTitle>
+
+                <CardGrid>
+                <DirectorCard>
+                    <ImageBox src={board1} />
+                    <InfoBox>
+                    <Name>U HTET AUNG</Name>
+                    <Role>Managing Director</Role>
+                    </InfoBox>
+                </DirectorCard>
+
+                <DirectorCard>
+                    <ImageBox src={board2} />
+                    <InfoBox>
+                    <Name>DAW KHIN THANDAR KO</Name>
+                    <Role>Director</Role>
+                    </InfoBox>
+                </DirectorCard>
+
+                <DirectorCard>
+                    <ImageBox src={board3} />
+                    <InfoBox>
+                    <Name>DAW KHIN SANDAR KO</Name>
+                    <Role>Director</Role>
+                    </InfoBox>
+                </DirectorCard>
+
+                <DirectorCard>
+                    <ImageBox src={board4} />
+                    <InfoBox>
+                    <Name>U WIN KO KO</Name>
+                    <Role>Director</Role>
+                    </InfoBox>
+                </DirectorCard>
+
+                <DirectorCard>
+                    <ImageBox src={board5} />
+                    <InfoBox>
+                    <Name>DR. AYE AYE AUNG</Name>
+                    <Role>Director</Role>
+                    </InfoBox>
+                </DirectorCard>
+                </CardGrid>
+            </Wrapper>
+            </Section>
+
+            {/* Roadmap */}
+            <RSection>
+              <RTitle>Roadmap</RTitle>
+
+              <Timeline>
+                <Item>
+                  <Year>Before 2015</Year>
+                  <Line />
+                  <IconCircle>
+                    <FaPlug />
+                  </IconCircle>
+                  <RCard>
+                    <p>1. SME Business structure and give services</p>
+                    <p>2. Employee 30–50 OUR</p>
+                  </RCard>
+                </Item>
+
+                <Item>
+                  <Year>2015–2019</Year>
+                  <Line />
+                  <IconCircle>
+                    <FaBriefcase />
+                  </IconCircle>
+                  <RCard>
+                    <p>1. Company type and introduces own brand name called Family Hospital Uniform</p>
+                    <p>2. Employee 100–150</p>
+                  </RCard>
+                </Item>
+
+                <Item>
+                  <Year>2020–2025</Year>
+                  <Line />
+                  <IconCircle>
+                    <FaTemperatureHigh />
+                  </IconCircle>
+                  <RCard>
+                    <p>1. Five showrooms, Nine dealers in upper and lower Myanmar, and distributes retail and wholesales</p>
+                    <p>2. Employee 160–200</p>
+                  </RCard>
+                </Item>
+              </Timeline>
+            </RSection>
+
+            {/* Partners */}
+            <Section style={{padding: "50px 100px"}}>
                 <Wrapper>
-                    <Title style={{padding: "50px 0px 30px 100px"}}>OUR HISTORY</Title>
-                    <Content style={{padding: "0px 100px"}}>
-                        <Flex>
-                            <Box style={{paddingRight: "50px", borderRight: "2px solid #777777", minHeight: "175px"}}>
-                                <ContentTitle>Before 2015</ContentTitle>
-                                <Description>1. SME Business structure and give services <br/> 2. Employee 30-50 OUR</Description>
-                            </Box>
-                            <Box style={{padding: "0px 50px", borderRight: "2px solid #777777", minHeight: "175px"}}>
-                                <ContentTitle>2015-2019</ContentTitle>
-                                <Description>1. Company type and introduces own brand name called Family Hospital Uniform <br/> 2. 2. Employee 100-150</Description>
-                            </Box>
-                            <Box style={{paddingLeft: "50px"}}>
-                                <ContentTitle>2020-2025</ContentTitle>
-                                <Description>1. Five showrooms, Nine dealers in upper and lower Myanmar, and distributes retail and wholesales <br/> 2. Employee 160-200</Description>
-                            </Box>
-                        </Flex>
-                    </Content>
+                <Title style={{textAlign: "center"}}>PARTNER WITH ASSOCIATES</Title>
+                <DeepBox>
+                    <PBox style={{ marginBotton: "20px" }}>
+                    <SmallImgBoxP style={{width: "200px"}}>
+                        <Image src={moh} />
+                    </SmallImgBoxP>
+                    <SmallImgBoxP style={{width: "200px"}}>
+                        <Image src={mmedical} />
+                    </SmallImgBoxP>
+                    <SmallImgBoxP style={{width: "200px"}}>
+                        <Image src={mprivate} />
+                    </SmallImgBoxP>
+                    </PBox>
+                </DeepBox>
                 </Wrapper>
             </Section>
 
@@ -391,274 +1138,49 @@ const About = () => {
                 </Wrapper>
             </Section> */}
 
-            <Section
-  style={{
-    padding: "0px 100px",
-    // background:
-    //   "linear-gradient(to right, rgba(28,73,170,0.5), rgba(5,59,175,0.8))",
-    background:"white",
-    marginTop: "30px",
-  }}
->
-  <Wrapper>
-    <Title>BOARD OF DIRECTORS</Title>
-    <SubTitle>Medical World Company Limited</SubTitle>
+            {/* Advantages */}
+            <ASection>
+              <AContainer>
+                <InfoCard>
+                  <Header>
+                    <FaIndustry />
+                    <h2>Competitive Advantage</h2>
+                  </Header>
 
-    <CardGrid>
-      <DirectorCard>
-        <ImageBox src={board1} />
-        <InfoBox>
-          <Name>U HTET AUNG</Name>
-          <Role>Managing Director</Role>
-        </InfoBox>
-      </DirectorCard>
+                  <List>
+                    <li>- Manufactured by own factory</li>
+                    <li>- Volume-based production (Quantity)</li>
+                    <li>- Customer & brand awareness programs</li>
+                    <li>- Continuous new designs & product development</li>
+                    <li>- Wash testing & sample making</li>
+                    <li>- Design consultation & budgeting</li>
+                    <li>- Quotation submitted within one day</li>
+                  </List>
+                </InfoCard>
 
-      <DirectorCard>
-        <ImageBox src={board2} />
-        <InfoBox>
-          <Name>DAW KHIN THANDAR KO</Name>
-          <Role>Director</Role>
-        </InfoBox>
-      </DirectorCard>
+                <InfoCard>
+                  <Header>
+                    <FaHandHoldingUsd />
+                    <h2>Customer Benefits</h2>
+                  </Header>
 
-      <DirectorCard>
-        <ImageBox src={board3} />
-        <InfoBox>
-          <Name>DAW KHIN SANDAR KO</Name>
-          <Role>Director</Role>
-        </InfoBox>
-      </DirectorCard>
-
-      <DirectorCard>
-        <ImageBox src={board4} />
-        <InfoBox>
-          <Name>U WIN KO KO</Name>
-          <Role>Director</Role>
-        </InfoBox>
-      </DirectorCard>
-
-      <DirectorCard>
-        <ImageBox src={board5} />
-        <InfoBox>
-          <Name>DR. AYE AYE AUNG</Name>
-          <Role>Director</Role>
-        </InfoBox>
-      </DirectorCard>
-    </CardGrid>
-  </Wrapper>
-</Section>
+                  <List>
+                    <li>- Save money & energy</li>
+                    <li>- Effective time consumption</li>
+                    <li>- Value & quality service</li>
+                    <li>- On-time delivery confirmation</li>
+                    <li>- Easy sizing from XS to 4XL</li>
+                    <li>- Improved customer trust</li>
+                    <li>- Best HR solution for management</li>
+                  </List>
+                </InfoCard>
+              </AContainer>
+            </ASection>
 
 
-            <Section>
-                <Wrapper>
-                    <Title style={{padding: "50px 0px 30px 0px", textAlign: "center"}}>OUR VISION, MISSION AND OBJECTIVE</Title>
-                    <Content style={{padding: "0px 100px"}}>
-                        <Flex>
-                            <Box style={{backgroundColor: "rgba(43, 87, 184, 0.8)", margin: "20px", padding: "10px", textAlign: "center", height: "120px", color: "#ffffff", borderRadius: "10px"}}>
-                                <ContentTitle style={{color: "#ffffff"}}>Vision</ContentTitle>
-                                <Description>Quality is our Virtue.</Description>
-                            </Box>
-                            <Box style={{backgroundColor: "rgba(43, 87, 184, 0.8)", margin: "20px", padding: "10px", textAlign: "center", height: "120px", color: "#ffffff", borderRadius: "10px"}}>
-                                <ContentTitle style={{color: "#ffffff"}}>Mission</ContentTitle>
-                                <Description>Flexibility and Responsibilities.</Description>
-                            </Box>
-                            <Box style={{backgroundColor: "rgba(43, 87, 184, 0.8)", margin: "20px", padding: "10px", textAlign: "center", height: "120px", color: "#ffffff", borderRadius: "10px"}}>
-                                <ContentTitle style={{color: "#ffffff"}}>Objective</ContentTitle>
-                                <Description>Leading in the Local Market and Exporting Abroad in Future.</Description>
-                            </Box>
-                        </Flex>
-                    </Content>
-                </Wrapper>
-            </Section>
-            <Section style={{padding: "50px 100px" , background: "linear-gradient(to right, rgba(5, 59, 175, 0.8), rgba(28, 73, 170, 0.5))", marginTop: "50px"}}>
-                <Wrapper>
-                    <Content style={{padding: "0px 100px"}}>
-                        <Flex style={{flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start"}}>
-                            <Box style={{minWidth: "50%"}}>
-                                <ContentTitle style={{color: "#ffffff"}}>COMPETATIVE ADVANTAGE</ContentTitle>
-                                <Ul>
-                                    <Li>Manufactured by own factory</Li>
-                                    <Li>Volumed based production (Quantity)</Li>
-                                    <Li>Build up customer relationship program and brand awareness program for quarterly basic</Li>
-                                    <Li>New design and products development continuously</Li>
-                                    <Li>Provide wash testing and sample making</Li>
-                                    <Li>Consult own design creation and proposed design budgeting</Li>
-                                    <Li>Submit the quatation within one day</Li>
-                                </Ul>
-                            </Box>
-                            <Box style={{minWidth: "50%"}}>
-                                <ContentTitle style={{color: "#ffffff"}}>CUSTOMER BENEFITS</ContentTitle>
-                                <Ul>
-                                    <Li>Save money and energy, convenience place to go buy</Li>
-                                    <Li>Effective time consumption</Li>
-                                    <Li>Get value and quality service by spending budget</Li>
-                                    <Li>Get confirmation for delivery date on time</Li>
-                                    <Li>Easy to choose from XS to 4XL for female and male different pattern</Li>
-                                    <Li>Customer trust improved</Li>
-                                    <Li>The best HR solution for top management</Li>
-                                </Ul>
-                            </Box>
-                        </Flex>
-                    </Content>
-                </Wrapper>
-            </Section>
-            <Section>
-                <Wrapper>
-                    <Title style={{padding: "50px 0px 30px 0px", textAlign: "center"}}>OUR BRANDS</Title>
-                    <Content style={{padding: "0px 100px"}}>
-                        <Flex>
-                            <Box>
-                                <Image src={url + `/ecommerce/brands/branded.png`} />
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/brands/ecofamily.png`} />
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/brands/family.png`} />
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/brands/oxypas.png`} />
-                            </Box>
-                        </Flex>
-                    </Content>
-                </Wrapper>
-                <Wrapper>
-                    <Title style={{padding: "50px 0px 30px 0px", textAlign: "center"}}>OUR PRODUCTS</Title>
-                    <Content style={{padding: "0px 100px"}}>
-                        <Flex>
-                            <Box>
-                                <Image src={url + `/ecommerce/items/skyline_upgrade_front.png`} style={{maxWidth: "250px"}} />
-                                <span style={{ display: "block", textAlign: "center", fontWeight: "bold", fontSize: "20px"}}>
-                                Skyline Upgrade
-                                </span>
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/items/holly_front.png`} style={{maxWidth: "250px"}} />
-                                <span style={{ display: "block", textAlign: "center", fontWeight: "bold", fontSize: "20px"}}>
-                                Holly
-                                </span>
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/items/lavender_front.png`} style={{maxWidth: "250px"}} />
-                                <span style={{ display: "block", textAlign: "center", fontWeight: "bold", fontSize: "20px"}}>
-                                Lavender
-                                </span>
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/items/handsome_front.png`} style={{maxWidth: "250px"}} />
-                                <span style={{ display: "block", textAlign: "center", fontWeight: "bold", fontSize: "20px"}}>
-                                Handsome
-                                </span>
-                            </Box>
-                            <Box>
-                                <Image src={url + `/ecommerce/items/vneck_front.png`} style={{maxWidth: "250px"}} />
-                                <span style={{ display: "block", textAlign: "center", fontWeight: "bold", fontSize: "20px"}}>
-                                Vneck
-                                </span>
-                            </Box>
-                        </Flex>
-                    </Content>
-                </Wrapper>
-            </Section>
-            <Section style={{padding: "50px 100px" , background: "linear-gradient(to right, rgba(5, 59, 175, 0.8), rgba(28, 73, 170, 0.5))", marginTop: "50px"}}>
-                <Wrapper>
-                    <Title style={{color: "#ffffff", textAlign: "center"}}>Our Factory and Production</Title>
-                    <Flex>
-                        <Left style={{ minWidth: "350px" }}>
-                        <SmallImgBox>
-                            <Image src={pho1} style={{ minWidth: "300px" }} />
-                        </SmallImgBox>
-                        <SmallImgBox style={{ marginTop: "10px" }}>
-                            <Image src={pho2} style={{ minWidth: "300px" }} />
-                        </SmallImgBox>
-                        </Left>
-                        <Center>
-                            <p style={{textAlign: "center",fontSize: "18px", fontWeight: "bold", color: "#ffffff", lineHeight: "35px"}}>
-                            Imported highly qualified raw materials are used to
-                            manufacture products and manufacturing is done locally.
-                            Matching accessories for uniforms are manufactured locally and
-                            distributed to both local and oversea market.
-                            </p>
-                        </Center>
-                        <Right style={{ minWidth: "350px" }}>
-                        <SmallImgBox>
-                            <Image src={pho3} style={{ minWidth: "300px" }} />
-                        </SmallImgBox>
-                        <SmallImgBox style={{ marginTop: "10px" }}>
-                            <Image src={pho4} style={{ minWidth: "300px" }} />
-                        </SmallImgBox>
-                        </Right>
-                    </Flex>
-                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
-                        {factory ? (
-                        <ShowP onClick={HideFactory}>Hide Factory Image</ShowP>
-                        ) : (
-                        <ShowP onClick={ShowFactory}>See All Factory Image</ShowP>
-                        )}
-                    </div>
-                </Wrapper>
 
-                
-                
-                {factory ? (
-                <div style={{marginTop: "50px"}}>
-                    <Wrapper style={{width: "100%"}}>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho5} />
-                            <FImg src={pho6} />
-                            <FImg src={pho7} />
-                        </FIbox>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho8} />
-                            <FImg src={pho9} />
-                            <FImg src={pho10} />
-                        </FIbox>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho11} />
-                            <FImg src={pho12} />
-                            <FImg src={pho13} />
-                        </FIbox>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho14} />
-                            <FImg src={pho15} />
-                            <FImg src={pho16} />
-                        </FIbox>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho17} />
-                            <FImg src={pho18} />
-                            <FImg src={pho19} />
-                        </FIbox>
-                        <FIbox style={{ width: "100%" }}>
-                            <FImg src={pho20} />
-                            <FImg src={pho21} />
-                            <FImg src={pho22} />
-                        </FIbox>
-                    </Wrapper>
-                </div>
-                ) : (
-                ""
-                )}
-
-                <Wrapper style={{marginTop: "50px"}}>
-                    <video
-                        src={factoryV}
-                        controls
-                        style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "10px",
-                        border: "2px solid #ffffff",
-                        backgroundColor: '#ffffff'
-                        }}
-                    />
-                </Wrapper>
-            </Section>
-
-            <div style={{marginTop: "50px"}}>
-                <YoutubeSlider/>
-            </div>
-
-            <Section style={{padding: "50px 100px"}}>
+            {/* Clients */}
+            {/* <Section style={{padding: "50px 100px"}}>
                 <Wrapper>
                 <Title style={{textAlign: "center"}}>Our Clients</Title>
                 <DeepBox>
@@ -778,34 +1300,176 @@ const About = () => {
                 )}
             </div>
                 </Wrapper>
+            </Section> */}
+
+
+
+
+            {/* Client */}
+            <Section style={{ padding: "30px 100px", overflow: "hidden" }}>
+              <Wrapper>
+                <Title style={{ textAlign: "center" }}>Our Clients</Title>
+
+                <Slider>
+                  <SlideTrack>
+                    {clientLogos.map((logo, index) => (
+                      <LogoBox key={index}>
+                        <CImage src={logo} />
+                      </LogoBox>
+                    ))}
+
+                    {clientLogos.map((logo, index) => (
+                      <LogoBox key={`dup-${index}`}>
+                        <CImage src={logo} />
+                      </LogoBox>
+                    ))}
+                  </SlideTrack>
+                </Slider>
+              </Wrapper>
             </Section>
 
-            <Section style={{padding: "50px 100px"}}>
+
+            {/* Products */}
+            {/* <Section style={{padding: "50px 100px" , background: "linear-gradient(to right, rgba(5, 59, 175, 0.8), rgba(28, 73, 170, 0.5))", marginTop: "50px"}}>
                 <Wrapper>
-                <Title style={{textAlign: "center"}}>PARTNER WITH ASSOCIATES</Title>
-                <DeepBox>
-                    <PBox style={{ marginBotton: "20px" }}>
-                    <SmallImgBoxP style={{width: "200px"}}>
-                        <Image src={moh} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP style={{width: "200px"}}>
-                        <Image src={mmedical} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP style={{width: "200px"}}>
-                        <Image src={mprivate} />
-                    </SmallImgBoxP>
-                    </PBox>
-                </DeepBox>
+                    <Title style={{color: "#ffffff", textAlign: "center"}}>Our Factory and Production</Title>
+                    <Flex>
+                        <Left style={{ minWidth: "350px" }}>
+                        <SmallImgBox>
+                            <Image src={pho1} style={{ minWidth: "300px" }} />
+                        </SmallImgBox>
+                        <SmallImgBox style={{ marginTop: "10px" }}>
+                            <Image src={pho2} style={{ minWidth: "300px" }} />
+                        </SmallImgBox>
+                        </Left>
+                        <Center>
+                            <p style={{textAlign: "center",fontSize: "18px", fontWeight: "bold", color: "#ffffff", lineHeight: "35px"}}>
+                            Imported highly qualified raw materials are used to
+                            manufacture products and manufacturing is done locally.
+                            Matching accessories for uniforms are manufactured locally and
+                            distributed to both local and oversea market.
+                            </p>
+                        </Center>
+                        <Right style={{ minWidth: "350px" }}>
+                        <SmallImgBox>
+                            <Image src={pho3} style={{ minWidth: "300px" }} />
+                        </SmallImgBox>
+                        <SmallImgBox style={{ marginTop: "10px" }}>
+                            <Image src={pho4} style={{ minWidth: "300px" }} />
+                        </SmallImgBox>
+                        </Right>
+                    </Flex>
+                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                        {factory ? (
+                        <ShowP onClick={HideFactory}>Hide Factory Image</ShowP>
+                        ) : (
+                        <ShowP onClick={ShowFactory}>See All Factory Image</ShowP>
+                        )}
+                    </div>
                 </Wrapper>
-            </Section>
-            <Section>
+
+                
+                
+                {factory ? (
+                <div style={{marginTop: "50px"}}>
+                    <Wrapper style={{width: "100%"}}>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho5} />
+                            <FImg src={pho6} />
+                            <FImg src={pho7} />
+                        </FIbox>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho8} />
+                            <FImg src={pho9} />
+                            <FImg src={pho10} />
+                        </FIbox>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho11} />
+                            <FImg src={pho12} />
+                            <FImg src={pho13} />
+                        </FIbox>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho14} />
+                            <FImg src={pho15} />
+                            <FImg src={pho16} />
+                        </FIbox>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho17} />
+                            <FImg src={pho18} />
+                            <FImg src={pho19} />
+                        </FIbox>
+                        <FIbox style={{ width: "100%" }}>
+                            <FImg src={pho20} />
+                            <FImg src={pho21} />
+                            <FImg src={pho22} />
+                        </FIbox>
+                    </Wrapper>
+                </div>
+                ) : (
+                ""
+                )}
+
+                <Wrapper style={{marginTop: "50px"}}>
+                    <video
+                        src={factoryV}
+                        controls
+                        style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "10px",
+                        border: "2px solid #ffffff",
+                        backgroundColor: '#ffffff'
+                        }}
+                    />
+                </Wrapper>
+            </Section> */}
+
+            {/* Product */}
+            <PSection>
+              <PWrapper>
+                <Top>
+                  <PLeft>
+                    <MainImage src={pho7} />
+                  </PLeft>
+
+                  <PRight>
+                    <PTitle>Our Factory and Production</PTitle>
+
+                    <PDescription>
+                      Imported highly qualified raw materials are used to manufacture
+                      products and manufacturing is done locally. Matching accessories
+                      for uniforms are manufactured locally and distributed to both
+                      local and oversea market.
+                    </PDescription>
+
+                    <ThumbnailRow>
+                  <Thumb src={pho8} />
+                  <Thumb src={pho3} />
+                  <Thumb src={pho4} />
+                  <Thumb src={pho5} />
+                  <Thumb src={pho6} />
+                </ThumbnailRow>
+                  </PRight>
+                </Top>
+              </PWrapper>
+
+              <BottomCurve src={aboutFactory}/>
+            </PSection>
+
+            <div style={{marginTop: "50px"}}>
+                <YoutubeSlider/>
+            </div>
+            
+
+
+            {/* <Section>
                 <Wrapper>
                 <Title style={{textAlign: "center"}}>Our Sale Network</Title>
                     <Flex style={{padding: "30px 0px"}}>
                         <img src={map} width="500px"/>
                     </Flex>
                 </Wrapper>
-            </Section>
+            </Section> */}
             <div>
                 <Footer />
             </div>

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Navigate, useNavigate,useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import AlertDialog from '../components/AlertDialog'
@@ -10,51 +11,133 @@ import Navbar from '../components/Navbar'
 import ColorNav from '../components/ColorNav'
 import Footer from '../components/Footer'
 import Swal from 'sweetalert2'
+import SignUp from "../slider-images/signin.png";
 
 const Container = styled.div`
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+  width: 100vw;
+  height: 100vh;
+  background: #f3f6fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Card = styled.div`
+  width: 900px;
+  // height: 550px;
+  height: 700px;
+  background: white;  
+  border-radius: 12px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+  ${mobile({
+    flexDirection: "column",
+    width: "95%",
+    height: "auto"
+  })}
+`;
+
+const Left = styled.div`
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const Right = styled.div`
+  flex: 1;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+`;
+
 const Wrapper = styled.div`
-    width: 40%;
+    width: 25%;
     padding: 20px;
     background-color: white;
     ${mobile({width: "75%"})}
 `
 const Form = styled.form`
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
 `
 const Title = styled.h1`
-    font-size: 24px;
-    font-weight: 300;
+  color: #1f4fa3;
+  font-size: 28px;
+  font-weight: 600;
+`;
+
+const Subtitle = styled.p`
+  color: #6b7280;
+  font-size: 16px;
+  margin-bottom: 25px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const Label = styled.label`
+  font-size: 16px;
 `
+
 const Input = styled.input`
-    flex: 1;
-    min-width: 40%;
-    margin: 20px 10px 0px 0px;
-    padding: 10px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  outline: none;
+`;
+
+const Forgot = styled.a`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  text-decoration: none;
 `
-const Agreement = styled.span`
-    font-size: 15px;
-    margin: 20px 0px;
-`
+
 const Button = styled.button`
-    width: 30%;
-    border: none;
-    padding: 15px 20px;
-    background-color: #32549b;
-    color: white;
-    cursor: pointer;
-    
+  background: #3b82f6;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+
+  &:hover {
+    background: #2563eb;
+  }
+`;
+
+
+const Divider = styled.div`
+  text-align: center;
+  margin: 20px 0;
+  color: gray;
+`;
+
+const IsAccount = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Register = () => {
-
+    const userRef = useRef();
     const [name,setName] = useState('');
     const [phone,setPhone] = useState('');
     const [email,setEmail] = useState('');
@@ -112,8 +195,9 @@ const Register = () => {
 
   return (
     <div>
-    <ColorNav/>
-    <Container>
+    {/* <ColorNav/> */}
+    <Navbar/>
+    {/* <Container>
         <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         
@@ -132,7 +216,80 @@ const Register = () => {
         <Button onClick={onRegisterClicked}>CREATE</Button>
         </Wrapper>
        <AlertDialog open={showDialog} close={()=>setShowDialog(false)} title="User Registration" content="Your user account has been successfully registered! Enjoy Shoppping!"/>
-    </Container>
+    </Container> */}
+
+    <Container>
+            <Card>
+                <Left>
+                <Title>Sign up 👋</Title>
+    
+                <Subtitle>
+                    Sign up to enjoy the feature of Medical World!
+                </Subtitle>
+    
+                <Form>
+
+                    <FormGroup>
+                        <Label>Name</Label>
+                        <Input
+                            placeholder="Enter your name"
+                            ref={userRef}
+                            value={username}
+                            onChange={(e)=>setUsername(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label>Date of Birth</Label>
+                        <Input
+                  type="date"
+                  // onChange={handleChange}
+                />
+                    </FormGroup>
+    
+                    <FormGroup>
+                        <Label>Email</Label>
+                        <Input
+                            placeholder="Example@gmail.com"
+                            ref={userRef}
+                            value={username}
+                            onChange={(e)=>setUsername(e.target.value)}
+                        />
+                    </FormGroup>
+    
+                    <FormGroup>
+                        <Label>Password</Label>
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
+                        />
+                    </FormGroup>
+    
+                    <Button>
+                    Sign Up
+                    </Button>
+    
+                    <Divider>Or</Divider>
+    
+                    {/* <SocialBtn>Sign in with Google</SocialBtn>
+                    <SocialBtn>Sign in with Facebook</SocialBtn> */}
+    
+                    <IsAccount>
+                    Already have an account?
+                    <Link to="/login"> Sign In</Link>
+                    </IsAccount>
+                </Form>
+                </Left>
+    
+                {/* RIGHT SIDE */}
+                <Right>
+                    <Image src={SignUp} />
+                </Right>
+    
+            </Card>
+        </Container>
     <Footer/>
     </div>
   )

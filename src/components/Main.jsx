@@ -11,6 +11,7 @@ import SeasonalDiscountNews from './SeasonalDiscountNews'
 import FacebookNewsFeed from '../components/FacebookNewsFeed';
 import PromotionPhoto from './PromotionPhoto';
 import Review from './Review';
+import NewItems from './NewItems'
 
 const Main = () => {
     
@@ -24,6 +25,7 @@ const Main = () => {
         
         {/* <PromotionPhoto/> */}
         <HomeItems title="Promotion Items" url="promotionitem_api"/>
+        {/* <NewItems title="New Items" url="newitem_api"/> */}
        
         {/* <HomeItems title="New Arrival" url="newitem_api"/> */}
         {/* <HomeItems title="Promotion Items" url="promotionitem_api"/> */}

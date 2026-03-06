@@ -42,7 +42,7 @@ const ChatBot = () => {
 
         try {
             const res = await sendChatMessage(formData);
-            setMessage((prev) => [...prev, { role: 'Medi Bot', text: res.data.reply }]);
+            setMessage((prev) => [...prev, { role: 'Medi Bot', text: res.data.english_reply }]);
         } catch {
             // console.error(err.message, "handleSend catch error")
             setMessage((prev) => [
