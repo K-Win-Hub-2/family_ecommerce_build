@@ -383,7 +383,7 @@ const Slider = () => {
 
       <Wrapper>
         <InfoContainer>
-          <Badge>50% OFF Super Sale</Badge>
+          {/* <Badge>50% OFF Super Sale</Badge> */}
 
           <Title>Step into Style:</Title>
           <Subtitle>Your Ultimate Fashion Destination</Subtitle>

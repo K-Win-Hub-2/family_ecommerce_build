@@ -16,28 +16,37 @@ import board3 from "../slider-images/human.jpg";
 import board4 from "../slider-images/human.jpg";
 import board5 from "../slider-images/human.jpg";
 
-import pho1 from "../files/factory/pho1.png";
-import pho2 from "../files/factory/pho2.png";
-import pho3 from "../files/factory/pho3.png";
-import pho4 from "../files/factory/pho4.png";
-import pho5 from "../files/factory/pho5.png";
-import pho6 from "../files/factory/pho6.png";
-import pho7 from "../files/factory/pho7.png";
-import pho8 from "../files/factory/pho8.png";
-import pho9 from "../files/factory/pho9.png";
-import pho10 from "../files/factory/pho10.png";
-import pho11 from "../files/factory/pho11.png";
-import pho12 from "../files/factory/pho12.png";
-import pho13 from "../files/factory/pho13.png";
-import pho14 from "../files/factory/pho14.png";
-import pho15 from "../files/factory/pho15.png";
-import pho16 from "../files/factory/pho16.png";
-import pho17 from "../files/factory/pho17.png";
-import pho18 from "../files/factory/pho18.png";
-import pho19 from "../files/factory/pho19.png";
-import pho20 from "../files/factory/pho20.png";
-import pho21 from "../files/factory/pho21.png";
-import pho22 from "../files/factory/pho22.png";
+import pho1 from "../files/factory/f1.jpg";
+import pho2 from "../files/factory/f2.jpg";
+import pho3 from "../files/factory/f3.jpg";
+import pho4 from "../files/factory/f4.jpg";
+import pho5 from "../files/factory/f5.jpg";
+import pho6 from "../files/factory/f6.jpg";
+import pho7 from "../files/factory/f7.jpg";
+import pho8 from "../files/factory/f8.JPG";
+import pho9 from "../files/factory/f9.JPG";
+import pho10 from "../files/factory/f10.jpg";
+import pho11 from "../files/factory/f11.jpg";
+import pho12 from "../files/factory/f12.JPG";
+import pho13 from "../files/factory/f13.jpg";
+import pho14 from "../files/factory/f14.jpg";
+import pho15 from "../files/factory/f15.JPG";
+import pho16 from "../files/factory/f16.jpg";
+import pho17 from "../files/factory/f17.jpg";
+import pho18 from "../files/factory/f18.jpg";
+import pho19 from "../files/factory/f19.jpg";
+import pho20 from "../files/factory/f20.jpg";
+import pho21 from "../files/factory/f21.jpg";
+import pho22 from "../files/factory/f22.jpg";
+import pho23 from "../files/factory/f23.jpg";
+import pho24 from "../files/factory/f24.jpg";
+import pho25 from "../files/factory/f25.jpg";
+import pho26 from "../files/factory/f26.jpg";
+import pho27 from "../files/factory/f27.jpg";
+import pho28 from "../files/factory/f28.jpg";
+import pho29 from "../files/factory/f29.jpg";
+import pho30 from "../files/factory/f30.jpg";
+import pho31 from "../files/factory/f31.jpg";
 import factoryV from "../files/factory.mp4";
 
 import about from "../slider-images/aboutus.png";
@@ -78,13 +87,15 @@ import mmedical from "../files/p_logo/myanmar_medical_association_centre.jpg";
 
 import map from "../files/map.png";
 
-import { FaBullseye, FaEye, FaGem, FaPlug, FaBriefcase, FaTemperatureHigh,  FaIndustry, FaLayerGroup, FaPalette, FaVial, FaClock, FaUsers, FaHandHoldingUsd, FaCheckCircle, FaShippingFast, FaTshirt  } from "react-icons/fa";
+import { FaBullseye, FaEye, FaGem,  FaIndustry, FaLayerGroup, FaPalette, FaVial, FaClock, FaUsers, FaHandHoldingUsd, FaCheckCircle, FaShippingFast, FaTshirt, FaTools, FaBuilding, FaNetworkWired, FaRocket  } from "react-icons/fa";
+import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 
 
 const Section = styled.div`
   width: 100%;
   background: #f7f9fc;
   overflow: hidden;
+  margin-top:10px;
 `;
 
 const Hero = styled.div`
@@ -372,18 +383,7 @@ const Role = styled.p`
 //     font-size: 15px;
 //     margin-top:14px;
 // `
-const Button = styled.a`
-    font-size: 16px;
-    padding: 5px 20px;
-    margin-top: 20px;
-    color: #ffffff;
-    background-color: #2b57b8;
-    text-decoration: none;
-    border-radius: 5px;
-    &:hover {
-        color: #ffffff;
-    }
-`
+
 const Box = styled.div`
     width: 33.33%;
 `
@@ -834,11 +834,18 @@ const PDescription = styled.p`
   font-weight: 500;
 `;
 
+const CarouselWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+`;
+
 const ThumbnailRow = styled.div`
   display: flex;
   gap: 20px;
-  margin-top: 50px;
-  flex-wrap: wrap;
+  overflow: hidden;   
+  width: 680px;       
 `;
 
 const Thumb = styled.img`
@@ -855,13 +862,45 @@ const Thumb = styled.img`
   }
 `;
 
+const Track = styled.div`
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease;   /* animation */
+  transform: translateX(${props => `-${props.index * 140}px`});
+`;
+
+const Button = styled.button`
+  color: #fff;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;   
+    opacity: 0.4;         
+    transform: none;
+  }
+
+  &:disabled:hover {
+    transform: none;      
+  }
+`;
+
+
 
 const BottomCurve = styled.img`
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 350px;
+  height: 390px;
 
   z-index: 0;
   pointer-events: none;
@@ -875,6 +914,29 @@ const About = () => {
     const url = useSelector((state) => state.user.url);
 
     const [factory, setFactory] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(pho7);
+    const factoryImages = [
+      pho1, pho2, pho3, pho4, pho5, pho6, pho8, pho9, pho10, pho11,
+      pho12, pho13, pho14, pho15, pho16, pho17, pho18,
+      pho19, pho20, pho21, pho22, pho23, pho24, pho25,
+      pho26, pho27, pho28, pho29, pho30, pho31
+    ];
+    const [startIndex, setStartIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const visibleImages = factoryImages.slice(startIndex, startIndex + 5);
+
+    const handleNext = () => {
+  if (currentIndex < factoryImages.length - 5) {
+    setCurrentIndex(prev => prev + 1);
+  }
+};
+
+const handlePrev = () => {
+  if (currentIndex > 0) {
+    setCurrentIndex(prev => prev - 1);
+  }
+};
 
     const ShowAllPartners = () => {
         setPartners(true);
@@ -946,7 +1008,7 @@ const About = () => {
                       <ContentTitle>About Our Medical World</ContentTitle>
 
                       <Description>
-                        Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories. Over the past 7 years, Medical World Co. Ltd, has been providing uniforms and accessories for Government Departments and Private Business Sectors. One of our best services, consultation service regarding
+                        Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories. Over the past 11 years, Medical World Co. Ltd, has been providing uniforms and accessories for Government Departments and Private Business Sectors. One of our best services, consultation service regarding uniform designs is offered. Customizable service for business logos imprinted on the uniform is also offered using modernized machines.
                       </Description>
                     </TextBox>
                   </ContentFlex>
@@ -1017,7 +1079,7 @@ const About = () => {
                 <DirectorCard>
                     <ImageBox src={board1} />
                     <InfoBox>
-                    <Name>U HTET AUNG</Name>
+                    <Name>U Win Ko Ko</Name>
                     <Role>Managing Director</Role>
                     </InfoBox>
                 </DirectorCard>
@@ -1025,23 +1087,23 @@ const About = () => {
                 <DirectorCard>
                     <ImageBox src={board2} />
                     <InfoBox>
-                    <Name>DAW KHIN THANDAR KO</Name>
-                    <Role>Director</Role>
+                    <Name>Daw Khin Sandar KO</Name>
+                    <Role>Chief Executive Officer</Role>
                     </InfoBox>
                 </DirectorCard>
 
                 <DirectorCard>
                     <ImageBox src={board3} />
                     <InfoBox>
-                    <Name>DAW KHIN SANDAR KO</Name>
-                    <Role>Director</Role>
+                    <Name>U Htet Aung</Name>
+                    <Role>Business Development Director</Role>
                     </InfoBox>
                 </DirectorCard>
 
                 <DirectorCard>
                     <ImageBox src={board4} />
                     <InfoBox>
-                    <Name>U WIN KO KO</Name>
+                    <Name>Daw Kathy Ko</Name>
                     <Role>Director</Role>
                     </InfoBox>
                 </DirectorCard>
@@ -1049,7 +1111,7 @@ const About = () => {
                 <DirectorCard>
                     <ImageBox src={board5} />
                     <InfoBox>
-                    <Name>DR. AYE AYE AUNG</Name>
+                    <Name>Daw Shwin Pyone</Name>
                     <Role>Director</Role>
                     </InfoBox>
                 </DirectorCard>
@@ -1066,7 +1128,7 @@ const About = () => {
                   <Year>Before 2015</Year>
                   <Line />
                   <IconCircle>
-                    <FaPlug />
+                    <FaTools />
                   </IconCircle>
                   <RCard>
                     <p>1. SME Business structure and give services</p>
@@ -1078,7 +1140,7 @@ const About = () => {
                   <Year>2015–2019</Year>
                   <Line />
                   <IconCircle>
-                    <FaBriefcase />
+                    <FaBuilding />
                   </IconCircle>
                   <RCard>
                     <p>1. Company type and introduces own brand name called Family Hospital Uniform</p>
@@ -1090,11 +1152,23 @@ const About = () => {
                   <Year>2020–2025</Year>
                   <Line />
                   <IconCircle>
-                    <FaTemperatureHigh />
+                    <FaNetworkWired />
                   </IconCircle>
                   <RCard>
                     <p>1. Five showrooms, Nine dealers in upper and lower Myanmar, and distributes retail and wholesales</p>
                     <p>2. Employee 160–200</p>
+                  </RCard>
+                </Item>
+
+                <Item>
+                  <Year>2026–2030</Year>
+                  <Line />
+                  <IconCircle>
+                    <FaRocket />
+                  </IconCircle>
+                  <RCard>
+                    <p>1. Build a centralized operational and branding structure.</p>
+                    <p>2. Capture 80% of the market share in the industry.</p>
                   </RCard>
                 </Item>
               </Timeline>
@@ -1424,12 +1498,12 @@ const About = () => {
                 </Wrapper>
             </Section> */}
 
-            {/* Product */}
+            {/* Factory */}
             <PSection>
               <PWrapper>
                 <Top>
                   <PLeft>
-                    <MainImage src={pho7} />
+                    <MainImage src={selectedImage} />
                   </PLeft>
 
                   <PRight>
@@ -1442,13 +1516,29 @@ const About = () => {
                       local and oversea market.
                     </PDescription>
 
-                    <ThumbnailRow>
-                  <Thumb src={pho8} />
-                  <Thumb src={pho3} />
-                  <Thumb src={pho4} />
-                  <Thumb src={pho5} />
-                  <Thumb src={pho6} />
-                </ThumbnailRow>
+                    <CarouselWrapper>
+
+                      <Button onClick={handlePrev} disabled={currentIndex === 0}>
+                        <IoMdArrowDropleftCircle />
+                      </Button>
+
+                      <ThumbnailRow>
+                        <Track index={currentIndex}>
+                          {factoryImages.map((img, index) => (
+                            <Thumb
+                              key={index}
+                              src={img}
+                              onClick={() => setSelectedImage(img)}
+                            />
+                          ))}
+                        </Track>
+                      </ThumbnailRow>
+
+                      <Button onClick={handleNext} disabled={currentIndex >= factoryImages.length - 5}>
+                        <IoMdArrowDroprightCircle />
+                      </Button>
+
+                    </CarouselWrapper>
                   </PRight>
                 </Top>
               </PWrapper>
@@ -1456,20 +1546,28 @@ const About = () => {
               <BottomCurve src={aboutFactory}/>
             </PSection>
 
-            <div style={{marginTop: "50px"}}>
+            {/* <div style={{marginTop: "50px"}}>
                 <YoutubeSlider/>
-            </div>
+            </div> */}
             
 
+            <Section>
+              <Wrapper>
+                <Title style={{ textAlign: "center" }}>Our Sale Network</Title>
 
-            {/* <Section>
-                <Wrapper>
-                <Title style={{textAlign: "center"}}>Our Sale Network</Title>
-                    <Flex style={{padding: "30px 0px"}}>
-                        <img src={map} width="500px"/>
-                    </Flex>
-                </Wrapper>
-            </Section> */}
+                <Flex
+                  style={{
+                    padding: "30px 0px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <img src={map} width="500px" />
+                </Flex>
+              </Wrapper>
+            </Section>
+
             <div>
                 <Footer />
             </div>
