@@ -1,8 +1,8 @@
-import React from 'react'
-import BotHeader from './BotHeader'
-import ChatWindow from './ChatWindow'
-import InputArea from './InputArea'
-import { X } from 'lucide-react'
+import React from "react";
+import BotHeader from "./BotHeader";
+import ChatWindow from "./ChatWindow";
+import InputArea from "./InputArea";
+import { X } from "lucide-react";
 
 const ChatModal = ({
   isOpen,
@@ -15,20 +15,17 @@ const ChatModal = ({
   previewUrl,
   handleFileChange,
   clearImage,
-  handleSend
+  handleSend,
 }) => {
   if (!isOpen) return null;
 
   return (
     <>
-      <div
-        // onClick={onClose}
-        className="fixed insert-0 bg-black/40 z-100"
-      >
+      <div className="fixed inset-0 bg-black/40 z-100">
         <div className="fixed inset-0 z-50 flex items-center justify-center mt-5">
-          <div className="w-[420px] h-[450px] bg-gray-100 rounded-xl shadow-xl flex flex-col relative">
+          <div className="w-[650px] h-[480px] bg-gray-100 rounded-3xl shadow-xl flex flex-col relative">
             <button
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
+              className="absolute top-3 right-3 text-white hover:text-red-500"
               onClick={onClose}
             >
               <X size={20} />
@@ -51,9 +48,8 @@ const ChatModal = ({
           </div>
         </div>
       </div>
-    
     </>
-  )
-}
+  );
+};
 
-export default ChatModal
+export default ChatModal;
