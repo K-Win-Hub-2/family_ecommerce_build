@@ -3,7 +3,7 @@
 // import ArrowLeftOutlinedIcon from '@mui/icons-material/ArrowLeftOutlined';
 // import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 // import { useState } from 'react';
-// import {sliderItems} from "../data"; 
+// import {sliderItems} from "../data";
 // import {mobile} from "../responsive";
 // import { Navigate, useNavigate  } from 'react-router-dom';
 
@@ -16,7 +16,7 @@
 //     background-attachment:fixed ;
 //     background-position: 0px 80px;
 //     background-size:100% 130%;
-   
+
 //     ${mobile({display: "none"})}
 // `
 
@@ -109,7 +109,7 @@
 //             setSlideIndex(slideIndex < 6 ? slideIndex+1: 0)
 //         }
 //     }
-     
+
 //     const navigate = useNavigate();
 
 //     const productline = () =>{
@@ -143,8 +143,7 @@
 //                             <Image src={item.img} />
 //                         )
 //                     }
-                    
-                    
+
 //                     </ImgContainer>
 //                     <InfoContainer>
 //                         {
@@ -157,9 +156,9 @@
 //                             ):''
 //                         }
 //                     </InfoContainer>
-//                 </Slide>    
+//                 </Slide>
 //             ))}
-            
+
 //             {/* <Slide bgc="fcf1ed"> */}
 //             {/* <InfoContainer>
 //                 <Title>Doctor Coats</Title>
@@ -169,7 +168,7 @@
 //             <ImgContainer>
 //                 <Image src="http://medicalworldinvpos.kwintechnologykw09.com/files/attachments/slider_photo2.jpg"/>
 //             </ImgContainer>
-            
+
 //             </Slide>
 
 //             <Slide bgc="fbf0f4">
@@ -228,7 +227,6 @@ const floatBlob = keyframes`
   100% { transform: translateY(0px); }
 `;
 
-
 const Container = styled.div`
   width: 100%;
   height: 95vh;
@@ -256,7 +254,6 @@ const DiagonalWave = styled.div`
   }
 `;
 
-
 // const Blob = styled.div`
 //   position: absolute;
 //   right: -150px;
@@ -273,8 +270,6 @@ const DiagonalWave = styled.div`
 //   z-index: 1;
 // `;
 
-
-
 const Wrapper = styled.div`
   width: 100%;
   padding: 0 100px;
@@ -283,7 +278,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   z-index: 3;
 `;
-
 
 const InfoContainer = styled.div`
   flex: 1;
@@ -336,12 +330,11 @@ const Button = styled.button`
   }
 `;
 
-
 const ImgContainer = styled.div`
   flex: 1;
   position: absolute;
   bottom: 10;
-  right: 80px;    
+  right: 80px;
   display: flex;
   align-items: flex-end;
 `;
@@ -389,19 +382,17 @@ const Slider = () => {
           <Subtitle>Your Ultimate Fashion Destination</Subtitle>
 
           <Description>
-            Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories.
+            Medical World Co., Ltd, founded in 2015, is a manufacturing and
+            distribution company of uniforms and accessories.
           </Description>
 
-          <Button onClick={productline}>
-            Shop Now →
-          </Button>
+          <Button onClick={productline}>Shop Now →</Button>
         </InfoContainer>
 
         <ImgContainer>
-          <Image src={banner} alt="banner"/>
+          <Image src={banner} alt="banner" />
         </ImgContainer>
       </Wrapper>
-
     </Container>
   );
 };

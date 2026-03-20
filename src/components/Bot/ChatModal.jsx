@@ -21,7 +21,7 @@ const ChatModal = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 z-100">
+      <div className="fixed inset-0 bg-black/40  z-[999]">
         <div className="fixed inset-0 z-50 flex items-center justify-center mt-5">
           <div className="w-[650px] h-[480px] bg-gray-100 rounded-3xl shadow-xl flex flex-col relative">
             <button
