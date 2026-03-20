@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { sendChatMessage } from "../../api/chatApi";
 import ChatToggleButton from "../../components/Bot/ChatToggleButton";
 import ChatModal from "../../components/Bot/ChatModal";
+import { getSessionId } from "../../utils/session";
 
 const ChatBot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -30,7 +31,6 @@ const ChatBot = () => {
 
   const handleSend = async (overrideText) => {
     const messageToSend = overrideText ?? input.trim();
-
     if (!messageToSend && !selectedFile) return;
 
     if (!overrideText) setInput("");
@@ -42,37 +42,53 @@ const ChatBot = () => {
         text: messageToSend,
         image: selectedFile ? previewUrl : null,
         isUser: true,
+        reply: null,
       },
     ]);
 
     setIsLoading(true);
 
     try {
-      const payload = {
-        message: messageToSend,
-      };
+      const sessionId = getSessionId();
 
+      const payload = { message: messageToSend, session_id: sessionId };
       const res = await sendChatMessage(payload);
+
+      const urlRegex = /(http[s]?:\/\/[^\n]+)/gi;
+
+      const urlsInText = (res.data.reply?.match(urlRegex) || []).map((url) =>
+        encodeURI(url.trim()),
+      );
+
+      let productUrls = [];
+      if (res.data.tool_result?.products) {
+        productUrls = res.data.tool_result.products
+          .map((p) => p.photo_url)
+          .filter(Boolean)
+          .map((url) => encodeURI(url));
+      }
+
+      const allImages = [...new Set([...urlsInText, ...productUrls])];
+      console.log("Extracted URLs:", allImages);
+
+      const cleanText = res.data.reply?.replace(urlRegex, "").trim();
 
       setMessage((prev) => [
         ...prev,
         {
           role: "Medi Bot",
-          text: res.data.english_reply,
-          toolCalls: res.data.tool_calls || [],
+          text: cleanText,
+          toolCalls: res.data.tool_used || [],
           toolResults: res.data.tool_results || [],
           isUser: false,
+          images: allImages.length > 0 ? allImages : null,
         },
       ]);
     } catch (err) {
       console.error("handleSend error:", err);
       setMessage((prev) => [
         ...prev,
-        {
-          role: "ai",
-          text: "Error connecting to server",
-          isUser: false,
-        },
+        { role: "ai", text: "Error connecting to server", isUser: false },
       ]);
     } finally {
       setIsLoading(false);
