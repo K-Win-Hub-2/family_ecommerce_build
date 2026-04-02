@@ -57,7 +57,6 @@
 // export const{addProduct,removeProduct,addCheckOutInfo, resetProduct,resetPcs} = cartSlice.actions
 // export default cartSlice.reducer;
 
-import { createSlice } from "@reduxjs/toolkit";
 
 // const cartSlice = createSlice({
 //     name: "cart",
@@ -271,6 +270,8 @@ import { createSlice } from "@reduxjs/toolkit";
 // export const { addProduct, updateQuantity, removeProduct, resetPcs, addCheckOutInfo, resetProduct  } = cartSlice.actions;
 // export default cartSlice.reducer;
 
+
+import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
@@ -287,7 +288,6 @@ const cartSlice = createSlice({
         remark: '',
     },
     reducers: {
-        // Helper function to recalculate totals
         recalculateTotals: (state) => {
             state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
             state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);

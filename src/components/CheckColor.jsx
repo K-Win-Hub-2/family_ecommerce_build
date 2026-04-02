@@ -26,18 +26,18 @@ const Div = styled.div`
 `
 
 const CheckColor = (props) => {
-  console.log('this is the props',props);
+  // console.log('this is the props',props);
   const design = useSelector(state=>state.design);
   const color = props.name;
   const checkColor = design.colors[color];
-  console.log('item',props.item);
+  // console.log('item',props.item);
   const url= useSelector(state => state.user.url);
   const imageUrl = url+`/ecommerce/color/defaultcolor.jpg`;
   const colorUrl = url+`/ecommerce/color/${props.name}.png`;
-  console.log('imageUrl',imageUrl);
+  // console.log('imageUrl',imageUrl);
   console.log(`Color Check ${checkColor}`);
-  console.log('props.name',props.name);
-  console.log('colorurl',colorUrl);
+  // console.log('props.name',props.name);
+  // console.log('colorurl',colorUrl);
     
   const handleImageError = (e) => {
     e.target.src = imageUrl;

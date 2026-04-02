@@ -85,7 +85,7 @@ import violin from "../files/p_logo/violin_health_beauty_clinic.jpg";
 import mprivate from "../files/p_logo/myanmar_private_hospital_association.jpg";
 import mmedical from "../files/p_logo/myanmar_medical_association_centre.jpg";
 
-import map from "../files/map.png";
+import map from "../files/map1.png";
 
 import { FaBullseye, FaEye, FaGem,  FaIndustry, FaLayerGroup, FaPalette, FaVial, FaClock, FaUsers, FaHandHoldingUsd, FaCheckCircle, FaShippingFast, FaTshirt, FaTools, FaBuilding, FaNetworkWired, FaRocket  } from "react-icons/fa";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";

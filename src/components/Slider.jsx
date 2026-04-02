@@ -359,7 +359,7 @@ const Slider = () => {
   const navigate = useNavigate();
 
   const productline = () => {
-    navigate("/products/1/family%20hospital");
+    navigate("/products");
   };
 
   return (

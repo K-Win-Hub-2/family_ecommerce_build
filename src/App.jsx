@@ -1,4 +1,5 @@
 import Cart from "./pages/Cart";
+import WishList from "./pages/wishlist/WishList";
 import HomePage from "./pages/Home";
 import Login from "./pages/Login";
 import Pay from "./pages/Pay";
@@ -39,9 +40,10 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage/>}/>
-        <Route path="/products/:category_id/:category_name" element={<ProductList/>}/>
+        <Route path="/products" element={<ProductList/>}/>
         <Route path="/product/:id" element={<Product/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/wish" element={<WishList/>}/>
         <Route path="/order/:name" element={<Order/>}/>
         <Route path="/preorder/:id" element={<PreOrder/>}/>
         <Route path="/login" element={user ? <Navigate to="/"/> : <Login/>}/>
