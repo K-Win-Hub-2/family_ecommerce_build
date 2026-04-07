@@ -647,9 +647,9 @@ const ItemOne = ({ item }) => {
         />
 
         <Info className="overlay">
-          <Icon>
+          {/* <Icon>
             <ShoppingCartOutlined />
-          </Icon>
+          </Icon> */}
 
           <Icon>
             <Link to={`/product/${item.id}`}>
@@ -657,9 +657,9 @@ const ItemOne = ({ item }) => {
             </Link>
           </Icon>
 
-          <Icon onClick={handleWishlist}>
+          {/* <Icon onClick={handleWishlist}>
             {isInWishlist ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-          </Icon>
+          </Icon> */}
         </Info>
       </ImageSection>
 
