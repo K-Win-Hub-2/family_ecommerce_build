@@ -5,13 +5,11 @@ import ReactMarkdown from "react-markdown";
 const MessageBubble = ({ msg }) => {
   const isUser = msg.role === "user";
 
-  // Extract images from tool results
   const images =
     msg.toolResults?.[0]?.products
       ?.map((p) => (p.photo_url ? encodeURI(p.photo_url) : null))
       .filter(Boolean) || [];
-
-  // Remove "Photo: ..." URLs from text for cleaner display
+      
   const cleanText =
     msg.text?.replace(/Photo: https?:\/\/\S+/g, "") || msg.reply;
 

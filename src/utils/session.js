@@ -10,7 +10,6 @@ export const getSessionId = () => {
       const parsed = JSON.parse(existing);
 
       if (parsed.expiry > Date.now()) {
-        // refresh expiry
         parsed.expiry = Date.now() + 1000 * 60 * 60 * 24;
         setCookie(COOKIE_NAME, JSON.stringify(parsed), 1);
 
@@ -21,7 +20,6 @@ export const getSessionId = () => {
     }
   }
 
-  // create new session
   const newSession = {
     session_id: uuidv4(),
     created_at: Date.now(),
