@@ -1,33 +1,35 @@
-import SearchIcon from '@mui/icons-material/Search';
-import Badge from '@mui/material/Badge';
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { mobile } from "../responsive"
-import { LogoutProcess } from "../redux/userRedux"
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
-import { FaBars } from 'react-icons/fa'
-import ColorNav from './ColorNav'
-import PreDialog from '../components/PreDialog'
-import axios from 'axios';
+import SearchIcon from "@mui/icons-material/Search";
+import Badge from "@mui/material/Badge";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { mobile } from "../responsive";
+import { LogoutProcess } from "../redux/userRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
+import ColorNav from "./ColorNav";
+import PreDialog from "../components/PreDialog";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { showSearch } from '../redux/designRedux';
-import LoginAlert from './LoginAlert';
+import { showSearch } from "../redux/designRedux";
+import LoginAlert from "./LoginAlert";
 // import ClipLoader from 'react-spinners/ClipLoader';
-import LogoPhoto from '../files/logo.png';
-import { NavLink } from 'react-router-dom';
+import LogoPhoto from "../files/logo.png";
+import { NavLink } from "react-router-dom";
 
 const Container = styled.div`
-    transition: 1s ease;
-    background: #fff;
-    text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
-    background-color: transparent;
-    ${mobile({ height: "50px" })}
-`
+  transition: 1s ease;
+  background: #fff;
+  text-shadow:
+    -1px -1px 1px rgba(255, 255, 255, 0.1),
+    1px 1px 1px rgba(0, 0, 0, 0.5);
+  background-color: transparent;
+  ${mobile({ height: "50px" })}
+`;
 // const Wrapper = styled.div`
 //     padding: 10px 20px;
 //     display: flex;
@@ -48,14 +50,13 @@ const Wrapper = styled.div`
   padding: 0 40px;
 `;
 
-
 const WrapperOne = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(2,127,157,1);
-    ${mobile({ padding: "10px 0px" })}
-`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(2, 127, 157, 1);
+  ${mobile({ padding: "10px 0px" })}
+`;
 
 // const Left = styled.div`
 //     flex: 1;
@@ -70,19 +71,18 @@ const Left = styled.div`
   gap: 10px;
 `;
 
-
 const LeftOne = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
 
 const Language = styled.span`
-    font-size: 14px;
-    cursor: pointer;
-    margin-left :30px;
-    ${mobile({ display: "none" })}
-`
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 30px;
+  ${mobile({ display: "none" })}
+`;
 
 // const SearchContainer = styled.div`
 //     border: 1px solid lightgray;
@@ -91,7 +91,6 @@ const Language = styled.span`
 //     margin-left: 25px;
 //     padding: 5px;
 // `
-
 
 const SearchContainer = styled.div`
   display: flex;
@@ -103,9 +102,9 @@ const SearchContainer = styled.div`
 `;
 
 const Input = styled.input`
-    border: none;
-    ${mobile({ width: "50px" })}
-`
+  border: none;
+  ${mobile({ width: "50px" })}
+`;
 
 // const Center = styled.div`
 //     flex: 1;
@@ -114,10 +113,10 @@ const Input = styled.input`
 // `
 
 const Center = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 30px;
-`
+  display: flex;
+  align-items: center;
+  gap: 30px;
+`;
 
 // const Logo = styled.h1`
 //     font-weight: bold;
@@ -166,13 +165,13 @@ const Right = styled.div`
 `;
 
 const RightOne = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: ;
-    justify-content: flex-end;
-    padding: 20px;
-    ${mobile({ flex: 2, justifyContent: "center" })}
-`
+  flex: 1;
+  display: flex;
+  align-items:;
+  justify-content: flex-end;
+  padding: 20px;
+  ${mobile({ flex: 2, justifyContent: "center" })}
+`;
 
 // const MenuItem = styled.div`
 //     font-size: 19px;
@@ -214,22 +213,19 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-
-const A = styled.a`
-
-`
+const A = styled.a``;
 
 const NavbarDropdown = styled.div`
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 
-    &:hover {
+  &:hover {
+    display: block;
+    > div {
       display: block;
-      >div {
-          display: block;
-      }
     }
-  `;
+  }
+`;
 
 const NavbarDropdownContent = styled.div`
   display: none;
@@ -251,29 +247,27 @@ const NavbarDropdownContent = styled.div`
 //     margin-right: 10px;
 // `
 
-
 const SInput = styled.input`
-    border: none;
-    outline: none;
-    flex: 1;
-    font-size: 14px;
-`
-
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+`;
 
 const SSubmit = styled.button`
-    color: white;
-    height: 35px;
-    border: 1px solid #2b57b8;
-    outline:none;
-    border-radius: 4px;
-`
+  color: white;
+  height: 35px;
+  border: 1px solid #2b57b8;
+  outline: none;
+  border-radius: 4px;
+`;
 const Searchbox = styled.div`
-    display: inline-block;
-`
+  display: inline-block;
+`;
 const Sm = styled.small`
-  font-size : 11px;
-  font-weight : bold;
-`
+  font-size: 11px;
+  font-weight: bold;
+`;
 
 const LoginButton = styled.button`
   background: transparent;
@@ -290,201 +284,201 @@ const LoginButton = styled.button`
 `;
 
 const Navbar = (props) => {
-    const [isScroll, setIsScroll] = useState(false);
-    const [isUser, setIsUser] = useState(false);
-    const dispatch = useDispatch();
-    const [showDialog, setShowDialog] = useState(false);
-    const pcs = useSelector(state=>state.cart.total_pcs);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+  const dispatch = useDispatch();
+  const [showDialog, setShowDialog] = useState(false);
+  const pcs = useSelector((state) => state.cart.total_pcs);
 
-    const userName = useSelector(state=>state.user.name);
+  const userName = useSelector((state) => state.user.name);
 
-    window.onscroll = function () {
-        if (document.documentElement.scrollTop > 100) {
-            setIsScroll(true);
-        } else {
-            setIsScroll(false);
-        }
-    };
-    const quantity = useSelector(state => state.cart.quantity);
-    // console.log(quantity);
-
-    const username = useSelector(state => state.user.name);
-
-    useEffect(() => {
-        if (username != '') {
-            setIsUser(true);
-        }
-    }, [])
-    // if(username != ''){
-    //     setIsUser(true);
-    // }
-    const logout = () => {
-        dispatch(LogoutProcess());
-        setIsUser(false);
+  window.onscroll = function () {
+    if (document.documentElement.scrollTop > 100) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
     }
+  };
+  const quantity = useSelector((state) => state.cart.quantity);
+  // console.log(quantity);
 
-    const showPreorder = () => {
-        setShowDialog(true);
+  const username = useSelector((state) => state.user.name);
+
+  useEffect(() => {
+    if (username != "") {
+      setIsUser(true);
     }
+  }, []);
+  // if(username != ''){
+  //     setIsUser(true);
+  // }
+  const logout = () => {
+    dispatch(LogoutProcess());
+    setIsUser(false);
+  };
 
-    const link = {
-        textDecoration: 'none',
-        fontSize: '17px',
-        color: '#2b57b8',
+  const showPreorder = () => {
+    setShowDialog(true);
+  };
+
+  const link = {
+    textDecoration: "none",
+    fontSize: "17px",
+    color: "#2b57b8",
+  };
+  const link1 = {
+    textDecoration: "none",
+    color: "white",
+  };
+
+  const [search, setSearch] = useState("");
+  const [itemsS, setItems] = useState([]);
+  const [showsearch, setShowSearch] = useState(false);
+  const [ok, setOk] = useState(false);
+
+  const ShowSearch = () => {
+    setShowSearch(true);
+  };
+
+  const navigate = useNavigate();
+
+  const url = useSelector((state) => state.user.url);
+
+  const SearchItems = () => {
+    if (search != "") {
+      axios
+        .post(url + "/api/searchitem", {
+          item: search,
+        })
+        .then((res) => {
+          // console.log(res.data);
+          setItems(res.data);
+          setOk(true);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    } else {
+      // alert('fail');
+      setShowSearch(false);
     }
-    const link1 = {
-        textDecoration: 'none',
-        color: 'white',
-    }
+  };
 
-    const [search, setSearch] = useState('');
-    const [itemsS, setItems] = useState([]);
-    const [showsearch, setShowSearch] = useState(false);
-    const [ok,setOk] = useState(false);
+  if (ok == true) {
+    console.log(itemsS);
+    dispatch(showSearch());
+    navigate("/products/1/family hospital", {
+      state: { itemsS: itemsS, click: true },
+    });
+  }
 
-    const ShowSearch = () => {
-        setShowSearch(true);
-    }
+  return (
+    <Container className="fixed-top">
+      {isScroll ? (
+        // <ColorNav />
+        <Wrapper>
+          <Left>
+            <img src={LogoPhoto} width="90" height="90" />
+            <Logo>Medical World</Logo>
+          </Left>
 
-    const navigate = useNavigate();
+          <Center>
+            <StyledNavLink to="/">
+              <MenuItem>Home</MenuItem>
+            </StyledNavLink>
 
-    const url = useSelector(state => state.user.url);
+            <StyledNavLink to="/about-us">
+              <MenuItem>About Us</MenuItem>
+            </StyledNavLink>
 
-    const SearchItems = () => {
-        if(search != ''){
-            axios.post(url + '/api/searchitem', {
-                item: search
-            }).then(res => {
-                // console.log(res.data);
-                setItems(res.data);
-                setOk(true);
-            }
-            ).catch(err => {
-                console.log('error');
-            });
-        }else{
-            // alert('fail');
-            setShowSearch(false);
-        } 
-       
-    }
+            <StyledNavLink to="/shop">
+              <MenuItem>Shop</MenuItem>
+            </StyledNavLink>
 
-    if(ok == true){
-        console.log(itemsS);
-        dispatch(showSearch());
-        navigate('/products/1/family hospital', { state: { itemsS: itemsS, click: true } })
-    }
+            <StyledNavLink to="/preorder">
+              <MenuItem>Preorder</MenuItem>
+            </StyledNavLink>
 
+            <StyledNavLink to="/contact-us">
+              <MenuItem>Contact Us</MenuItem>
+            </StyledNavLink>
+          </Center>
 
+          <Right>
+            <SearchContainer>
+              <SInput placeholder="Search for products..." />
+              <SearchIcon style={{ color: "#888" }} />
+            </SearchContainer>
 
-    return (
-        <Container className="fixed-top">
-            {isScroll ? (
-                // <ColorNav />
-                <Wrapper>
-                    <Left>
-                        <img src={LogoPhoto} width="90" height="90"/>
-                        <Logo>Medical World</Logo>
-                    </Left>
+            <Link to="/cart">
+              <ShoppingCartIcon style={{ color: "white" }} />
+            </Link>
 
-                    <Center>
+            <Link to="/user-profile">
+              <AccountCircleIcon style={{ color: "white" }} />
+            </Link>
 
-                        <StyledNavLink to="/">
-                            <MenuItem>Home</MenuItem>
-                        </StyledNavLink>
+            <Link to="/login">
+              <LoginButton>LogIn</LoginButton>
+            </Link>
+          </Right>
+        </Wrapper>
+      ) : (
+        <Wrapper>
+          <Left>
+            <img src={LogoPhoto} width="90" height="90" />
+            <Logo>Medical World</Logo>
+          </Left>
 
-                        <StyledNavLink to="/about-us">
-                            <MenuItem>About Us</MenuItem>
-                        </StyledNavLink>
+          <Center>
+            <StyledNavLink to="/">
+              <MenuItem>Home</MenuItem>
+            </StyledNavLink>
 
-                        <StyledNavLink to="/shop">
-                            <MenuItem>Shop</MenuItem>
-                        </StyledNavLink>
+            <StyledNavLink to="/about-us">
+              <MenuItem>About Us</MenuItem>
+            </StyledNavLink>
 
-                        <StyledNavLink to="/preorder">
-                            <MenuItem>Preorder</MenuItem>
-                        </StyledNavLink>
+            <StyledNavLink to="/shop">
+              <MenuItem>Shop</MenuItem>
+            </StyledNavLink>
 
-                        <StyledNavLink to="/contact-us">
-                            <MenuItem>Contact Us</MenuItem>
-                        </StyledNavLink>
-                    </Center>
+            <StyledNavLink to="/preorder">
+              <MenuItem>Preorder</MenuItem>
+            </StyledNavLink>
 
-                    <Right>
+            <StyledNavLink to="/contact-us">
+              <MenuItem>Contact Us</MenuItem>
+            </StyledNavLink>
+          </Center>
 
-                        <SearchContainer>
-                        <SInput placeholder="Search for products..." />
-                        <SearchIcon style={{ color: "#888" }} />
-                        </SearchContainer>
+          <Right>
+            <SearchContainer>
+              <SInput placeholder="Search for products..." />
+              <SearchIcon style={{ color: "#888" }} />
+            </SearchContainer>
 
-                        <ShoppingCartIcon style={{ color: "white" }} />
+            <Link to="/cart">
+              <ShoppingCartIcon style={{ color: "white" }} />
+            </Link>
 
-                        <AccountCircleIcon style={{color: "white"}}/>
+            <Link to="/user-profile">
+              <AccountCircleIcon style={{ color: "white" }} />
+            </Link>
 
-                        <LoginButton>
-                            LogIn
-                        </LoginButton>
+            <Link to="/login">
+              <LoginButton>LogIn</LoginButton>
+            </Link>
+          </Right>
+        </Wrapper>
+      )}
+      {isUser ? (
+        <PreDialog open={showDialog} close={() => setShowDialog(false)} />
+      ) : (
+        <LoginAlert open={showDialog} close={() => setShowDialog(false)} />
+      )}
+    </Container>
+  );
+};
 
-                    </Right>
-
-                </Wrapper>
-            ) : 
-                <Wrapper>
-                    <Left>
-                        <img src={LogoPhoto} width="90" height="90"/>
-                        <Logo>Medical World</Logo>
-                    </Left>
-
-                    <Center>
-
-                        <StyledNavLink to="/">
-                            <MenuItem>Home</MenuItem>
-                        </StyledNavLink>
-
-                        <StyledNavLink to="/about-us">
-                            <MenuItem>About Us</MenuItem>
-                        </StyledNavLink>
-
-                        <StyledNavLink to="/shop">
-                            <MenuItem>Shop</MenuItem>
-                        </StyledNavLink>
-
-                        <StyledNavLink to="/preorder">
-                            <MenuItem>Preorder</MenuItem>
-                        </StyledNavLink>
-
-                        <StyledNavLink to="/contact-us">
-                            <MenuItem>Contact Us</MenuItem>
-                        </StyledNavLink>
-                    </Center>
-
-                    <Right>
-
-                        <SearchContainer>
-                        <SInput placeholder="Search for products..." />
-                        <SearchIcon style={{ color: "#888" }} />
-                        </SearchContainer>
-
-                        <ShoppingCartIcon style={{ color: "white" }} />
-
-                        <AccountCircleIcon style={{color: "white"}}/>
-
-                        <LoginButton>
-                            LogIn
-                        </LoginButton>
-
-                    </Right>
-
-                </Wrapper>
-
-            }
-            {isUser ? (
-                <PreDialog open={showDialog} close={() => setShowDialog(false)} />
-            ) : (
-                <LoginAlert open={showDialog} close={() => setShowDialog(false)} />
-            )}
-        </Container>
-    )
-}
-
-export default Navbar
+export default Navbar;
