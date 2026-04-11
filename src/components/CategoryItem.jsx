@@ -9,6 +9,12 @@ flex: 1;
 margin: 3px;
 height: 50vh;
 position: relative;
+
+    ${props => props.isLast && `
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `}
 `
 const Image = styled.img`
     width: 100%;
@@ -16,6 +22,11 @@ const Image = styled.img`
     object-fit: contain;
     background-color: #ffffff;
     ${mobile({height: "30vh"})}
+
+    ${props => props.isLast && `
+        width: 50%;
+        height: 50%;
+    `}
 `
 const Info = styled.div`
 position: absolute;
@@ -41,12 +52,13 @@ const Button = styled.button`
     font-weight: 600;
 `
 
-const CategoryItem = ({item}) => {
+const CategoryItem = ({item, isLast}) => {
     const url= useSelector(state => state.user.url);
   return (
-    <Container style={{maxHeight: '150px'}}>
+    <Container style={{maxHeight: '150px'}} isLast={isLast}>
         {/* <Link to={`/products/${item.id}/${item.category_name}`}> */}
         <Image src={url+`/ecommerce/brands/${item.photo_path}`}/>
+        {/* <Image src={`http://192.168.1.54:8000/ecommerce/brands/${item.photo_path}`} isLast={isLast}/> */}
         {/* <Image src={`http://localhost:8000/ecommerce/brands/${item.photo_path}`}/>  */}
         {/* <Info>
             <Button>Details</Button>

@@ -13,7 +13,7 @@ const userSlice = createSlice({
         email: '',
          url:'http://familyuniformapp.medicalworld.com.mm',
     //    url: 'http://127.0.0.1:8000',
-    // url: 'http://192.168.1.40:8800',
+    // url: 'http://192.168.1.54:8000',
     },
     reducers: {
         loginStart: (state) => {
@@ -35,6 +35,7 @@ const userSlice = createSlice({
             state.email = action.payload.email;
         },
         LogoutProcess: (state) => {
+            state.currentUser = null;
             state.id = '';
             state.name = '';
             state.phone = '';

@@ -5,11 +5,18 @@ import ReactMarkdown from "react-markdown";
 const MessageBubble = ({ msg }) => {
   const isUser = msg.role === "user";
 
-  const images =
+  // Extract images from tool results and main message image
+  const toolImages =
     msg.toolResults?.[0]?.products
       ?.map((p) => (p.photo_url ? encodeURI(p.photo_url) : null))
       .filter(Boolean) || [];
-      
+  
+  const images = [
+    ...(msg.image ? [{ url: msg.image, alt: "Screenshot" }] : []),
+    ...toolImages
+  ];
+
+  // Remove "Photo: ..." URLs from text for cleaner display
   const cleanText =
     msg.text?.replace(/Photo: https?:\/\/\S+/g, "") || msg.reply;
 
@@ -53,7 +60,7 @@ const MessageBubble = ({ msg }) => {
           </ReactMarkdown>
         </div>
 
-        {msg.images && msg.images.length > 0 && (
+        {msg.images && (
           <div className="mt-2 grid grid-cols-2 gap-2">
             {msg.images.map((url, idx) => (
               <img
@@ -66,16 +73,16 @@ const MessageBubble = ({ msg }) => {
           </div>
         )}
 
-        {images.length > 0 && msg.showImages && (
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            {images.map((url, idx) => (
-              <img
-                key={idx}
-                src={url}
-                alt={`product-${idx}`}
-                className="rounded max-w-full h-40 object-cover"
-              />
-            ))}
+        {images.length > 0 && (
+          <div className="mt-2 mb-3 grid grid-cols-2 gap-2">
+            {images.map((img, idx) => (
+  <img
+    key={idx}
+    src={img.url}
+    alt={img.alt || `image-${idx}`}
+    className="rounded max-w-full h-40 object-cover"
+  />
+))}
           </div>
         )}
       </div>
