@@ -48,7 +48,6 @@
 //   padding: 0 40px;
 // `;
 
-
 // const WrapperOne = styled.div`
 //     display: flex;
 //     justify-content: space-between;
@@ -70,7 +69,6 @@
 //   gap: 10px;
 // `;
 
-
 // const LeftOne = styled.div`
 //     flex: 1;
 //     display: flex;
@@ -91,7 +89,6 @@
 // //     margin-left: 25px;
 // //     padding: 5px;
 // // `
-
 
 // const SearchContainer = styled.div`
 //   display: flex;
@@ -214,7 +211,6 @@
 //   }
 // `;
 
-
 // const A = styled.a`
 
 // `
@@ -251,14 +247,12 @@
 // //     margin-right: 10px;
 // // `
 
-
 // const SInput = styled.input`
 //     border: none;
 //     outline: none;
 //     flex: 1;
 //     font-size: 14px;
 // `
-
 
 // const SSubmit = styled.button`
 //     color: white;
@@ -365,8 +359,8 @@
 //         }else{
 //             // alert('fail');
 //             setShowSearch(false);
-//         } 
-       
+//         }
+
 //     }
 
 //     if(ok == true){
@@ -374,8 +368,6 @@
 //         dispatch(showSearch());
 //         navigate('/products/1/family hospital', { state: { itemsS: itemsS, click: true } })
 //     }
-
-
 
 //     return (
 //         <Container className="fixed-top">
@@ -428,7 +420,7 @@
 //                     </Right>
 
 //                 </Wrapper>
-//             ) : 
+//             ) :
 //                 <Wrapper>
 //                     <Left>
 //                         <img src={LogoPhoto} width="90" height="90"/>
@@ -489,21 +481,20 @@
 
 // export default Navbar
 
-
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { LogoutProcess } from '../redux/userRedux';
-import { showSearch } from '../redux/designRedux';
-import PreDialog from '../components/PreDialog';
-import LoginAlert from './LoginAlert';
-import axios from 'axios';
-import LogoPhoto from '../files/logo.png';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { LogoutProcess } from "../redux/userRedux";
+import { showSearch } from "../redux/designRedux";
+import PreDialog from "../components/PreDialog";
+import LoginAlert from "./LoginAlert";
+import axios from "axios";
+import LogoPhoto from "../files/logo.png";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
@@ -604,30 +595,88 @@ const LoginButton = styled.button`
   }
 `;
 
+const AccountMenu = styled.div`
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  display: ${props => props.show ? 'block' : 'none'};
+`;
+
+const AccountMenuItem = styled.div`
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 14px;
+  
+  &:hover {
+    background: #f8f9fa;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const AccountMenuHeader = styled.div`
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+`;
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const username = useSelector(state => state.user.name);
-  const pcs = useSelector(state => state.cart.total_pcs);
-  const wish = useSelector(state => state.wishlist.total_pcs);
-  const url = useSelector(state => state.user.url);
+  const username = useSelector((state) => state.user.name);
+  const pcs = useSelector((state) => state.cart.total_pcs);
+  const wish = useSelector((state) => state.wishlist.total_pcs);
+  const url = useSelector((state) => state.user.url);
 
   const [isUser, setIsUser] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [itemsS, setItems] = useState([]);
   const [showsearch, setShowSearch] = useState(false);
   const [ok, setOk] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
 
   useEffect(() => {
-    if (username !== '') setIsUser(true);
+    if (username !== "") setIsUser(true);
   }, [username]);
 
   const logout = () => {
     dispatch(LogoutProcess());
     setIsUser(false);
+    setShowAccountMenu(false);
+    // Navigate to login page after logout
+    navigate('/login');
   };
+
+  const toggleAccountMenu = () => {
+    setShowAccountMenu(!showAccountMenu);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showAccountMenu && !event.target.closest('.account-menu-container')) {
+        setShowAccountMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showAccountMenu]);
 
   const showPreorder = () => {
     setShowDialog(true);
@@ -636,14 +685,14 @@ const Navbar = () => {
   const ShowSearch = () => setShowSearch(true);
 
   const SearchItems = () => {
-    if (search !== '') {
+    if (search !== "") {
       axios
-        .post(url + '/api/searchitem', { item: search })
-        .then(res => {
+        .post(url + "/api/searchitem", { item: search })
+        .then((res) => {
           setItems(res.data);
           setOk(true);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else {
       setShowSearch(false);
     }
@@ -651,14 +700,14 @@ const Navbar = () => {
 
   if (ok) {
     dispatch(showSearch());
-    navigate('/products', { state: { itemsS, click: true } });
+    navigate("/products", { state: { itemsS, click: true } });
   }
 
   return (
     <Container className="fixed-top">
       <Wrapper>
         <Left>
-          <img src={LogoPhoto} width="90" height="90" />
+          <img src={LogoPhoto} width="80" height="80" />
           <Logo>Medical World</Logo>
         </Left>
 
@@ -672,9 +721,9 @@ const Navbar = () => {
           <StyledNavLink to="/products">
             <MenuItem>Shop</MenuItem>
           </StyledNavLink>
-          <StyledNavLink to="/preorder">
+          {/* <StyledNavLink to="/preorder">
             <MenuItem>Preorder</MenuItem>
-          </StyledNavLink>
+          </StyledNavLink> */}
           <StyledNavLink to="/contact-us">
             <MenuItem>Contact Us</MenuItem>
           </StyledNavLink>
@@ -685,58 +734,56 @@ const Navbar = () => {
             <SInput
               placeholder="Search for products..."
               value={search}
-              onChange={e => setSearch(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && SearchItems()}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && SearchItems()}
             />
-            <SearchIcon style={{ color: "#888", cursor: "pointer" }} onClick={SearchItems} />
+            <SearchIcon
+              style={{ color: "#888", cursor: "pointer" }}
+              onClick={SearchItems}
+            />
           </SearchContainer>
 
           <Link to="/cart" style={{ color: "white", position: "relative" }}>
-  <ShoppingCartIcon />
-  {pcs > 0 && (
-    <span
-      style={{
-        background: "red",
-        borderRadius: "50%",
-        color: "white",
-        fontSize: "12px",
-        padding: "2px 6px",
-        position: "absolute",
-        top: -8,
-        right: -10,
-      }}
-    >
-      {pcs}
-    </span>
-  )}
-</Link>
-
-<Link to="/wish" style={{ color: "white", position: "relative" }}>
-  <FavoriteBorderIcon />
-  {wish > 0 && (
-    <span
-      style={{
-        background: "red",
-        borderRadius: "50%",
-        color: "white",
-        fontSize: "12px",
-        padding: "2px 6px",
-        position: "absolute",
-        top: -8,
-        right: -10,
-      }}
-    >
-      {wish}
-    </span>
-  )}
-</Link>
-
-          <AccountCircleIcon style={{ color: "white" }} />
+            <ShoppingCartIcon />
+            {pcs > 0 && (
+              <span
+                style={{
+                  background: "red",
+                  borderRadius: "50%",
+                  color: "white",
+                  fontSize: "12px",
+                  padding: "2px 6px",
+                  position: "absolute",
+                  top: -8,
+                  right: -10,
+                }}
+              >
+                {pcs}
+              </span>
+            )}
+          </Link>
 
           {isUser ? (
-            <LoginButton onClick={logout}>LogOut</LoginButton>
+            <div className="account-menu-container" style={{ position: 'relative' }}>
+              <AccountCircleIcon 
+                style={{ color: "white", cursor: "pointer" }} 
+                onClick={toggleAccountMenu}
+              />
+              <AccountMenu show={showAccountMenu}>
+                <AccountMenuHeader>{username || "Khant"}</AccountMenuHeader>
+                <AccountMenuItem onClick={() => { navigate('/order_list'); setShowAccountMenu(false); }}>
+                  Order History
+                </AccountMenuItem>
+                <AccountMenuItem onClick={() => { navigate('/wish'); setShowAccountMenu(false); }}>
+                  Wishlist
+                </AccountMenuItem>
+                <AccountMenuItem onClick={logout}>
+                  Logout
+                </AccountMenuItem>
+              </AccountMenu>
+            </div>
           ) : (
-            <LoginButton onClick={() => setShowDialog(true)}>LogIn</LoginButton>
+            <LoginButton onClick={() => navigate("/login")}>LogIn</LoginButton>
           )}
         </Right>
       </Wrapper>

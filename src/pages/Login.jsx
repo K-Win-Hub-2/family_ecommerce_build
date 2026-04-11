@@ -1,21 +1,19 @@
-import React, { useState,useRef,useEffect,useContext } from 'react'
-import styled from 'styled-components'
-import { login } from '../redux/apiCalls'
-import {mobile} from "../responsive"
-import { useDispatch,useSelector } from 'react-redux'
-import {setUserInfo} from "../redux/userRedux"
-import AuthContext from '../redux/AuthProvider'
-import axios from 'axios'
-import { red } from '@mui/material/colors'
-import {
-    useNavigate,useLocation
-  } from "react-router-dom";
-import { Link } from 'react-router-dom'
-import ColorNav from '../components/ColorNav'
-import Footer from '../components/Footer'
-import Swal from 'sweetalert2'
-import loginImg from '../slider-images/signin.png'
-import Navbar from '../components/Navbar'
+import React, { useState, useRef, useEffect, useContext } from "react";
+import styled from "styled-components";
+import { login } from "../redux/apiCalls";
+import { mobile } from "../responsive";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../redux/userRedux";
+import AuthContext from "../redux/AuthProvider";
+import axios from "axios";
+import { red } from "@mui/material/colors";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ColorNav from "../components/ColorNav";
+import Footer from "../components/Footer";
+import Swal from "sweetalert2";
+import loginImg from "../slider-images/signin.png";
+import Navbar from "../components/Navbar";
 
 // url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") center;
 
@@ -30,17 +28,17 @@ const Container = styled.div`
 
 const Card = styled.div`
   width: 900px;
-  height: 600px;
-  background: white;  
+  height: 500px;
+  background: white;
   border-radius: 12px;
   display: flex;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   ${mobile({
     flexDirection: "column",
     width: "95%",
-    height: "auto"
+    height: "auto",
   })}
 `;
 
@@ -67,15 +65,15 @@ const Image = styled.img`
 `;
 
 const Wrapper = styled.div`
-    width: 25%;
-    padding: 20px;
-    background-color: white;
-    ${mobile({width: "75%"})}
-`
+  width: 25%;
+  padding: 20px;
+  background-color: white;
+  ${mobile({ width: "75%" })}
+`;
 const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-`
+  display: flex;
+  flex-direction: column;
+`;
 const Title = styled.h1`
   color: #1f4fa3;
   font-size: 28px;
@@ -96,7 +94,7 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   font-size: 16px;
-`
+`;
 
 const Input = styled.input`
   padding: 12px;
@@ -111,7 +109,7 @@ const Forgot = styled.a`
   justify-content: end;
   align-items: center;
   text-decoration: none;
-`
+`;
 
 const Button = styled.button`
   background: #3b82f6;
@@ -128,7 +126,6 @@ const Button = styled.button`
   }
 `;
 
-
 const Divider = styled.div`
   text-align: center;
   margin: 20px 0;
@@ -139,7 +136,7 @@ const IsAccount = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const SocialBtn = styled.button`
   width: 100%;
@@ -151,151 +148,142 @@ const SocialBtn = styled.button`
   cursor: pointer;
 `;
 
-
 const Error = styled.span`
-    color: red;
-`
+  color: red;
+`;
 
-const A = styled.a`
-
-`
+const A = styled.a``;
 
 const Login = () => {
-    const {setAuth} = useContext(AuthContext);
-    const userRef = useRef();
-    const errRef = useRef();
-    const [username,setUsername] = useState("");
-    const [password,setPassword] = useState("");
-    const [errmsg,setErrmsg] = useState("");
-    const [navi,setNavi] = useState("");
-    const [successmsg,setSuccessmsg] = useState(false);
-    const dispatch = useDispatch();
-    const url= useSelector(state => state.user.url);
-    const navigate = useNavigate();
-    
+  const { setAuth } = useContext(AuthContext);
+  const userRef = useRef();
+  const errRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errmsg, setErrmsg] = useState("");
+  const [navi, setNavi] = useState("");
+  const [successmsg, setSuccessmsg] = useState(false);
+  const dispatch = useDispatch();
+  const url = useSelector((state) => state.user.url);
+  const navigate = useNavigate();
 
-    const background = {
-        backgroundColor : 'red',
-        color : 'white',
-        align : 'center',
-    }
-    // const {isFetching,error} = useSelector((state)=>state.user)
-    useEffect(()=>{
-        userRef.current.focus();
-    },[]);
+  const background = {
+    backgroundColor: "red",
+    color: "white",
+    align: "center",
+  };
+  // const {isFetching,error} = useSelector((state)=>state.user)
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
 
-    useEffect(()=>{
-       setErrmsg('');
-    },[username,password]);
+  useEffect(() => {
+    setErrmsg("");
+  }, [email, password]);
 
-    const handleClick = (e) => {
-        e.preventDefault();
-    
-            const response = axios.post(url+'/api/Login',{
-                username: username,
-                password: password
-            }).then(function(response){
-                console.log(response);
-                if(response.data.status != 200){
-                    setErrmsg(' Missing Username Or Password! ');
-                    errRef.current.focus();
-                }
-                else{
-                    // alert('error');
-                    const access_token = response?.data?.access_token;
-                    setAuth({username,password,access_token});
-                    setUsername('');
-                    setPassword('');
-                    setSuccessmsg(true);
-                    navigate(-1);
-                    dispatch(setUserInfo({
-                        id : response.data.user.id,
-                        name : response.data.user.name,
-                        phone : response.data.user.phone,
-                        address : response.data.user.address,
-                        email : response.data.user.email,
-                    }))   
-                    Swal.fire({
-                        title:  "Success!",
-                        text: "Login Successful!",
-                        type: 'success',    
-                    });
-                }
-                
-            })
+  const handleClick = (e) => {
+    e.preventDefault();
 
-        // login(dispatch,{username,password});
-    }
-    
+    const response = axios
+      .post(url + "/api/Login", {
+      // .post("http://192.168.1.54:8000/api/Login", {
+        email: email,
+        password: password,
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.data.status != 200) {
+          setErrmsg(" Missing Email Or Password! ");
+          errRef.current.focus();
+        } else {
+          // alert('error');
+          const access_token = response?.data?.access_token;
+          setAuth({ email, password, access_token });
+          setEmail("");
+          setPassword("");
+          setSuccessmsg(true);
+          navigate("/");
+          dispatch(
+            setUserInfo({
+              id: response.data.user.id,
+              name: response.data.user.name,
+              phone: response.data.user.phone,
+              address: response.data.user.address,
+              email: response.data.user.email,
+            }),
+          );
+          Swal.fire({
+            title: "Success!",
+            text: "Login Successful!",
+            type: "success",
+          });
+        }
+      });
+
+    // login(dispatch,{email,password});
+  };
+
   return (
     <>
-    { successmsg ? (
-      ''
-    ) : (
+      {successmsg ? (
+        ""
+      ) : (
         <>
-    {/* <ColorNav/> */}
-    <Navbar/>
-    <Container>
-        <Card>
-            <Left>
-            <Title>Welcome Back 👋</Title>
+          {/* <ColorNav/> */}
+          <Container>
+            <Card>
+              <Left>
+                <Title>Welcome Back</Title>
 
-            <Subtitle>
-                Please enter your details
-            </Subtitle>
+                <Subtitle>Please enter your details</Subtitle>
 
-            <Form>
-
-                <FormGroup>
+                <Form>
+                  <FormGroup>
                     <Label>Email</Label>
                     <Input
-                        placeholder="Example@gmail.com"
-                        ref={userRef}
-                        value={username}
-                        onChange={(e)=>setUsername(e.target.value)}
+                      placeholder="Example@gmail.com"
+                      ref={userRef}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                </FormGroup>
+                  </FormGroup>
 
-                <FormGroup>
+                  <FormGroup>
                     <Label>Password</Label>
                     <Input
-                        type="password"
-                        placeholder="At least 8 characters"
-                        value={password}
-                        onChange={(e)=>setPassword(e.target.value)}
+                      type="password"
+                      placeholder="At least 8 characters"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
-                </FormGroup>
+                  </FormGroup>
 
-                <Forgot>Forgot Password?</Forgot>
+                  <Forgot>Forgot Password?</Forgot>
 
-                <Button onClick={handleClick}>
-                Sign in
-                </Button>
+                  <Button onClick={handleClick}>Sign in</Button>
 
-                <Divider>Or</Divider>
+                  <Divider>Or</Divider>
 
-                {/* <SocialBtn>Sign in with Google</SocialBtn>
+                  {/* <SocialBtn>Sign in with Google</SocialBtn>
                 <SocialBtn>Sign in with Facebook</SocialBtn> */}
 
-                <IsAccount>
-                Don't have an account?
-                <Link to="/register"> Sign up</Link>
-                </IsAccount>
-            </Form>
-            </Left>
+                  <IsAccount>
+                    Don't have an account?
+                    <Link to="/register"> Sign up</Link>
+                  </IsAccount>
+                </Form>
+              </Left>
 
-            {/* RIGHT SIDE */}
-            <Right>
+              {/* RIGHT SIDE */}
+              <Right>
                 <Image src={loginImg} />
-            </Right>
-
-        </Card>
-    </Container>
-    <Footer/>
+              </Right>
+            </Card>
+          </Container>
+        </>
+      )}
     </>
-    )} 
-   </>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

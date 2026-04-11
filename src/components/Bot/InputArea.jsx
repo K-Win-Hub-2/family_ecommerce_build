@@ -10,32 +10,8 @@ const InputArea = ({
   handleSend,
   isLoading,
 }) => {
-  const suggestions = [
-    { label: "💻 Laptop info", value: "Tell me about the laptop" },
-    { label: "📱 Phone stock", value: "Check stock for phone" },
-    { label: "🎧 vs ⌨️ Compare", value: "Compare headphones and keyboard" },
-    { label: "🔍 Search", value: "Show me electronics under $500" },
-  ];
-
-  const sendSuggestion = (text) => {
-    setInput(text);
-    handleSend(text);
-  };
-
   return (
     <>
-      <div className="flex flex-wrap gap-2 py-3 px-2 border-t border-t-gray-100">
-        {suggestions.map((s, idx) => (
-          <span
-            key={idx}
-            onClick={() => sendSuggestion(s.value)}
-            className="px-3 py-1 bg-white border border-indigo-500 rounded-full text-indigo-500 text-sm cursor-pointer transition-all duration-200 hover:bg-indigo-500 hover:text-white"
-          >
-            {s.label}
-          </span>
-        ))}
-      </div>
-
       <div className="px-4 py-3 bg-white border-t-2 border-gray-200">
         {previewUrl && (
           <div className="relative inline-block mb-2">

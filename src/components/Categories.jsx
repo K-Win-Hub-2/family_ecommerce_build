@@ -36,7 +36,7 @@ const Categories = () => {
     const getCategories = async () =>{
       try{
         const res = await axios.get(url+"/api/category_api");
-        // const res = await axios.get("http://localhost:8000/api/category_api");
+        // const res = await axios.get("http://192.168.1.54:8000/api/category_api");
         console.log(res.data);
         setCategories(res.data);
         
@@ -49,8 +49,8 @@ const Categories = () => {
     <MainContainer>
       <SectionTitle>Our Brands</SectionTitle>
       <Container>
-          {categories.map(item=>(
-              <CategoryItem item={item} key={item.id}/>
+          {categories.map((item, index)=>(
+              <CategoryItem item={item} key={item.id} isLast={index === categories.length - 1}/>
           ))}
       </Container>
     </MainContainer>

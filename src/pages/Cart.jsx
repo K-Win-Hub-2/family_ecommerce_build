@@ -17,7 +17,6 @@
 // import Swal from 'sweetalert2'
 // import Paidinfodialog from '../components/PaidInfoDialog';
 
-
 // const Container = styled.div``
 // const Wrapper = styled.div`
 //     padding: 20px;
@@ -167,8 +166,6 @@
 //     font-weight: 600;
 // `
 
-
-
 // const Cart = () => {
 //     const cart = useSelector(state=>state.cart);
 //     console.log("Cart data",cart);
@@ -183,15 +180,15 @@
 //             Swal.fire({
 //                 title:  'Warning!',
 //                 text: "You need to make register or sign in first.",
-//                 type: 'success',    
+//                 type: 'success',
 //               });
 //         }else{
 //             setShowDialog(true);
 //         }
- 
+
 //     }
 
-//     // const handleQuantityInc = (id) =>{   
+//     // const handleQuantityInc = (id) =>{
 //     //     const qty = parseInt(document.getElementById('qty'+id).innerHTML) + 1;
 //     //     document.getElementById('qty'+id).innerHTML = qty;
 //     //     const price = parseInt(document.getElementById('pri'+id).value) * qty;
@@ -206,7 +203,7 @@
 //     // };
 
 //     // const handleQuantityDec = (id) =>{
-        
+
 //     //     const qty = parseInt(document.getElementById('qty'+id).innerHTML) - 1;
 //     //     if(qty == 0){
 //     //         const total_pcs = parseInt(document.getElementById('total_pcs').innerHTML) - 1;
@@ -266,7 +263,6 @@
 //     //     dispatch(resetPcs({ total_pcs, total: subtotal }));
 //     // };
 
-
 //     // const handleQuantityDec = (id) => {
 //     //     const currentQty = parseInt(document.getElementById('qty' + id).innerHTML);
 //     //     const pricePerItem = parseInt(document.getElementById('pri' + id).value);
@@ -313,8 +309,6 @@
 //     //     dispatch(removeProduct({ id }));
 //     // };
 
-
-
 //     const handleQuantityInc = (id) => {
 //         const currentQty = cart.products.find(product => product.unitid === id)?.quantity || 0;
 //         dispatch(updateQuantity({ id, quantity: currentQty + 1 }));
@@ -329,7 +323,6 @@
 //         }
 //     };
 
-
 //       const removeCart = (id) => {
 //         const product = cart.products.find(product => product.unitid === id);
 //         if (product) {
@@ -338,12 +331,11 @@
 //         }
 //       };
 
-
 //     console.log('cart is ',cart);
 //   return (
 //     <Container>
 //         <ColorNav/>
-        
+
 //         {/* <Announcement/> */}
 //         <Wrapper>
 //             <Title>YOUR CART</Title>
@@ -386,9 +378,9 @@
 //                         </PriceDetail>
 //                     </Product>
 //                     ))}
-                    
+
 //                     <Hr/>
-                    
+
 //                 </Info>
 //                 <Summary>
 //                     <SummaryTitle>ORDER SUMMARY</SummaryTitle>
@@ -397,7 +389,7 @@
 //                         <SummaryItemText>Total Quantity</SummaryItemText>
 //                         <SummaryItemPrice id="total_pcs">{cart.total_pcs}</SummaryItemPrice>
 //                     </SummaryItem>
-                    
+
 //                     <SummaryItem>
 //                         <SummaryItemText>Sub Total</SummaryItemText>
 //                         <SummaryItemPrice id="subtotal">{cart.total}</SummaryItemPrice>
@@ -421,7 +413,7 @@
 //                 </Summary>
 //             </Bottom>
 //         </Wrapper>
-        
+
 //         <CheckoutDialog total={cart.total} open={showDialog} close={()=>setShowDialog(false)}/>
 //         <Footer/>
 //     </Container>
@@ -430,17 +422,13 @@
 
 // export default Cart
 
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ColorNav from "../components/ColorNav";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../responsive";
-import {
-  removeProduct,
-  updateQuantity,
-} from "../redux/cartRedux";
+import { removeProduct, updateQuantity } from "../redux/cartRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -456,7 +444,7 @@ import BankCard from "../components/BankInformation";
 import axios from "axios";
 
 const Container = styled.div`
-    margin-top:80px;
+  margin-top: 80px;
 `;
 
 const Wrapper = styled.div`
@@ -560,7 +548,6 @@ const SectionTitle = styled.h3`
   color: #2f80a5;
 `;
 
-
 const Label = styled.label`
   color: #2f80a5;
   font-weight: 600;
@@ -624,211 +611,223 @@ const SubTotal = styled.h3`
 `;
 
 const Cart = () => {
-    const cart = useSelector((state) => state.cart);
-    console.log("Cart : ",cart);
-    const url = useSelector((state) => state.user.url);
-    const username = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart);
+  console.log("Cart : ", cart);
+  const url = useSelector((state) => state.user.url);
+  const username = useSelector((state) => state.user);
 
-    const dispatch = useDispatch();
-    const [showDialog, setShowDialog] = useState(false);
-    const [banks, setBanks] = useState([]);
-    const [selectedBank, setSelectedBank] = useState("");
+  const dispatch = useDispatch();
+  const [showDialog, setShowDialog] = useState(false);
+  const [banks, setBanks] = useState([]);
+  const [selectedBank, setSelectedBank] = useState("");
 
-    useEffect(() => {
+  useEffect(() => {
     if (!url) return;
 
     axios
-        .get(url + "/api/bank/list")
-        .then((res) => {
+      .get(url + "/api/bank/list")
+      .then((res) => {
         setBanks(res.data.data || []);
-        })
-        .catch((err) => console.log(err));
-    }, [url]);
+      })
+      .catch((err) => console.log(err));
+  }, [url]);
 
+  const handleQuantityInc = (id) => {
+    const product = cart.products.find((p) => p.unitid === id);
+    dispatch(updateQuantity({ id, quantity: product.quantity + 1 }));
+  };
 
-    const handleQuantityInc = (id) => {
-        const product = cart.products.find((p) => p.unitid === id);
-        dispatch(updateQuantity({ id, quantity: product.quantity + 1 }));
-    };
+  const handleQuantityDec = (id) => {
+    const product = cart.products.find((p) => p.unitid === id);
+    if (product.quantity > 1) {
+      dispatch(updateQuantity({ id, quantity: product.quantity - 1 }));
+    } else {
+      dispatch(removeProduct(id));
+    }
+  };
 
-    const handleQuantityDec = (id) => {
-        const product = cart.products.find((p) => p.unitid === id);
-        if (product.quantity > 1) {
-        dispatch(updateQuantity({ id, quantity: product.quantity - 1 }));
-        } else {
-        dispatch(removeProduct(id));
+  const removeCart = (id) => {
+    dispatch(removeProduct(id));
+  };
+
+  const onCheckOutClicked = () => {
+    if (username.name === "") {
+      Swal.fire({
+        title: "Warning!",
+        text: "You need to login first.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/login";
         }
-    };
+      });
+    } else {
+      setShowDialog(true);
+    }
+  };
 
-    const removeCart = (id) => {
-        dispatch(removeProduct(id));
-    };
+  return (
+    <Container>
+      {/* <ColorNav /> */}
+      <Navbar />
 
-    const onCheckOutClicked = () => {
-        if (username.name === "") {
-        Swal.fire({
-            title: "Warning!",
-            text: "You need to login first.",
-            icon: "warning",
-        });
-        } else {
-        setShowDialog(true);
-        }
-    };
+      <Wrapper>
+        <Title>Your Cart</Title>
 
-    return (
-        <Container>
-        {/* <ColorNav /> */}
-        <Navbar/>
+        <Bottom>
+          <CartContainer>
+            <CartHeader>
+              <div>Products</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Total</div>
+              <div>Action</div>
+            </CartHeader>
 
-        <Wrapper>
-            <Title>Your Cart</Title>
+            {cart.products.map((product) => (
+              <CartRow key={product.unitid}>
+                <ProductInfo>
+                  <ProductImg
+                    src={url + `/ecommerce/items/${product.unitimg}`}
+                  />
+                  <div>
+                    <div>{product.unitname}</div>
+                    <small>Size: {product.size}</small>
+                    <br />
+                    <small className="capitalize">Color: {product.color}</small>
+                  </div>
+                </ProductInfo>
 
-            <Bottom>
-            <CartContainer>
-                <CartHeader>
-                <div>Products</div>
-                <div>Price</div>
-                <div>Quantity</div>
-                <div>Total</div>
-                <div>Action</div>
-                </CartHeader>
+                <div>${product.price}</div>
 
-                {cart.products.map((product) => (
-                <CartRow key={product.unitid}>
-                    <ProductInfo>
-                    <ProductImg
-                        src={url + `/ecommerce/items/${product.unitimg}`}
-                    />
-                    <div>
-                        <div>{product.unitname}</div>
-                        <small>Size: {product.size}</small>
-                        <br/>
-                        <small className="capitalize">Color: {product.color}</small>
-                    </div>
-                    </ProductInfo>
+                <div>
+                  <QtyBox>
+                    <button onClick={() => handleQuantityDec(product.unitid)}>
+                      <Remove fontSize="small" />
+                    </button>
+                    <span>{product.quantity}</span>
+                    <button onClick={() => handleQuantityInc(product.unitid)}>
+                      <Add fontSize="small" />
+                    </button>
+                  </QtyBox>
+                </div>
 
-                    <div>${product.price}</div>
+                <div>${product.price * product.quantity}</div>
 
-                    <div>
-                    <QtyBox>
-                        <button onClick={() => handleQuantityDec(product.unitid)}>
-                        <Remove fontSize="small" />
-                        </button>
-                        <span>{product.quantity}</span>
-                        <button onClick={() => handleQuantityInc(product.unitid)}>
-                        <Add fontSize="small" />
-                        </button>
-                    </QtyBox>
-                    </div>
+                <div>
+                  <RemoveBtn onClick={() => removeCart(product.unitid)}>
+                    <FaTrash />
+                  </RemoveBtn>
+                </div>
+              </CartRow>
+            ))}
 
-                    <div>${product.price * product.quantity}</div>
+            <CartRowTotal>
+              <div></div>
+              <div></div>
+              <div
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  marginRight: "5px",
+                }}
+              >
+                Sub Total Price:
+              </div>
+              <div style={{ fontSize: "24px" }}>${cart.total}</div>
+              <div></div>
+            </CartRowTotal>
+          </CartContainer>
 
-                    <div>
-                        <RemoveBtn
-                            onClick={() => removeCart(product.unitid)}
-                        >
-                        <FaTrash />
-                        </RemoveBtn>
-                    </div>
-                </CartRow>
-                ))}
+          <CheckoutContainer>
+            <Section>
+              <SectionTitle>Your Information</SectionTitle>
+              <div>
+                <Label>First Name</Label>
+                <Input placeholder="First Name" />
+              </div>
+              <div>
+                <Label>Last Name</Label>
+                <Input placeholder="Last Name" />
+              </div>
+              <div>
+                <Label>Email</Label>
+                <Input placeholder="Email" />
+              </div>
+              <div>
+                <Label>Phone Number</Label>
+                <Input placeholder="Phone Number" />
+              </div>
+            </Section>
 
-                <CartRowTotal>
-                  <div></div>
-                  <div></div>
-                  <div style={{ fontSize: "24px", fontWeight: "bold" , marginRight: "5px"}}>Sub Total Price:</div>
-                  <div style={{ fontSize: "24px" }}>${cart.total}</div>
-                  <div></div>
-                </CartRowTotal>
-            </CartContainer>
+            <Section>
+              <SectionTitle>Shipping Address</SectionTitle>
+              <div>
+                <Label>Country</Label>
+                <Select>
+                  <option>Choose a country</option>
+                </Select>
+              </div>
+              <div>
+                <Label>City</Label>
+                <Input placeholder="City" />
+              </div>
+              <div>
+                <Label>Address</Label>
+                <Input placeholder="Address" />
+              </div>
+            </Section>
 
-            <CheckoutContainer>
-                <Section>
-                    <SectionTitle>Your Information</SectionTitle>
-                    <div>
-                        <Label>First Name</Label>
-                        <Input placeholder="First Name" />
-                    </div>
-                    <div>
-                        <Label>Last Name</Label>
-                        <Input placeholder="Last Name" />
-                    </div>
-                    <div>
-                        <Label>Email</Label>
-                        <Input placeholder="Email" />
-                    </div>
-                    <div>
-                        <Label>Phone Number</Label>
-                        <Input placeholder="Phone Number" />
-                    </div>
-                </Section>
+            <Section>
+              <SectionTitle>Payment</SectionTitle>
 
-                <Section>
-                    <SectionTitle>Shipping Address</SectionTitle>
-                    <div>
-                        <Label>Country</Label>
-                        <Select>
-                            <option>Choose a country</option>
-                        </Select>
-                    </div>
-                    <div>
-                        <Label>City</Label>
-                        <Input placeholder="City" />
-                    </div>
-                    <div>
-                        <Label>Address</Label>
-                        <Input placeholder="Address" />
-                    </div>
-                </Section>
+              <BankCard />
 
-                <Section>
-                    <SectionTitle>Payment</SectionTitle>
+              <div>
+                <Label>Payment</Label>
+                <Select
+                  value={selectedBank}
+                  onChange={(e) => setSelectedBank(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select payment
+                  </option>
 
-                    <BankCard />
+                  {banks.map((bank) => (
+                    <option key={bank.id} value={bank.id}>
+                      {bank.bank_name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
 
-                    <div>
-                        <Label>Payment</Label>
-                        <Select
-                            value={selectedBank}
-                            onChange={(e) => setSelectedBank(e.target.value)}
-                        >
-                            <option value="" disabled>Select payment</option>
+              <div>
+                <Label>Payment Screenshot</Label>
+                <Input type="file" />
+              </div>
+              <div>
+                <Label>Order Notes</Label>
+                <TextArea placeholder="Order notes..." />
+              </div>
+            </Section>
 
-                            {banks.map((bank) => (
-                            <option key={bank.id} value={bank.id}>
-                                {bank.bank_name}
-                            </option>
-                            ))}
-                        </Select>
-                    </div>
+            <OrderButton onClick={onCheckOutClicked}>Place Order</OrderButton>
+          </CheckoutContainer>
+        </Bottom>
+      </Wrapper>
 
-                    <div>
-                        <Label>Payment Screenshot</Label>
-                        <Input type="file" />
-                    </div>
-                    <div>
-                        <Label>Order Notes</Label>
-                        <TextArea placeholder="Order notes..." />
-                    </div>
-                </Section>
+      <CheckoutDialog
+        total={cart.total}
+        open={showDialog}
+        close={() => setShowDialog(false)}
+      />
 
-                <OrderButton onClick={onCheckOutClicked}>
-                Place Order
-                </OrderButton>
-            </CheckoutContainer>
-            </Bottom>
-        </Wrapper>
-
-        <CheckoutDialog
-            total={cart.total}
-            open={showDialog}
-            close={() => setShowDialog(false)}
-        />
-
-        <Footer />
-        </Container>
-    );
+      <Footer />
+    </Container>
+  );
 };
 
 export default Cart;

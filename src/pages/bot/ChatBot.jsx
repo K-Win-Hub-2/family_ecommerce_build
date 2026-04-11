@@ -33,7 +33,11 @@ const ChatBot = () => {
     const messageToSend = overrideText ?? input.trim();
     if (!messageToSend && !selectedFile) return;
 
-    if (!overrideText) setInput("");
+    if (!overrideText) {
+      if (!selectedFile) {
+        setInput("");
+      }
+    }
 
     setMessage((prev) => [
       ...prev,
@@ -51,7 +55,36 @@ const ChatBot = () => {
     try {
       const sessionId = getSessionId();
 
-      const payload = { message: messageToSend, session_id: sessionId };
+      // Format message as array for multimodal data
+      let messageArray = [];
+
+      if (messageToSend) {
+        messageArray.push({ text: messageToSend });
+      }
+
+      if (selectedFile && previewUrl) {
+        // Convert blob URL to base64
+        const response = await fetch(previewUrl);
+        const blob = await response.blob();
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]); // Remove data:image/jpeg;base64, prefix
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+
+        messageArray.push({
+          inline_data: {
+            mime_type: "image/jpeg",
+            data: base64
+          }
+        });
+      }
+
+      const payload = { 
+        message: messageArray,
+        session_id: sessionId
+      };
       const res = await sendChatMessage(payload);
 
       const urlRegex = /(http[s]?:\/\/[^\n]+)/gi;
