@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c9db4bf9.css",
-    "main.js": "/static/js/main.854f60ef.js",
+    "main.css": "/static/css/main.ce400ef5.css",
+    "main.js": "/static/js/main.532cd024.js",
     "static/media/factory.mp4": "/static/media/factory.71beff15516a06d0d966.mp4",
     "static/media/slider1.mp4": "/static/media/slider1.75e5d385067dbc08d5df.mp4",
     "static/media/about.png": "/static/media/about.e3f62299bd0c9a828789.png",
@@ -95,11 +95,11 @@
     "static/media/city_hospital.png": "/static/media/city_hospital.7d2caba434f49c88fdff.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.c9db4bf9.css.map": "/static/css/main.c9db4bf9.css.map",
-    "main.854f60ef.js.map": "/static/js/main.854f60ef.js.map"
+    "main.ce400ef5.css.map": "/static/css/main.ce400ef5.css.map",
+    "main.532cd024.js.map": "/static/js/main.532cd024.js.map"
   },
   "entrypoints": [
-    "static/css/main.c9db4bf9.css",
-    "static/js/main.854f60ef.js"
+    "static/css/main.ce400ef5.css",
+    "static/js/main.532cd024.js"
   ]
 }
