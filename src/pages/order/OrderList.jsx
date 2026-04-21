@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { IoMdEye } from "react-icons/io";
+import SearchIcon from "@mui/icons-material/Search";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import Spinner from "../../common/Spinner";
+import axios from "axios";
+import DefaultImg from "../../feedImg/family.jpg";
 
 const Container = styled.div`
   margin: 20px;
@@ -155,8 +158,8 @@ const ModalBody = styled.div`
 `;
 
 const ModalImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 12px;
   border: 2px solid #0b6aa9;
@@ -220,17 +223,16 @@ const DateInputWrapper = styled.div`
 `;
 
 const DateInput = styled.input`
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 14px;
+  font-size: 16px;
+  padding: 10px 12px;
+  width: 150px;
+  background: #f1f5f9;
+  border: 1px solid #d7e2ea;
   outline: none;
-  width: 120px;
-  transition: border-color 0.3s ease;
+  border-radius: 8px;
 
-  &:focus {
-    border-color: #ced4da;
-    box-shadow: 0 0 0 2px rgba(11, 106, 169, 0.1);
+  ::placeholder {
+    color: #7d8b99;
   }
 `;
 
@@ -256,13 +258,44 @@ const FilterLabel = styled.span`
   font-weight: 500;
 `;
 
+const SearchWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const Input = styled.input`
+  font-size: 16px;
+  padding: 10px 12px;
+  width: 280px;
+  background: #f1f5f9;
+  border: 1px solid #d7e2ea;
+  outline: none;
+  border-radius: 8px;
+
+  ::placeholder {
+    color: #7d8b99;
+  }
+`;
+
+const Btn = styled.button`
+  border-radius: 8px;
+  background: #0b6aa9;
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  cursor: pointer;
+`;
+
 const OrderList = () => {
   const url = useSelector((state) => state.user.url);
+  const username = useSelector((state) => state.user);
+  const customer_id = username.id;
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -273,117 +306,38 @@ const OrderList = () => {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const mockOrders = [
-        {
-          id: 1,
-          code: "001",
-          orderDate: "21.2.2026",
-          productImage: null,
-          productName: "V-Neck",
-          size: "Medium",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 2,
-          code: "002",
-          orderDate: "19.2.2026",
-          productImage: null,
-          productName: "Shoes",
-          size: "Small",
-          quantity: 2,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 3,
-          code: "003",
-          orderDate: "19.2.2026",
-          productImage: null,
-          productName: "Accessories",
-          size: "-",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 4,
-          code: "004",
-          orderDate: "19.2.2026",
-          productImage: null,
-          productName: "Shoe",
-          size: "37",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 5,
-          code: "005",
-          orderDate: "19.2.2026",
-          productImage: null,
-          productName: "Shoe",
-          size: "38",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 6,
-          code: "006",
-          orderDate: "1.1.2026",
-          productImage: "/api/placeholder/50/50", // Red V-neck image
-          productName: "V-Neck",
-          size: "Medium",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 7,
-          code: "007",
-          orderDate: "1.1.2026",
-          productImage: null,
-          productName: "Scrub",
-          size: "-",
-          quantity: 10,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 8,
-          code: "008",
-          orderDate: "1.1.2026",
-          productImage: null,
-          productName: "Shoe",
-          size: "37",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 9,
-          code: "009",
-          orderDate: "1.1.2026",
-          productImage: null,
-          productName: "Shoe",
-          size: "38",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-        {
-          id: 10,
-          code: "010",
-          orderDate: "1.1.2026",
-          productImage: null,
-          productName: "Shoe",
-          size: "37",
-          quantity: 1,
-          price: "2,300,000 MMK",
-        },
-      ];
-
-      // Uncomment this when you have the actual API endpoint
-      // const response = await axios.get(url + "/api/orders");
-      // setOrders(response.data.orders || []);
-
-      setOrders(mockOrders);
-      setFilteredOrders(mockOrders);
+      
+      await axios.get(url + '/api/ecommerce_order_index/' + customer_id)
+        .then(res => {
+          const sortedOrders = res.data.instock.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          
+          // Transform the API data to match the component's expected format
+          const transformedOrders = sortedOrders.map(order => ({
+            id: order.id,
+            code: order.order_code,
+            orderDate: order.order_date,
+            productImage: null, // You can add product image if available in API
+            productName: order.customer_name || 'Order', // Adjust based on your API structure
+            size: '-', // Adjust based on your API structure
+            quantity: order.total_quantity,
+            price: order.total_amount ? `${order.total_amount} MMK` : '0 MMK',
+            // Keep original data for modal if needed
+            originalData: order
+          }));
+          
+          setOrders(transformedOrders);
+          setFilteredOrders(transformedOrders);
+        })
+        .catch(error => {
+          console.error('Error fetching orders:', error);
+          // Set empty arrays on error
+          setOrders([]);
+          setFilteredOrders([]);
+        });
     } catch (err) {
       console.log("Error fetching orders:", err);
+      setOrders([]);
+      setFilteredOrders([]);
     } finally {
       setIsLoading(false);
     }
@@ -393,31 +347,41 @@ const OrderList = () => {
     setSelectedOrder(order);
   };
 
-  const applyFilters = () => {
-    let filtered = [...orders];
-
-    if (searchTerm) {
-      filtered = filtered.filter(order => 
-        order.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.productName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const SearchItems = async () => {
+    try {
+      setIsLoading(true);
+      
+      let filtered = [...orders];
+      
+      if (search) {
+        filtered = filtered.filter(order => 
+          order.code.toLowerCase().includes(search.toLowerCase()) ||
+          order.productName.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+      
+      if (startDate || endDate) {
+        filtered = filtered.filter(order => {
+          const orderDate = new Date(order.orderDate.split('.').reverse().join('-')); // Convert DD.MM.YYYY to YYYY-MM-DD
+          const start = startDate ? new Date(startDate) : new Date('1900-01-01');
+          const end = endDate ? new Date(endDate) : new Date('2100-12-31');
+          return orderDate >= start && orderDate <= end;
+        });
+      }
+      
+      setFilteredOrders(filtered);
+    } catch (err) {
+      console.log("error");
+    } finally {
+      setIsLoading(false);
     }
-
-    if (startDate || endDate) {
-      filtered = filtered.filter(order => {
-        const orderDate = new Date(order.orderDate.split('.').reverse().join('-')); // Convert DD.MM.YYYY to YYYY-MM-DD
-        const start = startDate ? new Date(startDate) : new Date('1900-01-01');
-        const end = endDate ? new Date(endDate) : new Date('2100-12-31');
-        return orderDate >= start && orderDate <= end;
-      });
-    }
-
-    setFilteredOrders(filtered);
   };
 
   useEffect(() => {
-    applyFilters();
-  }, [searchTerm, startDate, endDate, orders]);
+    if (startDate || endDate) {
+      SearchItems();
+    }
+  }, [startDate, endDate, orders]);
 
   return (
     <div>
@@ -429,12 +393,13 @@ const OrderList = () => {
             <Title>Order List</Title>
           </TitleSection>
           <SearchFilterSection>
-            <SearchInput
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <SearchWrap>
+              <Input
+                placeholder="Search Items..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </SearchWrap>
             <DateFilterContainer>
               <DateInputWrapper>
                 <FilterLabel>Start date</FilterLabel>
@@ -455,9 +420,12 @@ const OrderList = () => {
                 />
               </DateInputWrapper>
             </DateFilterContainer>
-            <FilterButton onClick={applyFilters}>
+            {/* <FilterButton onClick={SearchItems}>
               Filter
-            </FilterButton>
+            </FilterButton> */}
+            <Btn onClick={SearchItems}>
+               Filter
+            </Btn>
           </SearchFilterSection>
         </HeaderContainer>
 
@@ -497,7 +465,7 @@ const OrderList = () => {
             </Table>
           ) : (
             <EmptyText>
-              {searchTerm || startDate || endDate 
+              {search || startDate || endDate 
                 ? "No orders found matching your filters" 
                 : "No orders found"}
             </EmptyText>
@@ -513,89 +481,43 @@ const OrderList = () => {
 
             <ModalBody>
               <ModalImage
-                src={selectedOrder.productImage || "/api/placeholder/250/250"}
+                src={selectedOrder.productImage || DefaultImg}
               />
 
               <ModalDetails>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', paddingRight: '10px' }}>
-                  <h4 style={{ margin: 0 }}>{selectedOrder.productName}</h4>
-                  <p style={{ margin: 0, textAlign: 'right' }}>{selectedOrder.price}</p>
+                  <h4 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>{"V-Neck" || selectedOrder.productName}</h4>
                 </div>
-                <p className="text-xs mb-0 pb-2">
-                  {selectedOrder.code}
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}><b>Price:</b> {selectedOrder.price}</p>
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                  <b>Product Code:</b> {selectedOrder.code}
                 </p>
-                <div className="flex gap-3">
-                  <p>
-                    <b>Size:</b> {selectedOrder.size}
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                  <b>Size:</b> {"Medium" || selectedOrder.size}
+                </p>
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                  <b>Quantity:</b> {selectedOrder.quantity}
+                </p>
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                  <b>Date:</b> {selectedOrder.orderDate}
+                </p>
+                {/* <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
+                  <p style={{ margin: 0, fontSize: '14px' }}>
+                    <b>Size:</b> {selectedOrder.size || 'Medium'}
                   </p>
-                  <p>
+                  <p style={{ margin: 0, fontSize: '14px' }}>
                     <b>Quantity:</b> {selectedOrder.quantity}
                   </p>
-                </div>
+                </div> */}
+                {/* <div style={{ marginTop: '10px' }}>
+                  <p style={{ margin: 0, fontSize: '14px' }}>
+                    <b>Date:</b> {selectedOrder.orderDate}
+                  </p>
+                </div> */}
                 
               </ModalDetails>
             </ModalBody>
-            <hr />
-            
-            <ModalBody>
-              <ModalImage
-                src={selectedOrder.productImage || "/api/placeholder/250/250"}
-              />
-
-              <ModalDetails>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', paddingRight: '10px' }}>
-                  <h4 style={{ margin: 0 }}>{selectedOrder.productName}</h4>
-                  <p style={{ margin: 0, textAlign: 'right' }}>{selectedOrder.price}</p>
-                </div>
-                <p className="text-xs mb-0 pb-2">
-                  {selectedOrder.code}
-                </p>
-                <div className="flex gap-3">
-                  <p>
-                    <b>Size:</b> {selectedOrder.size}
-                  </p>
-                  <p>
-                    <b>Quantity:</b> {selectedOrder.quantity}
-                  </p>
-                </div>
-                
-              </ModalDetails>
-            </ModalBody>
-            <hr />
-            <ModalBody>
-              <ModalImage
-                src={selectedOrder.productImage || "/api/placeholder/250/250"}
-              />
-
-              <ModalDetails>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', paddingRight: '10px' }}>
-                  <h4 style={{ margin: 0 }}>{selectedOrder.productName}</h4>
-                  <p style={{ margin: 0, textAlign: 'right' }}>{selectedOrder.price}</p>
-                </div>
-                <p className="text-xs mb-0 pb-2">
-                  {selectedOrder.code}
-                </p>
-                <div className="flex gap-3">
-                  <p>
-                    <b>Size:</b> {selectedOrder.size}
-                  </p>
-                  <p>
-                    <b>Quantity:</b> {selectedOrder.quantity}
-                  </p>
-                </div>
-                
-              </ModalDetails>
-            </ModalBody>
-            <hr />
-            <div className="flex justify-between">
-              <p>
-                <b>Date:</b> {selectedOrder.orderDate}
-              </p>
-              <p>
-                <b>Total Price:</b> {selectedOrder.price}
-              </p>
-            </div>
-            <p style={{ marginTop: "18px" }}>
+                        <p style={{ marginTop: "18px" }}>
               Easy to clean—This uniform nurse set dependable, fade
               resistant, and washable making it comfortable.
             </p>

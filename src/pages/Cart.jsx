@@ -594,6 +594,43 @@ const TextArea = styled.textarea`
   }
 `;
 
+const Filter = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+`;
+
+const DivF = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-item: center;
+  justify-content: center;
+  margin-right: 2px;
+  margin-bottom: 5px;
+`;
+
+const Radio = styled.input`
+  display: flex;
+  margin-right: 10px;
+  margin-left: 5px;
+`;
+
+const FilterSelect = styled.select`
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #2f80a5;
+  border-radius: 10px;
+  outline: none;
+
+  &:focus {
+    border: 1px solid #1e5f7a;
+    box-shadow: 0 0 0 2px rgba(47, 128, 165, 0.2);
+  }
+`;
+
+const FilterOption = styled.option``;
+
 const OrderButton = styled.button`
   width: 100%;
   padding: 12px;
@@ -620,6 +657,49 @@ const Cart = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [banks, setBanks] = useState([]);
   const [selectedBank, setSelectedBank] = useState("");
+  const [deliveryType, setDeliveryType] = useState("pickup");
+  const [showTownshipInput, setShowTownshipInput] = useState(false);
+  const [township, setTownship] = useState("");
+  const [pickup, setPickup] = useState("");
+  const [orderNotes, setOrderNotes] = useState("");
+  const [paymentScreenshot, setPaymentScreenshot] = useState(null);
+  const [address, setAddress] = useState(username.address || "");
+
+  const defaultTownships = [
+    "Ahlon",
+    "Bahan",
+    "Botatung",
+    "Dagon Seikkan",
+    "Dagon",
+    "Dala",
+    "Dawbon",
+    "East Dagon",
+    "Hlaing",
+    "Hlaingthaya",
+    "Insein",
+    "Kamayut",
+    "Kyauktada",
+    "Kyimyingdaing",
+    "Lanmadaw",
+    "Latha",
+    "Mayangon",
+    "Mingala Taungnyunt",
+    "Mingaladon",
+    "North Dagon",
+    "North Okkalapa",
+    "Pabedan",
+    "Pazundaung",
+    "Sanchaung",
+    "Seikkan",
+    "Seikkyi Kanaungto",
+    "Shwepyitha",
+    "South Dagon",
+    "South Okkalapa",
+    "Tamwe",
+    "Thaketa",
+    "Thingangyun",
+    "Yankin",
+  ];
 
   useEffect(() => {
     if (!url) return;
@@ -631,6 +711,59 @@ const Cart = () => {
       })
       .catch((err) => console.log(err));
   }, [url]);
+
+  const onTownshipChanged = (e) => {
+    setTownship(e.target.value);
+    const selectedTownship = defaultTownships.find(
+      (township) => township === e.target.value
+    );
+    console.log("township", selectedTownship);
+  };
+
+  const selectedBankObj = banks.find(
+    (bank) => bank.id.toString() === selectedBank.toString()
+  );
+
+  const onDeliveryTypeChanged = (e) => {
+    setDeliveryType(e.target.value);
+
+    if (e.target.value === "township") {
+      setShowTownshipInput(true);
+    } else {
+      setShowTownshipInput(false);
+    }
+  };
+
+  const onPickupChanged = (e) => setPickup(e.target.value);
+
+  const onOrderNotesChanged = (e) => setOrderNotes(e.target.value);
+
+  const onPaymentScreenshotChanged = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          const maxWidth = 200;
+          const maxHeight = 200;
+          const width = Math.min(maxWidth, img.width);
+          const height = Math.min(maxHeight, img.height);
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+          const shortenedBase64 = canvas.toDataURL("image/jpeg");
+          setPaymentScreenshot(shortenedBase64);
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onAddressChanged = (e) => setAddress(e.target.value);
 
   const handleQuantityInc = (id) => {
     const product = cart.products.find((p) => p.unitid === id);
@@ -746,38 +879,75 @@ const Cart = () => {
             <Section>
               <SectionTitle>Your Information</SectionTitle>
               <div>
-                <Label>First Name</Label>
-                <Input placeholder="First Name" />
+                <Label>Name</Label>
+                <Input 
+                  placeholder="Name" 
+                  value={username.name || ""} 
+                  readOnly 
+                />
               </div>
-              <div>
-                <Label>Last Name</Label>
-                <Input placeholder="Last Name" />
-              </div>
-              <div>
+              {/* <div>
                 <Label>Email</Label>
                 <Input placeholder="Email" />
-              </div>
+              </div> */}
               <div>
                 <Label>Phone Number</Label>
-                <Input placeholder="Phone Number" />
+                <Input 
+                  placeholder="Phone Number" 
+                  value={username.phone || ""} 
+                  readOnly 
+                />
               </div>
             </Section>
 
             <Section>
-              <SectionTitle>Shipping Address</SectionTitle>
-              <div>
-                <Label>Country</Label>
-                <Select>
-                  <option>Choose a country</option>
+              <SectionTitle>Address</SectionTitle>
+
+              <Filter>
+              <DivF>
+                <Radio
+                  type="radio"
+                  name="deliveryType"
+                  value="pickup"
+                  onChange={onDeliveryTypeChanged}
+                />
+                <label>Pickup</label>
+
+                <Radio
+                  type="radio"
+                  name="deliveryType"
+                  value="township"
+                  checked={showTownshipInput}
+                  onChange={onDeliveryTypeChanged}
+                />
+                <label>Township</label>
+              </DivF>
+            </Filter>
+            <Filter>
+              {deliveryType === "township" && (
+                <Select
+                  showTownshipInput={showTownshipInput}
+                  name="township"
+                  onChange={onTownshipChanged}
+                >
+                  <option value="" disabled>
+                    Select Township
+                  </option>
+                  {defaultTownships.map((township, index) => (
+                    <FilterOption key={index} value={township}>
+                      {township}
+                    </FilterOption>
+                  ))}
                 </Select>
-              </div>
-              <div>
-                <Label>City</Label>
-                <Input placeholder="City" />
-              </div>
+              )}
+            </Filter>
               <div>
                 <Label>Address</Label>
-                <Input placeholder="Address" />
+                <Input 
+                  placeholder="Address" 
+                  value={address}  
+                  onChange={onAddressChanged}
+                />
               </div>
             </Section>
 
@@ -802,15 +972,27 @@ const Cart = () => {
                     </option>
                   ))}
                 </Select>
+                {selectedBank && (
+                  <div style={{ marginTop: '5px', fontSize: '14px', color: '#2f80a5' }}>
+                    Selected: <strong>{banks.find(bank => bank.id.toString() === selectedBank.toString())?.bank_name}</strong>
+                  </div>
+                )}
               </div>
 
               <div>
                 <Label>Payment Screenshot</Label>
-                <Input type="file" />
+                <Input 
+                  type="file" 
+                  onChange={onPaymentScreenshotChanged}
+                />
               </div>
               <div>
                 <Label>Order Notes</Label>
-                <TextArea placeholder="Order notes..." />
+                <TextArea 
+                  placeholder="Order notes..." 
+                  value={orderNotes}
+                  onChange={onOrderNotesChanged}
+                />
               </div>
             </Section>
 
@@ -823,6 +1005,13 @@ const Cart = () => {
         total={cart.total}
         open={showDialog}
         close={() => setShowDialog(false)}
+        deliveryType={deliveryType}
+        township={township}
+        selectedBank={selectedBank}
+        selectedBankName={selectedBankObj?.bank_name}
+        orderNotes={orderNotes}
+        paymentScreenshot={paymentScreenshot}
+        address={address}
       />
 
       <Footer />

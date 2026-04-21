@@ -192,8 +192,8 @@ const Register = () => {
   const onRegisterClicked = (e) => {
     e.preventDefault();
     const res = axios
-      .post("http://familyuniformapp.medicalworld.com.mm/api/register", {
-      // .post("http://192.168.1.54:8000/api/register", {
+      // .post("http://familyuniformapp.medicalworld.com.mm/api/register", {
+      .post("http://192.168.100.163:8000/api/register", {
         username: name,
         dob: dob,
         email: email,

@@ -1,125 +1,11 @@
 import React  from 'react';
-import styled from 'styled-components';
-import {mobile} from "../responsive";
 import { Navigate, useNavigate,Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ColorNav from './ColorNav';
 import Footer from './Footer';
 import { useSelector} from 'react-redux'
-
-const Div = styled.div`
-    margin-top: 65px;
-`
-const Wrapper = styled.div`
-    widtr: 100vw;
-    height: auto;
-    min-height: 100vh;
-    padding: 50px;
-    background-color: #fcf5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   
-    flex-direction: column;
-    ${mobile({padding: '50'})}
-`
-const Button = styled.button`
-    margin-right:10px;
-  
-`
-
-const Title = styled.h1`
-    font-size: 50px;
-    margin-bottom: 20px;
-    text-align: center;
-`
-const Description = styled.div`
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 20px;
-    text-align: center;
-    ${mobile({textAlign: "center"})}
-`
-const Table = styled.table`
-    width: 70%;
-    height: auto;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    border: 1px solid rgba(2,127,157,1);
-    ${mobile({width: "90%"})}
-`
-const Tr = styled.tr`
-    width: 100%;
-    height: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    ${mobile({width: "90%"})}
-`
-const Th = styled.th`
-    text-align: center;
-    background-color: rgba(2,127,157,1);
-    border: 1px solid rgba(2,127,157,1);
-    color: #ffffff;
-    padding: 20px;
-    ${mobile({width: "90%"})}
-`
-const Td = styled.td`
-    text-align: center;
-    border-bottom: 1px solid rgba(2,127,157,1);
-    padding: 10px 0px 10px 0px;
-    ${mobile({width: "90%"})}
-`
-const Span = styled.span`
-    background-color: rgba(2,127,157,1);
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 6px;
-    border-radius: 50px;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-`
-const BigBox = styled.div`
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-item: center;
-    justify-content: space-between;
-    flex-direction: row;
-`
-const RBox = styled.div`
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-item: center;
-    justify-content: space-between;
-    flex-direction: row;
-`
-// border-right: 2px solid rgba(0,0,0,0.3);
-const LBox = styled.div`
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-item: center;
-    justify-content: space-between;
-    flex-direction: row;
-`
-const Left = styled.div`
-    width: 50%;
-    text-align: right;
-    padding: 20px;
-`
-const Right = styled.div`
-    width: 50%;
-    padding: 20px;
-`
-const P = styled.p`
-    font-size: 18px;
-    font-weight: 600;
-`
 
 
 const OrderHistory = () => {
@@ -193,119 +79,104 @@ const OrderHistory = () => {
         return <div>Loading...</div>;
       }
     return (
-
-        // <div>
-        //     <div>
-        //     <ColorNav/>
-        // </div>
-        // <Div>
-        //     <Wrapper>
-        //     <Title>Your order success</Title>
-        //     {/* <Description>This is where your order list shown</Description>    */}
-        //     <div className="">
-                      
-        //               <Button > <Link to='/order_list'>Contuine </Link> </Button>
-        //               <Button>Invoice</Button>
-        //     </div>
-        // </Wrapper>
-        // </Div>
-        // <div>
-        //     <Footer/>
-        // </div>
-        // </div>
         <div>
-            <div>
             <ColorNav/>
-        </div>
-        <Div>
-            <Wrapper>
-            <Title>Your Orders Detail</Title>
-            <Description>This is where your order list shown</Description>
-            <BigBox>
-            {/* {orders.map(order => ( */}
-            <React.Fragment>
-                <LBox>
-                    <Left>
-                        <P>NO :</P>
-                        <P>Customer Name :</P>
-                        <P>Order Phone :</P>
-                        <P>Order Address :</P>
-                        <P>Order Date :</P>
-                        <P>Delivery Fee :</P>
-                    </Left>
-                    <Right>
-                        <P>{order.id}</P>
-                        <P>{order.customer_name || username.name}</P>
-                        <P>{order.customer_phone}</P>
-                        <P>{order.deliver_address}</P>
-                        <P>{order.order_date}</P>
-                        <P>{order.delivery_fee}</P>
-                    </Right>
-                </LBox>
-                <RBox>
-                    <Left>
-                        <P>Order No :</P>
-                        <P>Total Quantity :</P>
-                        <P>Total Amount :</P>
-                        <P>Payment Type :</P>
-                        <P>Payment Channel :</P>
-                        <P>Order Status :</P>
-                    </Left>
-                    <Right>
-                        <P>{order.order_code}</P>
-                        <P>{order.total_quantity}</P>
-                        <P>{order.total_amount}</P>
-                        <P>{order.payment_type}</P>
-                        <P>{order.payment_channel}</P>
-                        <Span>{order.order_status}</Span>
-                    </Right>
-                </RBox>
-            </React.Fragment>
-        {/* ))} */}
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 pt-20">
+                <div className="container mx-auto px-4 py-8 max-w-6xl">
+                    <div className="text-center mb-12">
+                        <h1 className="text-5xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                            Your Order Details
+                        </h1>
+                        <p className="text-xl text-gray-600 font-light">
+                            Track and manage your order information
+                        </p>
+                    </div>
 
-</BigBox>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+                            <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                                <span className="w-2 h-8 bg-blue-500 rounded-full mr-3"></span>
+                                Order Information
+                            </h2>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center py-3 border-b border-blue-100">
+                                    <span className="text-gray-600 font-medium">Order ID:</span>
+                                    <span className="text-gray-900 font-semibold">{order.id}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-blue-100">
+                                    <span className="text-gray-600 font-medium">Customer Name:</span>
+                                    <span className="text-gray-900 font-semibold">{order.customer_name || username.name}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-blue-100">
+                                    <span className="text-gray-600 font-medium">Phone:</span>
+                                    <span className="text-gray-900 font-semibold">{order.customer_phone}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-blue-100">
+                                    <span className="text-gray-600 font-medium">Address:</span>
+                                    <span className="text-gray-900 font-semibold text-right max-w-xs">{order.deliver_address}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-blue-100">
+                                    <span className="text-gray-600 font-medium">Order Date:</span>
+                                    <span className="text-gray-900 font-semibold">{order.order_date}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3">
+                                    <span className="text-gray-600 font-medium">Delivery Fee:</span>
+                                    <span className="text-gray-900 font-semibold">${order.delivery_fee}</span>
+                                </div>
+                            </div>
+                        </div>
 
-            {/* {
-            
-                <Table>
-                <Tr>
-                    <Th>No</Th>
-                    <Th>Item Name</Th>
-                    <Th>Color</Th>
-                    <Th>Size</Th>
-                    <Th>Qty</Th>
-                    <Th>Price</Th>
-                </Tr>
-                {
-                    oinputs.map((oinput, index) => (
-                        ecounting.map((ec, i) => (
-                            oinput.id == ec.counting_unit_id ?
-                        <Tr key={oinput.id}>
-                            <Td>{++index}</Td>
-                            <Td>{oinput.unit_name}</Td>
-                            <Td>{color[i]}</Td>
-                            <Td>{size[i]}</Td>
-                            <Td>{ec.quantity}</Td>
-                            <Td>{ec.price}</Td>
-                        </Tr> : null
-                    ))
-                    ))
-                }
-                
-                
-            </Table> 
-            } */}
-      <Button onClick={Orderlist} > Contuine to orderlist  </Button>
+                        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+                            <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                                <span className="w-2 h-8 bg-indigo-500 rounded-full mr-3"></span>
+                                Order Summary
+                            </h2>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center py-3 border-b border-indigo-100">
+                                    <span className="text-gray-600 font-medium">Order Number:</span>
+                                    <span className="text-gray-900 font-semibold">{order.order_code}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-indigo-100">
+                                    <span className="text-gray-600 font-medium">Total Quantity:</span>
+                                    <span className="text-gray-900 font-semibold">{order.total_quantity} items</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-indigo-100">
+                                    <span className="text-gray-600 font-medium">Total Amount:</span>
+                                    <span className="text-2xl font-bold text-indigo-600">${order.total_amount}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-indigo-100">
+                                    <span className="text-gray-600 font-medium">Payment Type:</span>
+                                    <span className="text-gray-900 font-semibold">{order.payment_type}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3 border-b border-indigo-100">
+                                    <span className="text-gray-600 font-medium">Payment Channel:</span>
+                                    <span className="text-gray-900 font-semibold">{order.payment_channel}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-3">
+                                    <span className="text-gray-600 font-medium">Status:</span>
+                                    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg capitalize">
+                                        {order.order_status}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-           
-        </Wrapper>
-        </Div>
-        <div>
+                    <div className="text-center mt-10">
+                        <button 
+                            onClick={Orderlist}
+                            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 hover:from-blue-700 hover:to-indigo-700"
+                        >
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                            Continue to Order List
+                        </button>
+                    </div>
+                </div>
+            </div>
             <Footer/>
         </div>
-        </div>
-        
-
     );
 
 }

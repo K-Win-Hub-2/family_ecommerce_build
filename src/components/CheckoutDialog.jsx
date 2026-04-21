@@ -15,6 +15,7 @@ import { resetProduct } from "../redux/cartRedux";
 import BankInfoDialog from "./BankInfoDialog";
 import PaidInfoDialog from "./PaidInfoDialog";
 import PaymentDialog from "./PaymentDialog";
+import { Diversity1 } from "@mui/icons-material";
 
 const Form = styled.form`
   display: flex;
@@ -27,13 +28,17 @@ const Title = styled.h1`
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 20px 10px 0px 0px;
+  margin: 5px 0;
   padding: 10px;
+  border: 1px solid #2f80a5;
+  border-radius: 10px;
+  outline: none;
 `;
 const Filter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
+  margin:5px 0;
 `;
 const Lable = styled.label`
   font-size: 15px;
@@ -63,6 +68,19 @@ const FilterSelect = styled.select`
 
 const FilterOption = styled.option``;
 
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #2f80a5;
+  border-radius: 10px;
+  outline: none;
+
+  &:focus {
+    border: 1px solid #1e5f7a;
+    box-shadow: 0 0 0 2px rgba(47, 128, 165, 0.2);
+  }
+`;
+
 export default function CheckoutDialog(props) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -75,18 +93,45 @@ export default function CheckoutDialog(props) {
   const [paymentchannel, setPaymentChannel] = useState("");
   const [remark, setRemark] = useState("");
   const navigate = useNavigate();
-  const [bank_id, setBankId] = useState("");
+  const [banks, setBanks] = useState([]);
+  const [bank_id, setBankId] = useState();
   const [screenshot, setShortenedImageBase64] = useState("");
 
   const url = useSelector((state) => state.user.url);
+  console.log("URL: ", url);
  
   
   const username = useSelector((state) => state.user);
  
 
   const cart = useSelector((state) => state.cart);
+  console.log("Cart: ", cart)
   const dispatch = useDispatch();
-  
+
+  // Fetch banks data
+  useEffect(() => {
+    if (!url) return;
+
+    axios
+      .get(url + "/api/bank/list")
+      .then((res) => {
+        setBanks(res.data.data || []);
+      })
+      .catch((err) => console.log(err));
+  }, [url]);
+
+  // Initialize form data from props when dialog opens
+  useEffect(() => {
+    if (props.open) {
+      setTownship(props.township || "");
+      setBankId(props.selectedBank || "");
+      setRemark(props.orderNotes || "");
+      setShortenedImageBase64(props.paymentScreenshot || "");
+      setDeliveryType(props.deliveryType || "pickup");
+      setShowTownshipInput(props.deliveryType === "township");
+      setAddress(props.address || username.address || "");
+    }
+  }, [props.open, props.township, props.selectedBank, props.orderNotes, props.paymentScreenshot, props.deliveryType, props.address, username.address]);
 
   console.log(name, phone, address, township, charges);
 
@@ -143,34 +188,83 @@ export default function CheckoutDialog(props) {
   };
   console.log('cart is the answer',cart);
 
+  // const orderSave = async () => {
+  //   try {
+  //     const response = await axios.post( url + "/api/ecommerce_order_store", {
+  //       id: username.id,
+  //       name: username.customer_name || username.name,
+  //       phone: username.phone,
+  //       address: username.address,
+  //       township: props.township || township,
+  //       pickup: deliveryType === "pickup" ? "pickup" : "",
+  //       charges: charges,
+  //       paymenttype: "2", // Prepaid Full
+  //       paymentchannel: "1", // Mobile Banking
+  //       remark: remark,
+  //       products: cart.products,
+  //       quantity: cart.total_pcs,
+  //       amount: cart.total,
+  //       screenshot: props.paymentScreenshot || screenshot,
+  //       bank_id: props.selectedBank || bank_id,
+  //     });
+  //     console.log("order data is", response);
+  //     dispatch(resetProduct());
+  //     navigate("/order_history");
+  //   } catch (error) {
+  //     console.error("Failed to store e-commerce order:", error.message);
+  //     alert("Failed to store e-commerce order. Please try again.");
+  //   }
+  // };
+
   const orderSave = async () => {
-    try {
-      const response = await axios.post(url + "/api/ecommerce_order_store", {
-        id: username.id,
-        name: username.customer_name,
-        phone: username.phone,
-        address: username.address,
-        township: township,
-        pickup: pickup,
-        charges: charges,
-        paymenttype: paymenttype,
-        paymentchannel: paymentchannel,
-        remark: remark,
-        products: cart.products,
-        quantity: cart.total_pcs,
-        // quantity: cart.quantity,
-        amount: cart.total,
-        screenshot: screenshot,
-        bank_id: bank_id,
-      });
-      console.log("order data is", response);
-      dispatch(resetProduct());
-      navigate("/order_history");
-    } catch (error) {
-      console.error("Failed to store e-commerce order:", error.message);
-      alert("Failed to store e-commerce order. Please try again.");
-    }
-  };
+  try {
+    const payload = {
+      id: username.id,
+      name: username.customer_name || username.name,
+      phone: username.phone,
+
+      // Delivery logic
+      address: deliveryType === "pickup" ? "" : address,
+      township: deliveryType === "pickup" ? "" : township,
+      pickup: deliveryType === "pickup" ? 1 : 0,
+
+      charges: charges || 0,
+
+      remark: remark || "",
+
+      products: cart.products.map((item) => ({
+        unitid: item.unitid,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+
+      quantity: cart.total_pcs,
+      amount: cart.total,
+
+      // Payment proof
+      screenshot: screenshot || props.paymentScreenshot || "",
+
+      // Bank
+      bank_id: bank_id || props.selectedBank ? Number(bank_id || props.selectedBank) : null,
+    };
+
+    console.log("Final Payload:", payload);
+
+    const response = await axios.post(
+      url + "/api/ecommerce_order_store",
+      payload
+    );
+
+    console.log("order data is", response);
+
+    dispatch(resetProduct());
+    navigate("/order_history");
+  } catch (error) {
+    console.error("Failed to store e-commerce order:", error.message);
+    alert("Failed to store e-commerce order. Please try again.");
+  }
+};
+
   const [showBankInfo, setshowBankInfo] = useState(false);
   const [showPaidInfo, setshowPaidInfo] = useState(false);
 
@@ -238,6 +332,7 @@ export default function CheckoutDialog(props) {
               name="name"
               placeholder="name"
               value={username.name}
+              readOnly
             />
             <label>Phone</label>
 
@@ -247,6 +342,7 @@ export default function CheckoutDialog(props) {
               name="phone"
               placeholder="phone"
               value={username.phone}
+              readOnly
             />
             <label>Address</label>
 
@@ -255,84 +351,40 @@ export default function CheckoutDialog(props) {
               id="address"
               name="address"
               placeholder="address"
-              value={username.address}
+              value={address}
+              readOnly
             />
 
             <Filter>
-              <DivF>
-                {/* <label>Bank Info</label> */}
-
-                {/* <Lable >Pickup</Lable>
-                            <Input  type="radio" name="pickup" value={pickup} id='r1' ></Input>
-                            <Lable >Township</Lable>
-                            <Input  type="radio" name="township" id='r2'></Input> */}
-                <label>Pickup</label>
-                <Radio
-                  type="radio"
-                  name="deliveryType"
-                  value="pickup"
-                  onChange={onDeliveryTypeChanged}
-                />
-
-                <label>Township</label>
-                <Radio
-                  type="radio"
-                  name="deliveryType"
-                  value="township"
-                  checked={showTownshipInput}
-                  onChange={onDeliveryTypeChanged}
-                />
-              </DivF>
+              <div>
+                <label>Delivery Type: <strong>{deliveryType === "pickup" ? "Pickup" : "Township"}</strong></label>
+              </div>
             </Filter>
             <Filter>
-              {deliveryType === "township" && (
-                <FilterSelect
-                  showTownshipInput={showTownshipInput}
-                  name="township"
-                  onChange={onTownshipChanged}
-                >
-                  <FilterOption>Select Township</FilterOption>
-                  {defaultTownships.map((township, index) => (
-                    <FilterOption key={index} value={township}>
-                      {township}
-                    </FilterOption>
-                  ))}
-                </FilterSelect>
+              {deliveryType === "township" && township && (
+                <div>
+                  <label>Selected Township: <strong>{township}</strong></label>
+                </div>
               )}
             </Filter>
             <Filter>
-              <FilterTitle>Payment Type</FilterTitle>
-              <FilterSelect value={paymenttype} onChange={onPaymentTypeChanged}>
-                <FilterOption>Select Payment Type</FilterOption>
-                <FilterOption value="2">Prepaid Full</FilterOption>
-              </FilterSelect>
-            </Filter>
-            <Filter>
-              <FilterTitle>Payment Channel</FilterTitle>
-              <FilterSelect
-                value={paymentchannel}
-                onChange={onPaymentChannelChanged}
-              >
-                <FilterOption>Select Payment Channel</FilterOption>
-                <FilterOption value="1">Mobile Banking</FilterOption>
-              </FilterSelect>
+              <label>
+                Payment: <strong>{props.selectedBankName || 'N/A'}</strong>
+              </label>
             </Filter>
 
-            {paymentchannel == "1" ? (
+            {props.paymentScreenshot && (
               <div>
-                <div>
-                  <label>Bank Info</label>
-                  <Input
-                    type="checkbox"
-                    value={bank_id ? bank_id : ""}
-                    onChange={bankInfo}
-                  />
-                </div>
+                <label>Payment Screenshot Uploaded</label>
+                <img 
+                  src={props.paymentScreenshot} 
+                  alt="Payment Screenshot" 
+                  style={{ maxWidth: '100%', height: 'auto', marginTop: '10px' }}
+                />
               </div>
-            ) : (
-              ""
             )}
-            <input type="file" onChange={handleFileChange} />
+
+            <label>Pay amount</label>
             <Input
               type="text"
               id="payamount"
@@ -340,12 +392,20 @@ export default function CheckoutDialog(props) {
               placeholder="Pay Amount"
               value={props.total}
             />
-            <Input
-              type="text"
-              id="remark"
-              name="remark"
-              placeholder="remark"
+            <label>Order Notes</label>
+            <TextArea
+              value={remark}
               onChange={onRemarkChanged}
+              placeholder="Add any additional notes..."
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #2f80a5',
+                borderRadius: '10px',
+                outline: 'none',
+                minHeight: '80px',
+                resize: 'vertical'
+              }}
             />
           </Form>
         </DialogContent>

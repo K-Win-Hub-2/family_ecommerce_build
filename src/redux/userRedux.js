@@ -11,8 +11,8 @@ const userSlice = createSlice({
         phone: '',
         address: '',
         email: '',
-         url:'http://familyuniformapp.medicalworld.com.mm',
-    //    url: 'http://127.0.0.1:8000',
+        //  url:'http://familyuniformapp.medicalworld.com.mm',
+       url: 'http://192.168.100.163:8000',
     // url: 'http://192.168.1.54:8000',
     },
     reducers: {
@@ -41,9 +41,12 @@ const userSlice = createSlice({
             state.phone = '';
             state.address = '';
             state.email = '';
+        },
+        setBaseUrl: (state, action) => {
+            state.url = action.payload;
         }
     }
 })
 
-export const{loginStart,loginSuccess,loginFailure,setUserInfo,LogoutProcess} = userSlice.actions
+export const{loginStart,loginSuccess,loginFailure,setUserInfo,LogoutProcess,setBaseUrl} = userSlice.actions
 export default userSlice.reducer;
