@@ -6,6 +6,7 @@ import axios from 'axios';
 import ColorNav from './ColorNav';
 import Footer from './Footer';
 import { useSelector} from 'react-redux'
+import Navbar from './Navbar';
 
 
 const OrderHistory = () => {
@@ -80,7 +81,7 @@ const OrderHistory = () => {
       }
     return (
         <div>
-            <ColorNav/>
+            <Navbar/>
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 pt-20">
                 <div className="container mx-auto px-4 py-8 max-w-6xl">
                     <div className="text-center mb-12">
@@ -146,11 +147,11 @@ const OrderHistory = () => {
                                 </div>
                                 <div className="flex justify-between items-center py-3 border-b border-indigo-100">
                                     <span className="text-gray-600 font-medium">Payment Type:</span>
-                                    <span className="text-gray-900 font-semibold">{order.payment_type}</span>
+                                    <span className="text-gray-900 font-semibold capitalize">{order.payment_type}</span>
                                 </div>
                                 <div className="flex justify-between items-center py-3 border-b border-indigo-100">
                                     <span className="text-gray-600 font-medium">Payment Channel:</span>
-                                    <span className="text-gray-900 font-semibold">{order.payment_channel}</span>
+                                    <span className="text-gray-900 font-semibold capitalize">{order.payment_channel}</span>
                                 </div>
                                 <div className="flex justify-between items-center py-3">
                                     <span className="text-gray-600 font-medium">Status:</span>

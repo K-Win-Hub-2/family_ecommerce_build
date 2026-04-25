@@ -192,12 +192,15 @@
 
 // export default Slider
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { mobile } from "../responsive";
-import banner from "../slider-images/banner.png";
-import wave from "../slider-images/home.png";
+import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
+import slider1 from "../slider-images/slider7.jpg";
+import slider2 from "../slider-images/slider5.jpg";
+import slider3 from "../slider-images/slider6.jpg";
+
 
 const slideText = keyframes`
   from {
@@ -230,7 +233,10 @@ const floatBlob = keyframes`
 const Container = styled.div`
   width: 100%;
   height: 95vh;
-  background: #f4f8fc;
+  background-image: url(${props => props.backgroundImage});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -239,20 +245,6 @@ const Container = styled.div`
   ${mobile({ display: "none" })}
 `;
 
-const DiagonalWave = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  line-height: 0;
-  z-index: 0;
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 500px;
-  }
-`;
 
 // const Blob = styled.div`
 //   position: absolute;
@@ -330,69 +322,136 @@ const Button = styled.button`
   }
 `;
 
-const ImgContainer = styled.div`
-  flex: 1;
+
+const DotsContainer = styled.div`
   position: absolute;
-  bottom: 10;
-  right: 80px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  align-items: flex-end;
+  gap: 12px;
+  z-index: 10;
 `;
 
-const Image = styled.img`
-  width: 900px;
-  height: 900px;
-  object-fit: contain;
-  z-index: 4;
-  animation: ${slideImage} 1.4s ease forwards;
-  transform: translateY(50px);
+const Dot = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: ${props => props.active ? "#156ea8" : "#ccc"};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.active ? "#156ea8" : "#999"};
+  }
 `;
+
+const Arrow = styled.div`
+  color: #78a8df;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    transform: translateY(-50%);
+  }
+
+  &:disabled:hover {
+    transform: translateY(-50%);
+  }
+
+  ${props => props.direction === 'left' ? 'left: 20px;' : 'right: 20px;'}
+`;
+
+const slides = [
+  {
+    id: 1,
+    image: slider1,
+    title: "Step into Style:",
+    subtitle: "Your Ultimate Fashion Destination",
+    description: "Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories."
+  },
+  {
+    id: 2,
+    image: slider2,
+    title: "Quality Products:",
+    subtitle: "Premium Uniforms & Accessories",
+    description: "Discover our extensive collection of high-quality uniforms and accessories designed for comfort and durability."
+  },
+  {
+    id: 3,
+    image: slider3,
+    title: "Professional Excellence:",
+    subtitle: "Trusted by Thousands",
+    description: "Join thousands of satisfied customers who rely on our premium products for their professional needs."
+  }
+];
 
 const Slider = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
 
   const productline = () => {
     navigate("/products");
   };
 
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <Container>
-      <DiagonalWave>
-        <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <path
-            fill="#156ea8"
-            d="
-              M0,260
-              C200,260 350,100 430,100
-              C550,100 650,240 720,240
-              C900,240 1150,60 1440,20
-              L1440,320
-              L0,320
-              Z
-            "
-          />
-        </svg>
-      </DiagonalWave>
+    <Container backgroundImage={slides[currentSlide].image}>
+      <Arrow direction="left" onClick={prevSlide}>
+        <IoMdArrowDropleftCircle />
+      </Arrow>
+      
+      <Arrow direction="right" onClick={nextSlide}>
+        <IoMdArrowDroprightCircle />
+      </Arrow>
 
       <Wrapper>
         <InfoContainer>
-          {/* <Badge>50% OFF Super Sale</Badge> */}
-
-          <Title>Step into Style:</Title>
-          <Subtitle>Your Ultimate Fashion Destination</Subtitle>
-
-          <Description>
-            Medical World Co., Ltd, founded in 2015, is a manufacturing and
-            distribution company of uniforms and accessories.
-          </Description>
-
-          <Button onClick={productline}>Shop Now →</Button>
+          <Title>{slides[currentSlide].title}</Title>
+          <Subtitle>{slides[currentSlide].subtitle}</Subtitle>
+          <Description>{slides[currentSlide].description}</Description>
+          {/* <Button onClick={productline}>Shop Now →</Button> */}
         </InfoContainer>
-
-        <ImgContainer>
-          <Image src={banner} alt="banner" />
-        </ImgContainer>
       </Wrapper>
+
+      <DotsContainer>
+        {slides.map((_, index) => (
+          <Dot
+            key={index}
+            active={index === currentSlide}
+            onClick={() => goToSlide(index)}
+          />
+        ))}
+      </DotsContainer>
     </Container>
   );
 };

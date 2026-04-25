@@ -291,6 +291,22 @@ const OrderList = () => {
   const url = useSelector((state) => state.user.url);
   const username = useSelector((state) => state.user);
   const customer_id = username.id;
+
+  const formatSize = (size) => {
+    const sizeMap = {
+      'xxl': 'XXL',
+      'xxlf': 'XXL',
+      'xl': 'XL',
+      'lg': 'L',
+      'md': 'M',
+      'sm': 'S',
+      'xs': 'XS',
+      'xxs': 'XXS'
+    };
+    
+    const lowercaseSize = size ? size.toLowerCase() : '';
+    return sizeMap[lowercaseSize] || size;
+  };
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -316,9 +332,9 @@ const OrderList = () => {
             id: order.id,
             code: order.order_code,
             orderDate: order.order_date,
-            productImage: null, // You can add product image if available in API
-            productName: order.customer_name || 'Order', // Adjust based on your API structure
-            size: '-', // Adjust based on your API structure
+            productImage: order.photo_path || null,
+            productName: order.item_name || 'Order',
+            size: formatSize(order.size_name) || '-',
             quantity: order.total_quantity,
             price: order.total_amount ? `${order.total_amount} MMK` : '0 MMK',
             // Keep original data for modal if needed
@@ -438,6 +454,9 @@ const OrderList = () => {
                 <TableRow>
                   <TableHeaderCell>Code</TableHeaderCell>
                   <TableHeaderCell>Order Date</TableHeaderCell>
+                  <TableHeaderCell>Product Image</TableHeaderCell>
+                  <TableHeaderCell>Product Name</TableHeaderCell>
+                  <TableHeaderCell>Size</TableHeaderCell>
                   <TableHeaderCell>Quantity</TableHeaderCell>
                   <TableHeaderCell>Price</TableHeaderCell>
                   <TableHeaderCell>Action</TableHeaderCell>
@@ -448,6 +467,18 @@ const OrderList = () => {
                   <TableRow key={order.id}>
                     <TableCell>{order.code}</TableCell>
                     <TableCell>{order.orderDate}</TableCell>
+                    <TableCell>
+                      <ProductImage 
+                        src={order.productImage ? url + '/ecommerce/items/' + order.productImage : DefaultImg} 
+                        alt={order.productName}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <ProductName>{order.productName}</ProductName>
+                    </TableCell>
+                    <TableCell>
+                      <Size>{order.size}</Size>
+                    </TableCell>
                     <TableCell>
                       <Quantity>{order.quantity}</Quantity>
                     </TableCell>
@@ -481,19 +512,19 @@ const OrderList = () => {
 
             <ModalBody>
               <ModalImage
-                src={selectedOrder.productImage || DefaultImg}
+                src={selectedOrder.productImage ? url + '/ecommerce/items/' + selectedOrder.productImage : DefaultImg}
               />
 
               <ModalDetails>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', paddingRight: '10px' }}>
-                  <h4 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>{"V-Neck" || selectedOrder.productName}</h4>
+                  <h4 style={{ margin: '5px 0', fontSize: '20px', fontWeight: '900' }}>{selectedOrder.productName}</h4>
                 </div>
                 <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}><b>Price:</b> {selectedOrder.price}</p>
-                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                {/* <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
                   <b>Product Code:</b> {selectedOrder.code}
-                </p>
+                </p> */}
                 <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
-                  <b>Size:</b> {"Medium" || selectedOrder.size}
+                  <b>Size:</b> {selectedOrder.size}
                 </p>
                 <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
                   <b>Quantity:</b> {selectedOrder.quantity}
@@ -517,10 +548,10 @@ const OrderList = () => {
                 
               </ModalDetails>
             </ModalBody>
-                        <p style={{ marginTop: "18px" }}>
+                        {/* <p style={{ marginTop: "18px" }}>
               Easy to clean—This uniform nurse set dependable, fade
               resistant, and washable making it comfortable.
-            </p>
+            </p> */}
           </ModalContent>
         </ModalOverlay>
       )}

@@ -102,6 +102,7 @@ export default function CheckoutDialog(props) {
  
   
   const username = useSelector((state) => state.user);
+  console.log("Username state: ", username);
  
 
   const cart = useSelector((state) => state.cart);
@@ -218,8 +219,12 @@ export default function CheckoutDialog(props) {
 
   const orderSave = async () => {
   try {
+    // Debug: Check if username.id exists
+    console.log("Username ID:", username.id);
+    console.log("Username object:", username);
+    
     const payload = {
-      id: username.id,
+      id: username.id || null, 
       name: username.customer_name || username.name,
       phone: username.phone,
 
@@ -410,7 +415,7 @@ export default function CheckoutDialog(props) {
           </Form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close}>Cancel</Button>
+          <Button onClick={props.close} className="bg-blue-500">Cancel</Button>
           <Button onClick={orderSave}>Save</Button>
         </DialogActions>
       </Dialog>

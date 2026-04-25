@@ -317,7 +317,6 @@ import { mobile } from "../responsive";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { resetSearch } from "../redux/designRedux";
-import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 import Navbar from "../components/Navbar";
 import Spinner from "../common/Spinner";
 
@@ -328,15 +327,39 @@ const Container = styled.div`
 
 const Title = styled.h2`
   margin: 20px;
-  margin-top: 80px;
+  margin-top: 100px;
   color: #0b6aa9;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 42px;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  padding-bottom: 15px;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translateX(50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #0b6aa9, #0b74b5);
+    border-radius: 2px;
+  }
+
+  ${mobile({
+    fontSize: "28px",
+    letterSpacing: "1px",
+    margin: "20px 10px",
+  })}
 `;
 
 const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
   gap: 10px;
   flex-wrap: wrap;
   margin: 20px;
@@ -355,24 +378,11 @@ const CategoryNavWrapper = styled.div`
   margin: 20px 0 30px;
 `;
 
-const CategoryScroll = styled.div`
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  width: 1100px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-`;
-
 const CategoryButtonWrap = styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
-  width: max-content;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
   transition: all 0.4s ease-in-out;
 `;
 
@@ -489,6 +499,108 @@ const EmptyText = styled.p`
   color: #666;
 `;
 
+const BrandSection = styled.div`
+  display: flex;
+  align-items: left;
+  gap: 40px;
+  margin: 20px auto;
+  padding: 40px;
+  background: #e2eef7;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  width: 1200px;
+  max-width: 100%;
+
+  ${mobile({
+    flexDirection: "column",
+    textAlign: "center",
+    padding: "30px 20px",
+    gap: "20px",
+    width: "100%",
+  })}
+`;
+
+const BrandLogo = styled.img`
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  ${mobile({
+    width: "120px",
+    height: "120px",
+    padding: "10px",
+  })}
+`;
+
+const BrandInfo = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const BrandName = styled.h3`
+  color: #0b74b5;
+  font-weight: 800;
+  margin-bottom: 10px;
+  font-size: 32px;
+  text-transform: capitalize;
+  line-height: 1.2;
+
+  ${mobile({
+    fontSize: "24px",
+  })}
+`;
+
+const BrandDescription = styled.div`
+  color: #4a5568;
+  font-size: 20px;
+  line-height: 1.8;
+  margin: 8px 0 0 0;
+  font-weight: 400;
+  max-width: 700px;
+  text-align: left;
+  letter-spacing: 0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  ul {
+    margin: 15px 0;
+    padding-left: 20px;
+  }
+
+  li {
+    margin: 10px 0;
+    list-style-type: disc;
+    list-style-position: outside;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  strong {
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  ${mobile({
+    fontSize: "14px",
+    lineHeight: "1.6",
+    maxWidth: "100%",
+  })}
+`;
+
 const ProductList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -502,6 +614,7 @@ const ProductList = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [categoryDetails, setCategoryDetails] = useState(null);
 
   useEffect(() => {
     getItems();
@@ -513,18 +626,17 @@ const ProductList = () => {
   homesearchitem();
 }, [hsearch]);
 
-  const categoryScrollRef = useRef(null);
-
-  const scrollCategories = (direction) => {
-    if (categoryScrollRef.current) {
-      const scrollAmount = 220;
-
-      categoryScrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+useEffect(() => {
+  // Set "Family Hospital" as default category when categories are loaded
+  if (cate.length > 0 && !selectedCategory) {
+    const familyHospital = cate.find(cat => cat.category_name === "family hospital");
+    if (familyHospital) {
+      setSelectedCategory(familyHospital);
+      getCategoryItems(familyHospital.id);
     }
-  };
+  }
+}, [cate, selectedCategory]);
+
 
   const homesearchitem = () => {
     if (hsearch === true && location.state?.itemsS) {
@@ -550,7 +662,12 @@ const ProductList = () => {
     axios
       .get(url + "/api/category_all")
       .then((response) => {
-        setCate(response.data || []);
+        const allCategories = response.data || [];
+        const targetCategories = ["family hospital", "branded", "ecofamily", "NICE", "Arfi Brand"];
+        const filteredCategories = allCategories.filter(cat => 
+          targetCategories.includes(cat.category_name)
+        );
+        setCate(filteredCategories);
       })
       .catch((err) => {
         console.log(err);
@@ -592,6 +709,22 @@ const ProductList = () => {
   }
 };
 
+const getCategoryItems = async (categoryId) => {
+  try {
+    setIsLoading(true);
+    
+    const response = await axios.get(url + "/api/category_all/" + categoryId);
+    setItems(response.data.items || []);
+    setSubCat(response.data.subs || []);
+    setCategoryDetails(response.data.category || null);
+    console.log(response.data.items);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
       const matchCategory = selectedCategory
@@ -609,7 +742,7 @@ const ProductList = () => {
   const groupedItems = useMemo(() => {
     const validSubcategories = selectedCategory
       ? subcat.filter((sub) => sub.category_name === selectedCategory.category_name)
-      : subcat;
+      : [];
 
     const filteredSubcategories = selectedSubcategory
       ? validSubcategories.filter((sub) => sub.id === Number(selectedSubcategory))
@@ -640,41 +773,34 @@ const ProductList = () => {
 
         <TopBar>
           <CategoryNavWrapper>
-            <ArrowButton onClick={() => scrollCategories("left")}>
-              <IoMdArrowDropleftCircle />
-            </ArrowButton>
+            <CategoryButtonWrap>
+              {/* <CategoryButton
+                active={selectedCategory === null}
+                onClick={() => {
+                  setSelectedCategory(null);
+                  setSelectedSubcategory("");
+                }}
+              >
+                All
+              </CategoryButton> */}
 
-            <CategoryScroll ref={categoryScrollRef}>
-              <CategoryButtonWrap>
+              {cate.map((ca) => (
                 <CategoryButton
-                  active={selectedCategory === null}
+                  key={ca.id}
+                  active={selectedCategory?.id === ca.id}
                   onClick={() => {
-                    setSelectedCategory(null);
+                    setSelectedCategory(ca);
                     setSelectedSubcategory("");
+                    getCategoryItems(ca.id);
                   }}
+                  className="capitalize"
                 >
-                  All
+                  {ca.category_name}
                 </CategoryButton>
+              ))}
 
-                {cate.map((ca) => (
-                  <CategoryButton
-                    key={ca.id}
-                    active={selectedCategory?.id === ca.id}
-                    onClick={() => {
-                      setSelectedCategory(ca);
-                      setSelectedSubcategory("");
-                    }}
-                    className="capitalize"
-                  >
-                    {ca.category_name}
-                  </CategoryButton>
-                ))}
-              </CategoryButtonWrap>
-            </CategoryScroll>
-
-            <ArrowButton onClick={() => scrollCategories("right")}>
-              <IoMdArrowDroprightCircle />
-            </ArrowButton>
+              
+            </CategoryButtonWrap>
           </CategoryNavWrapper>
 
           <SearchWrap>
@@ -689,7 +815,26 @@ const ProductList = () => {
           </SearchWrap>
         </TopBar>
 
-        {selectedCategory && (
+        {/* Brand Logo and Description */}
+        {categoryDetails && (
+          <BrandSection>
+            <BrandLogo 
+              // src={categoryDetails.photo_path ? `/feedImg/${categoryDetails.photo_path}` : '/feedImg/placeholder.png'}
+              src={url+`/ecommerce/brands/${categoryDetails.photo_path}`}
+              alt={categoryDetails.category_name}
+            />
+            <BrandInfo>
+              <BrandName>{categoryDetails.category_name}</BrandName>
+              <BrandDescription
+                dangerouslySetInnerHTML={{
+                  __html: categoryDetails.description || `Explore our premium ${categoryDetails.category_name} collection. Quality products designed for professionals who demand the best.`
+                }}
+              />
+            </BrandInfo>
+          </BrandSection>
+        )}
+
+        {selectedCategorySubcategories.length > 0 && (
           <SubcategoryWrap>
             <SubcategorySelect
               value={selectedSubcategory}
@@ -706,8 +851,6 @@ const ProductList = () => {
           </SubcategoryWrap>
         )}
       </Container>
-
-      
 
       <Container>
         {isLoading ? (

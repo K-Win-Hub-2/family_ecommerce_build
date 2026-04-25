@@ -12,6 +12,7 @@ import FacebookNewsFeed from '../components/FacebookNewsFeed';
 import PromotionPhoto from './PromotionPhoto';
 import Review from './Review';
 import NewItems from './NewItems'
+import HotItems from './HotItems'
 
 const Main = () => {
     
@@ -21,17 +22,17 @@ const Main = () => {
     <div>
         {/* <Announcement/> */}
         <Slider/>
-      {/* <ChatBot /> */}
+        {/* <ChatBot /> */}
+        <Categories/>
         
         {/* <PromotionPhoto/> */}
         <HomeItems title="Promotion Items" url="promotionitem_api"/>
         {/* <NewItems title="New Items" url="newitem_api"/> */}
        
-        {/* <HomeItems title="New Arrival" url="newitem_api"/> */}
+        <NewItems title="New Arrival" url="newitem_api"/>
         {/* <HomeItems title="Promotion Items" url="promotionitem_api"/> */}
-        {/* <HomeItems title="Hot Sale Items" url="hotsaleitem_api"/> */}
+        <HotItems title="Hot Sale Items" url="hotsaleitem_api"/>
         {/* <SeasonalDiscountNews/> */}
-        <Categories/>
         <Review/>
         <FacebookNewsFeed />
       

@@ -7,7 +7,7 @@ import { useSelector} from 'react-redux'
 const Container = styled.div`
 flex: 1;
 margin: 3px;
-height: 50vh;
+height: 30vh;
 position: relative;
 
     ${props => props.isLast && `
@@ -55,7 +55,7 @@ const Button = styled.button`
 const CategoryItem = ({item, isLast}) => {
     const url= useSelector(state => state.user.url);
   return (
-    <Container style={{maxHeight: '150px'}} isLast={isLast}>
+    <Container isLast={isLast}>
         {/* <Link to={`/products/${item.id}/${item.category_name}`}> */}
         <Image src={url+`/ecommerce/brands/${item.photo_path}`}/>
         {/* <Image src={`http://192.168.1.54:8000/ecommerce/brands/${item.photo_path}`} isLast={isLast}/> */}

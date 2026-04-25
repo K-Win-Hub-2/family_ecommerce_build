@@ -809,8 +809,8 @@ const SlideTrack = styled.div`
 `;
 
 const LogoBox = styled.div`
-  width: 140px;
-  height: 90px;
+  width: 250px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -819,7 +819,7 @@ const LogoBox = styled.div`
 `;
 
 const CImage = styled.img`
-  width: 100%;
+  width: 200px;
   height: 100%;
   object-fit: contain;
   opacity: 0.9;
@@ -857,7 +857,8 @@ const PLeft = styled.div`
 
 const MainImage = styled.img`
   width: 100%;
-  max-width: 500px;
+  max-width: 800px;
+  height: 500px;
   border-radius: 22px;
   border: 4px solid white;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -916,7 +917,7 @@ const Track = styled.div`
 `;
 
 const Button = styled.button`
-  color: #fff;
+  color: #2b57b8;
   border: none;
   font-size: 40px;
   cursor: pointer;
@@ -944,7 +945,7 @@ const BottomCurve = styled.img`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 390px;
+  height: 360px;
 
   z-index: 0;
   pointer-events: none;
@@ -957,6 +958,7 @@ const About = () => {
 
   const [factory, setFactory] = useState(false);
   const [selectedImage, setSelectedImage] = useState(pho7);
+  const [clientsExpanded, setClientsExpanded] = useState(false);
   const factoryImages = [
     pho1,
     pho2,
@@ -1018,6 +1020,13 @@ const About = () => {
   };
   const HideFactory = () => {
     setFactory(false);
+  };
+
+  const ShowAllClients = () => {
+    setClientsExpanded(true);
+  };
+  const HideAllClients = () => {
+    setClientsExpanded(false);
   };
 
   return (
@@ -1323,149 +1332,50 @@ const About = () => {
         </AContainer>
       </ASection>
 
-      {/* Clients */}
-      {/* <Section style={{padding: "50px 100px"}}>
-                <Wrapper>
-                <Title style={{textAlign: "center"}}>Our Clients</Title>
-                <DeepBox>
-                    <PBox style={{ marginBotton: "20px" }}>
-                    <SmallImgBoxP>
-                        <Image src={aryu} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                        <Image src={asiaRoyal} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                        <Image src={ssc} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                        <Image src={pinlon} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                        <Image src={grandHantha} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                        <Image src={osc} />
-                    </SmallImgBoxP>
-
-                    {partners ? (
-                <div>
-                  <PBox style={{ marginTop: "20px" }}>
-                    <SmallImgBoxP>
-                      <Image src={panhlaing} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={khaing} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={ami} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={asiaRoyal2} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={aungyadana} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={city} />
-                    </SmallImgBoxP>
-                  </PBox>
-                  <PBox style={{ marginTop: "20px" }}>
-                    <SmallImgBoxP>
-                      <Image src={dLux} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={dagonMedicare} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={hlaingTW} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={ingyinphyu} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={sos} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={eye} />
-                    </SmallImgBoxP>
-                  </PBox>
-                  <PBox style={{ marginTop: "20px" }}>
-                    <SmallImgBoxP>
-                      <Image src={kankaw} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={kembangan} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={khaing} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={mandalar} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={minipal} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={moeKaung} />
-                    </SmallImgBoxP>
-                  </PBox>
-                  <PBox style={{ marginTop: "20px" }}>
-                    <SmallImgBoxP>
-                      <Image src={victoria} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={shweLamin} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={shweYaung} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={tawwin} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={thuka} />
-                    </SmallImgBoxP>
-                    <SmallImgBoxP>
-                      <Image src={violin} />
-                    </SmallImgBoxP>
-                  </PBox>
-                </div>
-              ) : (
-                ""
-              )}
-            </PBox>
-            </DeepBox>
-            <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
-                {partners ? (
-                <ShowP onClick={HideAllPartners} style={{backgroundColor: "#32549b", color: "#ffffff", fontWeight: "bold"}}>Hide Clients</ShowP>
-                ) : (
-                <ShowP onClick={ShowAllPartners} style={{backgroundColor: "#32549b", color: "#ffffff", fontWeight: "bold"}}>Show All Clients</ShowP>
-                )}
-            </div>
-                </Wrapper>
-            </Section> */}
-
       {/* Client */}
       <Section style={{ padding: "30px 100px", overflow: "hidden" }}>
         <Wrapper>
           <Title style={{ textAlign: "center" }}>Our Clients</Title>
 
-          <Slider>
-            <SlideTrack>
-              {clientLogos.map((logo, index) => (
-                <LogoBox key={index}>
-                  <CImage src={logo} />
-                </LogoBox>
-              ))}
+          {clientsExpanded ? (
+            <DeepBox>
+              <PBox style={{ marginBottom: "20px" }}>
+                {clientLogos.map((logo, index) => (
+                  <SmallImgBoxP key={index} style={{ width: "200px", padding: "20px" }}>
+                    <Image src={logo} />
+                  </SmallImgBoxP>
+                ))}
+              </PBox>
+            </DeepBox>
+          ) : (
+            <Slider>
+              <SlideTrack>
+                {clientLogos.map((logo, index) => (
+                  <LogoBox key={index}>
+                    <CImage src={logo} />
+                  </LogoBox>
+                ))}
 
-              {clientLogos.map((logo, index) => (
-                <LogoBox key={`dup-${index}`}>
-                  <CImage src={logo} />
-                </LogoBox>
-              ))}
-            </SlideTrack>
-          </Slider>
+                {clientLogos.map((logo, index) => (
+                  <LogoBox key={`dup-${index}`}>
+                    <CImage src={logo} />
+                  </LogoBox>
+                ))}
+              </SlideTrack>
+            </Slider>
+          )}
+
+          <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "30px" }}>
+            {clientsExpanded ? (
+              <ShowP onClick={HideAllClients} style={{ backgroundColor: "#32549b", color: "#ffffff", fontWeight: "bold", padding: "10px 20px" }}>
+                Hide All Clients
+              </ShowP>
+            ) : (
+              <ShowP onClick={ShowAllClients} style={{ backgroundColor: "#32549b", color: "#ffffff", fontWeight: "bold", padding: "10px 20px" }}>
+                Show All Clients
+              </ShowP>
+            )}
+          </div>
         </Wrapper>
       </Section>
 

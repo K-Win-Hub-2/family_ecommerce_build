@@ -21,8 +21,8 @@ const SectionTitle = styled.span`
     margin-top: 20px;
     font-weight: bold;
     font-size:30px;
-    // margin-left: 20px;
-    text-align: center;
+    margin-left: 20px;
+    text-align: left;
     color: #2b57b8;
     ${mobile({fontSize: "14px"})}
 `

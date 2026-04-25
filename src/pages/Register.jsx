@@ -138,7 +138,7 @@ const Button = styled.button`
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  margin-top: 10px;
+  margin-top: 20px;
 
   &:hover {
     background: #2563eb;
@@ -192,13 +192,14 @@ const Register = () => {
   const onRegisterClicked = (e) => {
     e.preventDefault();
     const res = axios
-      // .post("http://familyuniformapp.medicalworld.com.mm/api/register", {
-      .post("http://192.168.100.163:8000/api/register", {
+      .post("http://familyuniformapp.medicalworld.com.mm/api/register", {
+      // .post("http://192.168.100.163:8000/api/register", {
         username: name,
         dob: dob,
         email: email,
         phone: phone,
         password: password,
+        address: address,
       })
       .then(function (response) {
         if (response.data.status === "422") {
@@ -319,6 +320,15 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Label>Address</Label>
+                <Input
+                  placeholder="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                 />
               </FormGroup>
 

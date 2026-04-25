@@ -74,14 +74,12 @@ const OldPrice = styled.span`
 const Discount = styled.span`
   background: red;
   color: white;
-  padding: 3px 10px;
+  padding: 5px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 16px;
 `;
 
 const ButtonRow = styled.div`
-  display: flex;
-  gap: 10px;
   margin-top: 10px;
 `;
 
@@ -109,7 +107,7 @@ const HeartIcon = styled.div`
   position: absolute;
   top: 12px;
   right: 12px;
-  background: #7ac943;
+//   background: #7ac943;
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -260,7 +258,7 @@ const Item = ({ item, title }) => {
         <Card>
 
             <HeartIcon>
-                <FavoriteBorderIcon />
+                <Discount>{item.discount_price}%</Discount>
             </HeartIcon>
 
             <ImageSection>
@@ -283,14 +281,15 @@ const Item = ({ item, title }) => {
                 {promoprice && (
                     <>
                     <OldPrice>${orderprice}</OldPrice>
-                    <Discount>-{item.discount_price}%</Discount>
                     </>
                 )}
                 </PriceRow>
 
                 <ButtonRow>
-                <CartBtn>Add to Cart</CartBtn>
-                <BuyBtn>Buy Now</BuyBtn>
+                {/* <CartBtn>Add to Cart</CartBtn> */}
+                <Link to={`/product/${item.id}`} style={{ textDecoration: 'none', width: '100%', display: 'block' }}>
+                    <BuyBtn style={{ width: '100%' }}>Add to Cart</BuyBtn>
+                </Link>
                 </ButtonRow>
             </Content>
 

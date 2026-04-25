@@ -1225,10 +1225,10 @@ const Product = () => {
     };
 
     const handleClick = () => {
-        if (!selectedSize || !selectedColor || !selectedFabric || !selectedGender) {
+        if (!selectedSize || !selectedColor || !selectedGender) {
         Swal.fire({
             title: "Please select options",
-            text: "Choose gender, fabric, color and size first.",
+            text: "Choose gender, color and size first.",
             icon: "warning",
         });
         return;
@@ -1316,22 +1316,37 @@ const Product = () => {
     const availableGenders = [...new Set(units.map((unit) => unit.gender_name))];
 
     const choosegen = (gender) => {
-        setSelectedGender(gender);
+    setSelectedGender(gender);
 
-        const filtered = allUnits.filter((unit) => unit.gender_name === gender);
-        setFilteredUnits(filtered);
+    const filtered = allUnits.filter(
+        (unit) => unit.gender_name === gender
+    );
 
-        const fabrics = [...new Set(filtered.map((unit) => unit.fabric_name))];
-        setFilteredFabrics(fabrics);
+    setFilteredUnits(filtered);
 
-        setSelectedFabric(null);
-        setSelectedColor(null);
-        setSelectedSize(null);
-        setFilteredColors([]);
-        setFilteredSizes([]);
-        setPrice(0);
-        setStock(0);
-    };
+    
+    const uniqueColors = [
+        ...new Map(
+            filtered.map((unit) => [
+                unit.colour_name,
+                {
+                    colour_name: unit.colour_name,
+                    colour_description:
+                        unit.colour_description || unit.colour_name,
+                },
+            ])
+        ).values(),
+    ];
+
+    setFilteredColors(uniqueColors);
+
+    // reset
+    setSelectedColor(null);
+    setSelectedSize(null);
+    setFilteredSizes([]);
+    setPrice(0);
+    setStock(0);
+};
 
     const ChangeFabric = (fabricName) => {
         setSelectedFabric(fabricName);
@@ -1365,25 +1380,24 @@ const Product = () => {
     };
 
     const handleColorChange = (colorObj) => {
-        setSelectedColor(colorObj.colour_name);
-        setColor(colorObj.colour_name);
+    setSelectedColor(colorObj.colour_name);
+    setColor(colorObj.colour_name);
 
-        const filtered = allUnits.filter(
+    const filtered = allUnits.filter(
         (unit) =>
             unit.gender_name === selectedGender &&
-            unit.fabric_name === selectedFabric &&
             unit.colour_name === colorObj.colour_name
-        );
+    );
 
-        setPrimaryStoreUnit(filtered);
+    setPrimaryStoreUnit(filtered);
 
-        const sizes = [...new Set(filtered.map((unit) => unit.size_name))];
-        setFilteredSizes(sizes);
+    const sizes = [...new Set(filtered.map((unit) => unit.size_name))];
+    setFilteredSizes(sizes);
 
-        setSelectedSize(null);
-        setPrice(0);
-        setStock(0);
-    };
+    setSelectedSize(null);
+    setPrice(0);
+    setStock(0);
+};
 
     const handleSizeChange = (sizeName) => {
         const filtered = primaryStoreUnit.filter((unit) => unit.size_name === sizeName);
@@ -1538,9 +1552,11 @@ const Product = () => {
             <ProductTitle>{item.item_name}</ProductTitle>
 
             <ProductMeta>
+                {/* {selectedFabric && (
                 <div>
                   <BoldText>Fabric</BoldText> — {displayFabric}
                 </div>
+                )} */}
                 {/* <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <BoldText>Colours</BoldText> —
 
@@ -1620,24 +1636,8 @@ const Product = () => {
                 )}
             </SizeRow>
 
-            <Divider />
-
-            <SectionTitle>Fabric</SectionTitle>
-            <SizeRow>
-                {filteredFabrics.map((fab, index) => (
-                <SizeBox
-                    key={index}
-                    selected={selectedFabric === fab}
-                    onClick={() => ChangeFabric(fab)}
-                >
-                    {fab}
-                </SizeBox>
-                ))}
-            </SizeRow>
-
-            <Divider />
-
-            <SectionTitle>Color</SectionTitle>
+            
+            {/* <SectionTitle>Color</SectionTitle>
             <ColorRow>
                 {filteredColors.map((col, index) => (
                 <ColorCircle
@@ -1648,7 +1648,23 @@ const Product = () => {
                     title={col.colour_description}
                 />
                 ))}
-            </ColorRow>
+            </ColorRow> */}
+
+            {selectedGender && (
+              <>
+                <SectionTitle>Color</SectionTitle>
+                <ColorRow>
+                  {filteredColors.map((col, index) => (
+                    <ColorCircle
+                      key={index}
+                      bg={getColorCode(col.colour_description)}
+                      selected={selectedColor === col.colour_name}
+                      onClick={() => handleColorChange(col)}
+                    />
+                  ))}
+                </ColorRow>
+              </>
+            )}
 
             <SmallText>
                 Selected color -{" "}
@@ -1696,7 +1712,7 @@ const Product = () => {
                 {instockFlag == 1 ? (
                     <AddCartButton onClick={handleClick}>Add to cart</AddCartButton>
                     ) : (
-                    <AddCartButton as="div" style={{ opacity: 0.6, cursor: "not-allowed" }}>
+                    <AddCartButton style={{ opacity: 0.6, cursor: "not-allowed" }}>
                         Stock Unavailable
                     </AddCartButton>
                 )}
@@ -1708,7 +1724,7 @@ const Product = () => {
 
             </CartRow>
 
-            <ActionRow>
+            {/* <ActionRow>
                 {preorderFlag == 1 ? (
                 <Link to={`/order/${item.item_name}`} state={{ units }}>
                     <OutlineButton>Make Order</OutlineButton>
@@ -1717,14 +1733,14 @@ const Product = () => {
                 <OutlineButton as="div">Preorder Unavailable</OutlineButton>
                 )}
 
-                {/* <OutlineButton onClick={() => setCheckSize(true)}>
+                <OutlineButton onClick={() => setCheckSize(true)}>
                 Check Size
-                </OutlineButton> */}
+                </OutlineButton>
             </ActionRow>
 
             <DownloadPdf href={sample} download>
                 Download Catalog
-            </DownloadPdf>
+            </DownloadPdf> */}
 
             {relatedpants && relatedpants.id && (
                 <div style={{ marginTop: "30px" }}>

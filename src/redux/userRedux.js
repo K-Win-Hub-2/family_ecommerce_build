@@ -11,8 +11,8 @@ const userSlice = createSlice({
         phone: '',
         address: '',
         email: '',
-        //  url:'http://familyuniformapp.medicalworld.com.mm',
-       url: 'http://192.168.100.163:8000',
+         url:'http://familyuniformapp.medicalworld.com.mm',
+    //    url: 'http://192.168.100.163:8000',
     // url: 'http://192.168.1.54:8000',
     },
     reducers: {
