@@ -7,9 +7,9 @@ import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 import YoutubeSlider from "../components/YoutubeSlider";
 
-import profile from "../slider-images/about.png";
+import profile from "../slider-images/about1.jpg";
 import client from "../slider-images/human.jpg";
-import group from "../slider-images/aboutgp.jpg";
+import group from "../slider-images/about.jpg";
 import board1 from "../slider-images/UWinKoKo.png";
 import board2 from "../slider-images/DawKhinSandarKo.png";
 import board3 from "../slider-images/UHtetAung.png";
@@ -123,6 +123,12 @@ const Hero = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 80px 100px 40px 100px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 30px;
+  }
 `;
 
 const slideText = keyframes`
@@ -150,12 +156,22 @@ const slideImage = keyframes`
 const Left = styled.div`
   flex: 1;
   animation: ${slideText} 1.2s ease forwards;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const HeroTitle = styled.h1`
   font-size: 60px;
   font-weight: 700;
   color: #2b57b8;
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+    line-height: 1.3;
+  }
 `;
 
 const HeroDesc = styled.p`
@@ -164,6 +180,12 @@ const HeroDesc = styled.p`
   color: #555;
   line-height: 28px;
   max-width: 500px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 100%;
+  }
 `;
 
 const DoctorWrapper = styled.div`
@@ -173,6 +195,11 @@ const DoctorWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const DoctorCard = styled.div`
@@ -182,6 +209,10 @@ const DoctorCard = styled.div`
   border-radius: 25px;
   animation: ${slideImage} 1.4s ease forwards;
   transform: translateY(50px);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const DoctorImage = styled.img`
@@ -193,6 +224,13 @@ const DoctorImage = styled.img`
   z-index: 2;
   animation: ${slideImage} 1.4s ease forwards;
   transform: translateY(50px);
+
+  @media (max-width: 768px) {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    transform: translateY(0);
+  }
 `;
 
 const Right = styled.div`
@@ -200,6 +238,10 @@ const Right = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const ClientBadge = styled.div`
@@ -215,6 +257,10 @@ const ClientBadge = styled.div`
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   animation: ${slideImage} 1.4s ease forwards;
   transform: translateY(50px);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ClientWrapper = styled.div`
@@ -254,7 +300,11 @@ const ContentSection = styled.div`
   padding: 140px 100px 80px 100px;
   color: white;
   overflow: hidden;
-  // background: #156ea8; /* fallback color */
+
+  @media (max-width: 768px) {
+    padding: 60px 20px;
+    background: #1c6ea4;
+  }
 `;
 
 const AboutWave = styled.img`
@@ -263,18 +313,25 @@ const AboutWave = styled.img`
   left: 0;
   width: 100%;
   height: 900px;
-
   z-index: 0;
   pointer-events: none;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ContentFlex = styled.div`
   position: relative;
   z-index: 2;
-
   display: flex;
   align-items: center;
   gap: 60px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 const ImageCard = styled.div`
@@ -288,10 +345,25 @@ const ImageCard = styled.div`
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     object-fit: cover;
   }
+
+  @media (max-width: 768px) {
+    margin-top: 0;
+    width: 100%;
+
+    img {
+      max-width: 100%;
+      border-radius: 20px;
+    }
+  }
 `;
 
 const TextBox = styled.div`
   flex: 1;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const Flex = styled.div`
@@ -303,11 +375,20 @@ const Flex = styled.div`
 const ContentTitle = styled.h2`
   font-size: 60px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
 `;
 
 const Description = styled.p`
   font-size: 25px;
   line-height: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 1.6;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -953,12 +1034,23 @@ const BottomCurve = styled.img`
 `;
 
 const About = () => {
-  const [partners, setPartners] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const url = useSelector((state) => state.user.url);
 
   const [factory, setFactory] = useState(false);
   const [selectedImage, setSelectedImage] = useState(pho7);
   const [clientsExpanded, setClientsExpanded] = useState(false);
+  const [partners, setPartners] = useState(false);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   const factoryImages = [
     pho1,
     pho2,
@@ -1057,25 +1149,12 @@ const About = () => {
             <Right>
               <DoctorWrapper>
                 <DoctorImage src={profile} alt="doctor" />
-
-                <DoctorCard />
-
-                <ClientBadge>
-                  <h4>250+ Satisfied Clients</h4>
-
-                  <ClientWrapper>
-                    <ClientImage src={client} alt="client" />
-                    <ClientImage src={client} alt="client" />
-                    <ClientImage src={client} alt="client" />
-                    <ClientImage src={client} alt="client" />
-                  </ClientWrapper>
-                </ClientBadge>
               </DoctorWrapper>
             </Right>
           </Hero>
 
           <ContentSection>
-            <AboutWave src={about} />
+            {!isMobile && <AboutWave src={about} />}
 
             <ContentFlex>
               <ImageCard>
@@ -1111,16 +1190,16 @@ const About = () => {
               <IconBox>
                 <FaBullseye />
               </IconBox>
-              <CardTitle>Mission</CardTitle>
-              <CardText>Quality is our Virtue.</CardText>
+              <CardTitle>Vision</CardTitle>
+              <CardText>Flexibility and Responsibilities.</CardText>
             </Card>
 
             <ActiveCard>
               <IconBoxWhite>
                 <FaEye />
               </IconBoxWhite>
-              <CardTitleWhite>Vision</CardTitleWhite>
-              <CardTextWhite>Flexibility and Responsibilities.</CardTextWhite>
+              <CardTitleWhite>Mission</CardTitleWhite>
+              <CardTextWhite>Quality is our Virtue.</CardTextWhite>
             </ActiveCard>
 
             <Card>
@@ -1162,7 +1241,7 @@ const About = () => {
             <DirectorCard>
               <ImageBox src={board2} />
               <InfoBox>
-                <Name>Daw Khin Sandar KO</Name>
+                <Name>Daw Khin Sandar Ko</Name>
                 <Role>Chief Executive Officer</Role>
               </InfoBox>
             </DirectorCard>

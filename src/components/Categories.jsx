@@ -24,7 +24,7 @@ const SectionTitle = styled.span`
     margin-left: 20px;
     text-align: left;
     color: #2b57b8;
-    ${mobile({fontSize: "14px"})}
+    ${mobile({fontSize: "20px"})}
 `
 
 const Categories = () => {

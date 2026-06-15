@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import family from '../feedImg/family.jpg'
-import brandedms from '../feedImg/brandedms.jpg'
-import wcoat from '../feedImg/wcoat.jpg'
-import shoe from '../feedImg/shoe.jpg'
 import axios from 'axios'
-import { DataObjectTwoTone } from '@mui/icons-material'
 import { useSelector} from 'react-redux'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 const Container = styled.div`
     width: 100%;
     height: auto;
-    // padding: 20px;
     margin-top: 40px;
-    margin-bottom: 40px;`
+    margin-bottom: 40px;
+`
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -22,6 +17,11 @@ const HeaderContainer = styled.div`
   align-items: center;
   margin-bottom: 20px;
   padding: 0 20px;
+  
+  @media (max-width: 768px) {
+    padding: 0 10px;
+    margin-bottom: 15px;
+  }
 `;
 
 const ArrowButton = styled.button`
@@ -45,6 +45,11 @@ const ArrowButton = styled.button`
     background: #ccc;
     cursor: not-allowed;
   }
+  
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const FeedBox = styled.div`
@@ -54,33 +59,193 @@ const FeedBox = styled.div`
     padding: 20px;
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
+    
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
 `
 
 const ItemsWrapper = styled.div`
   display: flex;
   gap: 20px;
   transition: transform 0.3s ease;
+  
+  @media (max-width: 768px) {
+    gap: 15px;
+  }
 `;
 
 const ItemContainer = styled.div`
-  flex: 0 0 500px;
-  min-width: 500px;
+  flex: 0 0 350px;
+  min-width: 350px;
+
+  @media (max-width: 992px) {
+    flex: 0 0 300px;
+    min-width: 300px;
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 50%;
+    min-width: 50%;
+    max-width: 350px;
+  }
 `;
+
 const SectionTitle = styled.h2`
     font-weight: bold;
-    font-size:30px;
+    font-size: 30px;
     margin-left: 10px;
     text-align: left;
     color: #2b57b8;
+    
+    @media (max-width: 768px) {
+        font-size: 22px;
+        margin-left: 5px;
+    }
 `
 
+const Card = styled.div`
+  width: 100%;
+  border: 2px solid #2b57b8;
+  border-radius: 20px;
+  background: white;
+  overflow: hidden;
+  transition: 0.3s;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
   
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  
+  @media (max-width: 768px) {
+    height: 520px;
+  }
+`;
+
+const CardImage = styled.div`
+  max-height: 200px;
+  min-height: 200px;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    max-height: 180px;
+    min-height: 180px;
+  }
+`;
+
+const CardBody = styled.div`
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+`;
+
+const CardTitle = styled.h4`
+  color: #2b57b8;
+  font-weight: bold;
+  margin: 0 0 15px 0;
+  font-size: 22px;
+  flex-shrink: 0;
+  
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+const CardTextContainer = styled.div`
+  font-size: 14px;
+  color: #3a3a3a;
+  line-height: 1.6;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding-right: 5px;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #2b57b8;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #1e4098;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+`;
+
+const CardButton = styled.a`
+  background-color: #2b57b8;
+  color: #fff;
+  border-radius: 20px;
+  padding: 10px 25px;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 500;
+  transition: background 0.3s;
+  flex-shrink: 0;
+  align-self: flex-start;
+  
+  &:hover {
+    background: #1e4098;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+`;
 
 const FacebookNewsFeed = () => {
-
-    const [products,setProducts] =  useState([]);
+    const [products, setProducts] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const url= useSelector(state => state.user.url);
+    const [containerWidth, setContainerWidth] = useState(350);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const feedBoxRef = useRef(null);
+    const url = useSelector(state => state.user.url);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+            if (feedBoxRef.current) {
+                const width = feedBoxRef.current.offsetWidth;
+                setContainerWidth(width);
+            }
+        };
+        
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const scrollLeft = () => {
         if (currentIndex > 0) {
@@ -89,22 +254,22 @@ const FacebookNewsFeed = () => {
     };
 
     const scrollRight = () => {
-        if (currentIndex < products.length - 1) {
+        const visibleItems = isMobile ? 1 : 3;
+        if (currentIndex < products.length - visibleItems) {
             setCurrentIndex(currentIndex + 1);
         }
     };
   
-    useEffect(()=>{
-      const getProducts = async () =>{
-        try{
-          const res = await axios.get(url+`/api/facebook`);
+    useEffect(() => {
+      const getProducts = async () => {
+        try {
+          const res = await axios.get(url + `/api/facebook`);
           console.log(res.data);
           setProducts(res.data);
-        }catch(err){}
+        } catch(err) {}
       };
       getProducts();
-      
-    },[]);
+    }, [url]);
 
     return (
         <Container>
@@ -112,63 +277,36 @@ const FacebookNewsFeed = () => {
                 <SectionTitle>Facebook Newsfeed</SectionTitle>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <ArrowButton onClick={scrollLeft} disabled={currentIndex === 0}>
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={isMobile ? 16 : 20} />
                     </ArrowButton>
-                    <ArrowButton onClick={scrollRight} disabled={currentIndex === products.length - 3}>
-                        <ArrowRight size={20} />
+                    <ArrowButton onClick={scrollRight} disabled={currentIndex >= products.length - (isMobile ? 1 : 3)}>
+                        <ArrowRight size={isMobile ? 16 : 20} />
                     </ArrowButton>
                 </div>
             </HeaderContainer>
-            <FeedBox>
-                <ItemsWrapper style={{ transform: `translateX(-${currentIndex * 420}px)` }}>
+            <FeedBox ref={feedBoxRef}>
+                <ItemsWrapper style={{ transform: `translateX(-${currentIndex * (isMobile ? containerWidth : 370)}px)` }}>
                     {
-                        products.map((el)=>(
+                        products.map((el) => (
                             <ItemContainer key={el.id}>
-                                <div className="card" style={{width: '100%',border:'2px solid #2b57b8',borderRadius:"20px"}}>
-                                    <div style={{maxHeight: '200px',minHeight: '200px',borderRadius:'20px', overflow: 'hidden'}}>
-                                        <img src={url+'/facebook_images/'+el.facebook_photo} class="card-img-top" alt="..." />
-                                    </div>
-                                    <div className="card-body" style={{position: 'relative', minHeight: '230px'}}>
-                                        <h4 className="card-title" style={{color:"#2b57b8", fontWeight:"bold"}}>{el.facebook_title}</h4>
-                                        <p className="card-text">{el.facebook_description}</p>
-                                        <a href={el.facebook_link} className="btn" style={{position: "absolute", bottom: "15px",backgroundColor:"#2b57b8",color:"#fff",borderRadius:"20px"}}>See In Facebook</a>
-                                    </div>
-                                </div>
+                                <Card>
+                                    <CardImage>
+                                        <img src={url + '/facebook_images/' + el.facebook_photo} alt="Facebook post" />
+                                    </CardImage>
+                                    <CardBody>
+                                        <CardTitle>{el.facebook_title}</CardTitle>
+                                        <CardTextContainer>
+                                            <div dangerouslySetInnerHTML={{ __html: el.facebook_description }} />
+                                        </CardTextContainer>
+                                        <CardButton href={el.facebook_link} target="_blank" rel="noopener noreferrer">
+                                            See In Facebook
+                                        </CardButton>
+                                    </CardBody>
+                                </Card>
                             </ItemContainer>
                         ))
                     }
                 </ItemsWrapper>
-             
-            {/* <div className="card" style={{width: '25%', marginLeft:'20px'}}>
-                <div style={{maxHeight: '200px',minHeight: '200px', overflow: 'hidden'}}>
-                    <img src={brandedms} class="card-img-top" alt="..."></img>
-                </div>
-                <div className="card-body" style={{position: 'relative'}}>
-                    <h5 className="card-title">Branded Medical Scrub</h5>
-                    <p className="card-text">နိုင်ငံတကာအဆင့်မှီ အရည်အသွေးမြင့် Medical Scrub ကို ပြည်တွင်းမှာပဲ အလွယ်တကူ ဝယ်လို့ရနေပါပြီ၊၊</p>
-                    <a href="https://www.facebook.com/471460249710870/posts/pfbid02y1XXaJSyf19iFi4UrgaCENjxH2QG1Tb3SJzSyj5rdwzk1DUptfxHpK3ZVue6Y8unl/?mibextid=dDOYBg" className="btn btn-primary" style={{position: "absolute", bottom: "15px"}}>See In Facebook</a>
-                </div>
-            </div>
-            <div className="card" style={{width: '25%', marginLeft:'20px'}}>
-                <div style={{maxHeight: '200px',minHeight: '200px', overflow: 'hidden'}}>
-                    <img src={wcoat} class="card-img-top" alt="..." style={{minHeight: '200px'}}></img>
-                </div>
-                <div className="card-body" style={{position: 'relative'}}>
-                    <h5 className="card-title">Branded Doctor Coat</h5>
-                    <p className="card-text">White Coat ထဲက International Premium Coat ကိုသာ ၀ယ်ယူချင်ပါတယ်ဆိုရင်တော့ Medical_World_Showroom ကို လာရောက်လေ့လာဖို့ ဖိတ်ခေါ်ချင်ပါတယ်၊၊</p>
-                    <a href="https://www.facebook.com/471460249710870/posts/pfbid0W8E6o4t7fdJ1J5f8iFHLThe1M2hrnFNyygKuuqKyorTUo8hFR3BR8zG6NnLe4E99l/?mibextid=dDOYBg" className="btn btn-primary" style={{position: "absolute", bottom: "15px"}}>See In Facebook</a>
-                </div>
-            </div>
-            <div className="card" style={{width: '25%', marginLeft:'20px'}}>
-                <div style={{maxHeight: '200px',minHeight: '200px', overflow: 'hidden'}}>
-                    <img src={shoe} class="card-img-top" alt="..."></img>
-                </div>
-                <div className="card-body" style={{position: 'relative'}}>
-                    <h5 className="card-title">Family Medical Shoes</h5>
-                    <p className="card-text"> Family Medical Shoes လေးနဲ့ဆို ခြေလှမ်းတိုင်းကပေါ့ပါးပြီး ကြာလှပါချည်ရဲ့ဆိုတဲ့ ဂျူတီချိန်တောင် ဘယ်လိုကုန်သွားလဲ သိမှာမဟုတ်ဘူးနော်။</p>
-                    <a href="https://www.facebook.com/471460249710870/posts/pfbid02eN8R3V4cwWfCXmbuvRHkNrZSi6dyBLNomQqKnGGxrcizK6RkZwYKoBkSG7iQScsCl/?mibextid=dDOYBg" className="btn btn-primary" style={{position: "absolute", bottom: "15px"}}>See In Facebook</a>
-                </div>
-            </div> */}
             </FeedBox>
         </Container>
     )
