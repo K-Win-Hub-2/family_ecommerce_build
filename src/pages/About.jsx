@@ -52,36 +52,49 @@ import factoryV from "../files/factory.mp4";
 import about from "../slider-images/aboutus.png";
 import aboutFactory from "../slider-images/factory.png";
 
-import aryu from "../files/p_logo/aryu_international_hospital.png";
-import asiaRoyal from "../files/p_logo/asia_royal.jpg";
-import grandHantha from "../files/p_logo/grand_hantha_international.png";
+import aryu from "../files/new_logo/Aryu Hopsital.png";
+import asiaRoyal from "../files/new_logo/Asia Royal Photo.png";
+import grandHantha from "../files/new_logo/Grand Hantha Hospital.png";
 import moh from "../files/p_logo/ministry_of_health.jpg";
-import pinlon from "../files/p_logo/pinlon_group_of_hospitality.png";
-import victoria from "../files/p_logo/victoria_hospital.png";
-import panhlaing from "../files/p_logo/punhlaing_hospital.jpg";
-import ssc from "../files/p_logo/ssc_hospital.png";
-import ami from "../files/p_logo/ami_life.jpg";
-import asiaRoyal2 from "../files/p_logo/asia_royal_2.jpg";
-import aungyadana from "../files/p_logo/aung_yadana_hospital.jpg";
-import city from "../files/p_logo/city_hospital.png";
-import dLux from "../files/p_logo/d_lux_dental_clinic.jpg";
-import dagonMedicare from "../files/p_logo/dagon_medicare_hospital.jpg";
-import hlaingTW from "../files/p_logo/hlaing_taw_win.jpg";
-import ingyinphyu from "../files/p_logo/ingyinphyu_dental_clinic.jpg";
-import sos from "../files/p_logo/international_sos.jpg";
-import eye from "../files/p_logo/international_specialist_eye_centre.png";
-import kankaw from "../files/p_logo/kankaw_hospital.jpg";
-import kembangan from "../files/p_logo/kembangan_general_hospital.jpg";
-import khaing from "../files/p_logo/khaing_yadanar_hospital.jpg";
-import mandalar from "../files/p_logo/mandalar_hospital.png";
-import minipal from "../files/p_logo/manipal_sml.jpg";
-import moeKaung from "../files/p_logo/moe_kaung_treasure.jpg";
-import osc from "../files/p_logo/osc_hospital.png";
-import shweLamin from "../files/p_logo/shwe_lamin_hospital.jpg";
-import shweYaung from "../files/p_logo/shwe_yaung_lin_hospital.jpg";
-import tawwin from "../files/p_logo/tawwin_malikha_hospital.jpg";
-import thuka from "../files/p_logo/thukha_kabar_hospital.png";
-import violin from "../files/p_logo/violin_health_beauty_clinic.jpg";
+import pinlon from "../files/new_logo/Pinlon Hospital.png";
+import victoria from "../files/new_logo/ဝိတိုရိယ.png";
+import panhlaing from "../files/new_logo/Pan Hlaing.png";
+import ssc from "../files/new_logo/SSC Hospital.png";
+import ami from "../files/new_logo/ami_life.jpg";
+// import asiaRoyal2 from "../files/new_logo/";
+import aungyadana from "../files/new_logo/Aung Yadanar Hospital.png";
+import city from "../files/new_logo/City Hospital.png";
+import dLux from "../files/new_logo/d_lux_dental_clinic.jpg";
+import dagonMedicare from "../files/new_logo/dagon_medicare_hospital.jpg";
+import hlaingTW from "../files/new_logo/htw.jpg";
+import myattawwin from "../files/new_logo/mtw.jpg";
+import parami from "../files/new_logo/Parmi Hospital.png";
+import asiamyanmar from "../files/new_logo/asiamyanmar.jpg";
+// import ingyinphyu from "../files/p_logo/ingyinphyu_dental_clinic.jpg";
+import sos from "../files/new_logo/INternational 505.png";
+import eye from "../files/new_logo/International Eye Center.png";
+import kankaw from "../files/new_logo/kankaw_hospital.jpg";
+// import kembangan from "../files/p_logo/kembangan_general_hospital.jpg";
+import khaing from "../files/new_logo/khaing_yadanar_hospital.jpg";
+import mandalar from "../files/new_logo/Mandalar Hospital.png";
+import mingalar from "../files/new_logo/mingalar.jpg";
+import minipal from "../files/new_logo/manipal_sml.jpg";
+import osc from "../files/new_logo/OSC Hospitall.png";
+import shweLamin from "../files/new_logo/Shwe La Min Hospital.png";
+import shweohh from '../files/new_logo/shweohh.png';
+import shweYaung from "../files/new_logo/shwe_yaung_lin_hospital.jpg";
+import mth from "../files/new_logo/MTH Hospital.png";
+import samitivej from "../files/new_logo/Sumajivi.png";
+import nini from "../files/new_logo/nini.jpg";
+import kaytu from "../files/new_logo/kaytu.jpg";
+import nhospital from "../files/new_logo/nhospital.jpg";
+
+
+// import tawwin from "../files/p_logo/tawwin_malikha_hospital.jpg";
+import thuka from "../files/new_logo/Thuka Gabar Hospital.png";
+import sakura from "../files/new_logo/sakura.jpg";
+import padamyar from "../files/new_logo/padamyar.jpg";
+import violin from "../files/new_logo/violin_health_beauty_clinic.jpg";
 import mprivate from "../files/p_logo/myanmar_private_hospital_association.jpg";
 import mmedical from "../files/p_logo/myanmar_medical_association_centre.jpg";
 
@@ -842,34 +855,49 @@ const List = styled.ul`
 const clientLogos = [
   aryu,
   asiaRoyal,
-  ssc,
-  pinlon,
   grandHantha,
-  osc,
+  victoria,
+  pinlon,
   panhlaing,
+  parami,
+  osc,
+  aungyadana,
+  mingalar,
+  mandalar,
+  myattawwin,
+  hlaingTW,
+  nhospital, 
+  city,
+  padamyar, 
+  sakura,
+  nini,
+  shweohh,
+  asiamyanmar,
+  // myintmo,
+  kaytu,
+  // chanmyae,
+  samitivej,
+  ssc,
   khaing,
   ami,
-  asiaRoyal2,
-  aungyadana,
-  city,
   dLux,
   dagonMedicare,
-  hlaingTW,
-  ingyinphyu,
   sos,
   eye,
   kankaw,
-  kembangan,
-  khaing,
-  mandalar,
+  mth,
   minipal,
-  moeKaung,
-  victoria,
   shweLamin,
   shweYaung,
-  tawwin,
   thuka,
   violin,
+  // asiaRoyal2,
+  // ingyinphyu,
+  // kembangan,
+  // khaing,
+  // mandalar,
+  // moeKaung,
+  
 ];
 
 const scroll = keyframes`
@@ -1210,15 +1238,13 @@ const About = () => {
           <Hero>
             <Left>
               <HeroTitle>
-                We Craft Brand <br />
-                and Digital Experiences
+                We Craft Exceptional Brands and Digital Experiences
               </HeroTitle>
 
               <HeroDesc>
-                We leverage our in-house manufacturing capabilities to deliver
-                high-volume production with precision and scale. By optimizing
-                our supply chain, we offer a convenient, cost-effective solution
-                that saves you both money and energy.
+                  At Medical World, we combine innovation, creativity, and manufacturing excellence to build impactful brands and meaningful digital experiences.
+                  Leveraging our in-house manufacturing capabilities, we deliver high-volume production with precision, consistency, and efficiency. Through a well-optimized supply chain and streamlined operations, we provide reliable, cost-effective solutions that help our clients save both time and resources while maintaining the highest quality standards. 
+                  Our commitment is to transform ideas into successful brands and deliver experiences that create lasting value for our customers.
               </HeroDesc>
 
               {/* <Button>Learn More</Button> */}
@@ -1243,14 +1269,11 @@ const About = () => {
                 <ContentTitle>About Our Medical World</ContentTitle>
 
                 <Description>
-                  Medical World Co., Ltd, founded in 2015, is a manufacturing
-                  and distribution company of uniforms and accessories. Over the
-                  past 11 years, Medical World Co. Ltd, has been providing
-                  uniforms and accessories for Government Departments and
-                  Private Business Sectors. One of our best services,
-                  consultation service regarding uniform designs is offered.
-                  Customizable service for business logos imprinted on the
-                  uniform is also offered using modernized machines.
+                  Medical World Co., Ltd. was established in 2015 as a leading manufacturer and distributor of uniforms and accessories in Myanmar. 
+
+                  Since our inception, we have been committed to delivering high-quality uniform solutions tailored to the needs of government organizations, healthcare institutions, and private-sector businesses. With more than a decade of industry experience, Medical World has built a strong reputation for excellence, reliability, and customer-focused service. 
+
+                  We provide end-to-end uniform solutions, from consultation and design development to manufacturing and distribution. Our expertise includes customized uniform design services, helping organizations create professional and distinctive corporate identities. We also offer advanced logo embroidery and printing services using modern production technology, ensuring durability, precision, and exceptional quality.
                 </Description>
               </TextBox>
             </ContentFlex>
@@ -1269,7 +1292,7 @@ const About = () => {
                 <FaBullseye />
               </IconBox>
               <CardTitle>Vision</CardTitle>
-              <CardText>Flexibility and Responsibilities.</CardText>
+              <CardText>To be the most trusted and innovative uniform solutions provider in Myanmar and beyond. </CardText>
             </Card>
 
             <ActiveCard>
@@ -1277,7 +1300,7 @@ const About = () => {
                 <FaEye />
               </IconBoxWhite>
               <CardTitleWhite>Mission</CardTitleWhite>
-              <CardTextWhite>Quality is our Virtue.</CardTextWhite>
+              <CardTextWhite>Delivering quality uniforms and customized solutions with excellence, reliability, and innovation.</CardTextWhite>
             </ActiveCard>
 
             <Card>
@@ -1286,7 +1309,7 @@ const About = () => {
               </IconBox>
               <CardTitle>Objective</CardTitle>
               <CardText>
-                Leading in the Local Market and Exporting Abroad.
+                To lead the industry through superior products, customer satisfaction, and sustainable growth.
               </CardText>
             </Card>
           </CardContainer>
@@ -1320,7 +1343,7 @@ const About = () => {
               <ImageBox src={board2} />
               <InfoBox>
                 <Name>Daw Khin Sandar Ko</Name>
-                <Role>Chief Executive Officer</Role>
+                <Role>Chief Executive Officer (CEO) & Board Director</Role>
               </InfoBox>
             </DirectorCard>
 
@@ -1328,7 +1351,7 @@ const About = () => {
               <ImageBox src={board3} />
               <InfoBox>
                 <Name>U Htet Aung</Name>
-                <Role>Business Development Director</Role>
+                <Role>Business Development Director and Board Director</Role>
               </InfoBox>
             </DirectorCard>
 
@@ -1353,7 +1376,7 @@ const About = () => {
 
       {/* Roadmap */}
       <RSection>
-        <RTitle>Roadmap</RTitle>
+        <RTitle>Strategic Roadmap</RTitle>
 
         <Timeline>
           <Item>
@@ -1405,8 +1428,11 @@ const About = () => {
               <FaRocket />
             </IconCircle>
             <RCard>
-              <p>1. Build a centralized operational and branding structure.</p>
-              <p>2. Capture 80% of the market share in the industry.</p>
+              <p>1. Centralized Operations & Brand Development</p>
+              <p>2. Industry Market Leadership</p>
+              <p>3. Operational Excellence</p>
+              <p>4. Business Expansion</p>
+              <p>5. Sustainable Growth</p>
             </RCard>
           </Item>
         </Timeline>

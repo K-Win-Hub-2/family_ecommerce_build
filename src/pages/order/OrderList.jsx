@@ -91,6 +91,17 @@ const Price = styled.div`
   color: #0b6aa9;
 `;
 
+const Status = styled.button`
+  color: white;
+  background: #0b6aa9;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: capitalize;
+`;
+
 const ActionButton = styled.button`
   background: none;
   border: none;
@@ -299,6 +310,8 @@ const OrderList = () => {
       'xl': 'XL',
       'lg': 'L',
       'md': 'M',
+      'mef': 'M',
+      'mdf': 'M',
       'sm': 'S',
       'xs': 'XS',
       'xxs': 'XXS'
@@ -337,7 +350,7 @@ const OrderList = () => {
             size: formatSize(order.size_name) || '-',
             quantity: order.total_quantity,
             price: order.total_amount ? `${order.total_amount} MMK` : '0 MMK',
-            // Keep original data for modal if needed
+            order_status: order.order_status || '-',
             originalData: order
           }));
           
@@ -452,20 +465,21 @@ const OrderList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHeaderCell>Code</TableHeaderCell>
+                  {/* <TableHeaderCell>Code</TableHeaderCell> */}
                   <TableHeaderCell>Order Date</TableHeaderCell>
                   <TableHeaderCell>Product Image</TableHeaderCell>
                   <TableHeaderCell>Product Name</TableHeaderCell>
                   <TableHeaderCell>Size</TableHeaderCell>
                   <TableHeaderCell>Quantity</TableHeaderCell>
                   <TableHeaderCell>Price</TableHeaderCell>
+                  <TableHeaderCell>Status</TableHeaderCell>
                   <TableHeaderCell>Action</TableHeaderCell>
                 </TableRow>
               </TableHeader>
               <tbody>
                 {filteredOrders.map((order) => (
                   <TableRow key={order.id}>
-                    <TableCell>{order.code}</TableCell>
+                    {/* <TableCell>{order.code}</TableCell> */}
                     <TableCell>{order.orderDate}</TableCell>
                     <TableCell>
                       <ProductImage 
@@ -484,6 +498,9 @@ const OrderList = () => {
                     </TableCell>
                     <TableCell>
                       <Price>{order.price}</Price>
+                    </TableCell>
+                    <TableCell>
+                      <Status>{order.order_status}</Status>
                     </TableCell>
                     <TableCell>
                       <ActionButton onClick={() => handleViewOrder(order)}>
@@ -531,6 +548,9 @@ const OrderList = () => {
                 </p>
                 <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
                   <b>Date:</b> {selectedOrder.orderDate}
+                </p>
+                <p style={{ margin: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600', color: '#0b6aa9' }}>
+                  <b>Status:</b> {selectedOrder.status}
                 </p>
                 {/* <div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
                   <p style={{ margin: 0, fontSize: '14px' }}>

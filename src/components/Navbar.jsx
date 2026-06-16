@@ -261,6 +261,8 @@ const Navbar = () => {
 
   const username = useSelector((state) => state.user.name);
   const pcs = useSelector((state) => state.cart.total_pcs);
+  // const activeOrderCount = useSelector((state) => state.user.total_order);
+  // console.log(activeOrderCount);
   const url = useSelector((state) => state.user.url);
 
   const [isUser, setIsUser] = useState(false);
@@ -372,7 +374,7 @@ const Navbar = () => {
             )}
           </Link>
 
-          <Link to="/order_list" style={{ color: "white", position: "relative", display: "flex", alignItems: "center" }}>
+          {/* <Link to="/order_list" style={{ color: "white", position: "relative", display: "flex", alignItems: "center" }}>
             <PostAddIcon style={{ fontSize: "24px" }} />
             {pcs > 0 && (
               <span
@@ -390,7 +392,16 @@ const Navbar = () => {
                 {pcs}
               </span>
             )}
-          </Link>
+          </Link> */}
+
+          <Link to="/order_list" style={{ color: "white", position: "relative", display: "flex", alignItems: "center" }}>
+  <PostAddIcon style={{ fontSize: "24px" }} />
+  {/* {activeOrderCount > 0 && (
+    <span style={{ background: "red", borderRadius: "50%", color: "white", fontSize: "11px", padding: "1px 5px", position: "absolute", top: -6, right: -8 }}>
+      {activeOrderCount}
+    </span>
+  )} */}
+</Link>
 
           {isUser ? (
             <DesktopAccountWrapper className="account-menu-container" style={{ position: 'relative' }}>
@@ -400,9 +411,9 @@ const Navbar = () => {
               />
               <AccountMenu show={showAccountMenu}>
                 <AccountMenuHeader>{username || "User"}</AccountMenuHeader>
-                <AccountMenuItem onClick={() => { navigate('/order_list'); setShowAccountMenu(false); }}>
+                {/* <AccountMenuItem onClick={() => { navigate('/order_list'); setShowAccountMenu(false); }}>
                   Order History
-                </AccountMenuItem>
+                </AccountMenuItem> */}
                 <AccountMenuItem onClick={() => { navigate('/wish'); setShowAccountMenu(false); }}>
                   Wishlist
                 </AccountMenuItem>
@@ -447,7 +458,7 @@ const Navbar = () => {
               Wishlist
             </MobileMenuItem>
             <MobileMenuItem onClick={logout} style={{ color: "#ff8b8b" }}>
-              Logout ({username || "Profile"})
+              Logout
             </MobileMenuItem>
           </>
         ) : (
