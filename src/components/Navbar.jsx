@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { FaBars } from "react-icons/fa";
 import { LogoutProcess } from "../redux/userRedux";
@@ -353,6 +354,26 @@ const Navbar = () => {
 
           <Link to="/cart" style={{ color: "white", position: "relative", display: "flex", alignItems: "center" }}>
             <ShoppingCartIcon style={{ fontSize: "24px" }} />
+            {pcs > 0 && (
+              <span
+                style={{
+                  background: "red",
+                  borderRadius: "50%",
+                  color: "white",
+                  fontSize: "11px",
+                  padding: "1px 5px",
+                  position: "absolute",
+                  top: -6,
+                  right: -8,
+                }}
+              >
+                {pcs}
+              </span>
+            )}
+          </Link>
+
+          <Link to="/order_list" style={{ color: "white", position: "relative", display: "flex", alignItems: "center" }}>
+            <PostAddIcon style={{ fontSize: "24px" }} />
             {pcs > 0 && (
               <span
                 style={{

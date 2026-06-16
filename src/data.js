@@ -7,15 +7,17 @@ export const sliderItems = [
     {
       id: 1,
       img: slider1,
-      title: "Medical Scrubs",
-      desc: "New Arrival And Design. Place Your Order Now",
+      title: "Step Into Style:",
+      subtitle: "Your ultimate fashion destination",
+      desc: "Medical World Co., Ltd, founded in 2015, is a manufacturing and distribution company of uniforms and accessories.",
       bg: "f5fafd",
     },
     {
       id: 2,
       img: slider2,
-      title: "Medical Scrubs",
-      desc: "New Arrival And Design. Place Your Order Now",
+      title: "Professional Excellence:",
+      subtitle: "Trusted by Thousands",
+      desc: "Join thousands of satisfied customers who rely on our premium products for their professional needs.",
       bg: "fcf1ed",
     }
   ];

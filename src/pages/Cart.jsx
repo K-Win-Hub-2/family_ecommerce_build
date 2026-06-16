@@ -471,10 +471,16 @@ const CartHeader = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   padding: 15px;
-  background: #2f80a5;
+  background: #1f4f8b;
   color: white;
   font-weight: 600;
   border-radius: 8px;
+
+  ${mobile({
+    gridTemplateColumns: "2fr 1fr 1fr 1fr 0.8fr",
+    fontSize: "14px",
+    padding: "12px 10px",
+  })}
 `;
 
 const CartRow = styled.div`
@@ -485,32 +491,60 @@ const CartRow = styled.div`
   margin-top: 10px;
   border: 1px solid #2f80a5;
   border-radius: 10px;
-`;
 
-const CartRowTotal = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  align-items: center;
-  padding: 15px;
-  margin-top: 10px;
+  ${mobile({
+    gridTemplateColumns: "2fr 1fr 1fr 1fr 0.8fr",
+    padding: "12px 10px",
+    gap: "5px",
+  })}
 `;
 
 const ProductInfo = styled.div`
   display: flex;
-  gap: 15px;
-  align-items: center;
+  gap: 12px;
+  align-items: flex-start;
+
+  ${mobile({
+    flexDirection: "column",
+    gap: "8px",
+    alignItems: "center",
+    textAlign: "center",
+  })}
+
+  div {
+    font-size: 15px;
+
+    ${mobile({
+      fontSize: "14px",
+    })}
+  }
+
+  small {
+    font-size: 13px;
+
+    ${mobile({
+      fontSize: "12px",
+    })}
+  }
 `;
 
 const ProductImg = styled.img`
   width: 70px;
   height: 70px;
   object-fit: cover;
+  border-radius: 4px;
+
+  ${mobile({
+    width: "65px",
+    height: "65px",
+  })}
 `;
 
 const QtyBox = styled.div`
   display: flex;
   width: 90px;
   align-items: center;
+  justify-content: center;
   border: 1px solid #2f80a5;
   border-radius: 6px;
   overflow: hidden;
@@ -525,14 +559,38 @@ const QtyBox = styled.div`
     cursor: pointer;
     padding: 5px;
   }
+
+  ${mobile({
+    width: "80px",
+  })}
 `;
 
 const RemoveBtn = styled.button`
-  margin-top: 5px;
-  padding: 10px;
-  font-size: 20px;
+  background: transparent;
+  border: none;
   color: red;
+  font-size: 20px;
   cursor: pointer;
+
+  ${mobile({
+    fontSize: "18px",
+  })}
+`;
+
+const CartRowTotal = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 15px;
+  margin-top: 10px;
+
+  ${mobile({
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    flexWrap: "wrap",
+    textAlign: "center",
+  })}
 `;
 
 const CheckoutContainer = styled.div`
@@ -634,7 +692,7 @@ const FilterOption = styled.option``;
 const OrderButton = styled.button`
   width: 100%;
   padding: 12px;
-  background: #2f80a5;
+  background: #1f4f8b;
   color: white;
   border: none;
   border-radius: 6px;

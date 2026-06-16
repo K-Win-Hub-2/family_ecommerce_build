@@ -11,75 +11,94 @@ import Navbar from "../components/Navbar";
 import ColorNav from "../components/ColorNav";
 import Footer from "../components/Footer";
 import Swal from "sweetalert2";
-import SignUp from "../slider-images/signin.png";
+import SignUp from "../slider-images/login.jpg";
+import logo from "../files/logo.png";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: #f3f6fb;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+
+  ${mobile({
+    padding: "15px",
+    boxSizing: "border-box",
+  })}
 `;
 
 const Card = styled.div`
-  width: 900px;
-  height: 550px;
+  width: 950px;
+  height: 650px;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   ${mobile({
-    flexDirection: "column",
-    width: "95%",
-    height: "auto",
+    width: "92%",
+    maxWidth: "360px",
+    height: "85vh",
+    minHeight: "650px",
+    borderRadius: "16px",
   })}
 `;
 
 const Left = styled.div`
   flex: 1;
-  padding: 60px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   overflow-y: auto;
-  max-height: 100%;
+  height: 100%;
 
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  scrollbar-color: rgba(59, 130, 246, 0.4) transparent;
 
   &::-webkit-scrollbar {
     width: 6px;
-    background-color: transparent;
   }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(59, 130, 246, 0);
-    border-radius: 10px;
-    transition: background-color 0.3s;
+    background: rgba(59, 130, 246, 0.4);
+    border-radius: 20px;
   }
 
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(59, 130, 246, 0.6); /* blue thumb on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
   }
 
-  &:hover {
-    scrollbar-color: rgba(59, 130, 246, 0.6) transparent;
-  }
+  ${mobile({
+    padding: "25px",
+  })}
 `;
 
 const Right = styled.div`
   flex: 1;
-  width: 50%;
-  height: 100%;
   overflow: hidden;
+
+  ${mobile({
+    display: "none",
+  })}
 `;
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+const Logo = styled.img`
+  width: 75px;
+  height: auto;
+  margin: 0 auto 20px;
   display: block;
 `;
 
@@ -93,15 +112,21 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
+
 const Title = styled.h1`
   color: #1f4fa3;
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+
+  ${mobile({
+    fontSize: "28px",
+  })}
 `;
 
 const Subtitle = styled.p`
   color: #6b7280;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 25px;
 `;
 
@@ -112,17 +137,22 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  margin-top: 20px;
-  font-size: 16px;
+  font-size: 15px;
+  margin-bottom: 6px;
+  margin-top: 14px;
 `;
 
 const Input = styled.input`
-  padding: 12px;
+  padding: 14px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
   outline: none;
-`;
+  font-size: 15px;
 
+  &:focus {
+    border-color: #3b82f6;
+  }
+`;
 const Forgot = styled.a`
   display: flex;
   justify-content: end;
@@ -133,12 +163,13 @@ const Forgot = styled.a`
 const Button = styled.button`
   background: #3b82f6;
   color: white;
-  padding: 12px;
+  padding: 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  margin-top: 20px;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 24px;
 
   &:hover {
     background: #2563eb;
@@ -148,19 +179,25 @@ const Button = styled.button`
 const Divider = styled.div`
   text-align: center;
   margin: 20px 0;
-  color: gray;
+  color: #6b7280;
 `;
 
 const IsAccount = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  font-size: 15px;
+
+  a {
+    margin-left: 4px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
 `;
 
 const EmailHelper = styled.span`
   color: #6b7280;
   font-size: 12px;
-  font-style: italic;
+  margin-top: 5px;
 `;
 
 const Register = () => {
@@ -268,83 +305,85 @@ const Register = () => {
       <Container>
         <Card>
           <Left>
-            <Title>Sign up</Title>
+  <Logo src={logo} alt="Medical World" />
 
-            <Subtitle>Sign up to enjoy the feature of Medical World!</Subtitle>
+  <Title>Sign Up</Title>
 
-            <Form>
-              <FormGroup>
-                <Label>Name</Label>
-                <Input
-                  placeholder="Enter your name"
-                  ref={userRef}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </FormGroup>
+  <Subtitle>
+    Create your account to enjoy the features of Medical World.
+  </Subtitle>
 
-              <FormGroup>
-                <Label>Date of Birth</Label>
-                <Input
-                  type="date"
-                  value={dob}
-                  onChange={onDobChanged}
-                />
-              </FormGroup>
+  <Form>
+    <FormGroup>
+      <Label>Name</Label>
+      <Input
+        placeholder="Enter your name"
+        value={name}
+        onChange={onNameChanged}
+      />
+    </FormGroup>
 
-              <FormGroup>
-                <Label>Email</Label>
-                <Input
-                  placeholder="Enter your email"
-                  ref={userRef}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <EmailHelper>You need to use this email to login.</EmailHelper>
-              </FormGroup>
+    <FormGroup>
+      <Label>Date of Birth</Label>
+      <Input
+        type="date"
+        value={dob}
+        onChange={onDobChanged}
+      />
+    </FormGroup>
 
-              <FormGroup>
-                <Label>Phone</Label>
-                <Input
-                  placeholder="Enter your phone"
-                  ref={userRef}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </FormGroup>
+    <FormGroup>
+      <Label>Email</Label>
+      <Input
+        placeholder="Enter your email"
+        value={email}
+        onChange={onEmailChanged}
+      />
+      <EmailHelper>
+        You will use this email to sign in later.
+      </EmailHelper>
+    </FormGroup>
 
-              <FormGroup>
-                <Label>Password</Label>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormGroup>
+    <FormGroup>
+      <Label>Phone</Label>
+      <Input
+        placeholder="Enter your phone number"
+        value={phone}
+        onChange={onPhoneChanged}
+      />
+    </FormGroup>
 
-              <FormGroup>
-                <Label>Address</Label>
-                <Input
-                  placeholder="Address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </FormGroup>
+    <FormGroup>
+      <Label>Password</Label>
+      <Input
+        type="password"
+        placeholder="At least 8 characters"
+        value={password}
+        onChange={onPasswordChanged}
+      />
+    </FormGroup>
 
-              <Button onClick={onRegisterClicked}>Sign Up</Button>
+    <FormGroup>
+      <Label>Address</Label>
+      <Input
+        placeholder="Enter your address"
+        value={address}
+        onChange={onAddressChanged}
+      />
+    </FormGroup>
 
-              <Divider>Or</Divider>
+    <Button type="submit" onClick={onRegisterClicked}>
+      Sign Up
+    </Button>
 
-              {/* <SocialBtn>Sign in with Google</SocialBtn>
-                    <SocialBtn>Sign in with Facebook</SocialBtn> */}
+    <Divider>Or</Divider>
 
-              <IsAccount>
-                Already have an account?
-                <Link to="/login"> Sign In</Link>
-              </IsAccount>
-            </Form>
-          </Left>
+    <IsAccount>
+      Already have an account?
+      <Link to="/login">Sign In</Link>
+    </IsAccount>
+  </Form>
+</Left>
 
           {/* RIGHT SIDE */}
           <Right>

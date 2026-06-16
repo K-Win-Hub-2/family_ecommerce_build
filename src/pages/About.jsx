@@ -917,6 +917,11 @@ const PSection = styled.section`
   padding: 80px 120px;
   // background: white;
   overflow: hidden;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+  }
 `;
 
 const PWrapper = styled.div`
@@ -930,10 +935,21 @@ const Top = styled.div`
   display: flex;
   gap: 60px;
   align-items: center;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 const PLeft = styled.div`
   flex: 1;
+  
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const MainImage = styled.img`
@@ -943,23 +959,49 @@ const MainImage = styled.img`
   border-radius: 22px;
   border: 4px solid white;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    height: 280px; /* Keeps image aspect-ratio clean on small screens */
+    max-width: 100%;
+    object-filt: contain;
+  }
 `;
 
 const PRight = styled.div`
   flex: 1;
   color: #2b57b8;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const PTitle = styled.h1`
   font-size: 42px;
   margin-bottom: 20px;
   font-weight: 700;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 const PDescription = styled.p`
   font-size: 24px;
   line-height: 1.8;
   font-weight: 500;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const CarouselWrapper = styled.div`
@@ -967,6 +1009,13 @@ const CarouselWrapper = styled.div`
   align-items: center;
   gap: 10px;
   margin-top: 50px;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 const ThumbnailRow = styled.div`
@@ -974,6 +1023,12 @@ const ThumbnailRow = styled.div`
   gap: 20px;
   overflow: hidden;
   width: 680px;
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    width: 290px; /* Constrains size so fewer thumbnails show on mobile screen */
+    gap: 10px;
+  }
 `;
 
 const Thumb = styled.img`
@@ -988,6 +1043,13 @@ const Thumb = styled.img`
   &:hover {
     transform: translateY(-5px) scale(1.05);
   }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+  }
 `;
 
 const Track = styled.div`
@@ -995,6 +1057,13 @@ const Track = styled.div`
   gap: 20px;
   transition: transform 0.5s ease; /* animation */
   transform: translateX(${(props) => `-${props.index * 140}px`});
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    gap: 10px;
+    /* Updates multiplier logic on mobile since thumbnails are smaller (70px width + 10px gap = 80px) */
+    transform: translateX(${(props) => `-${props.index * 80}px`});
+  }
 `;
 
 const Button = styled.button`
@@ -1005,6 +1074,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   z-index: 10;
+  background: transparent; /* fallback safety */
 
   &:hover {
     transform: scale(1.1);
@@ -1019,6 +1089,11 @@ const Button = styled.button`
   &:disabled:hover {
     transform: none;
   }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
 `;
 
 const BottomCurve = styled.img`
@@ -1027,9 +1102,12 @@ const BottomCurve = styled.img`
   left: 0;
   width: 100%;
   height: 360px;
-
   z-index: 0;
   pointer-events: none;
+
+  /* Hides the curve completely on mobile view */
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -1611,15 +1689,27 @@ const About = () => {
           <Title style={{ textAlign: "center" }}>Our Sale Network</Title>
 
           <Flex
-            style={{
-              padding: "30px 0px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <img src={map} width="500px" />
-          </Flex>
+  style={{
+    padding: "40px 15px", // Slightly increased vertical padding to give the shadow breathing room
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  }}
+>
+  <img 
+    src={map} 
+    alt="Network Map"
+    style={{
+      width: "100%",
+      maxWidth: "500px",
+      height: "auto",
+      objectFit: "contain",
+      borderRadius: "12px", // Smooth corners matching the reference layout style
+      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.06)", // Layered deep shadow
+    }} 
+  />
+</Flex>
         </Wrapper>
       </Section>
 

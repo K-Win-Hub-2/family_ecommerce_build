@@ -352,7 +352,7 @@ const Title = styled.h2`
   ${mobile({
     fontSize: "28px",
     letterSpacing: "1px",
-    margin: "20px 10px",
+    margin: "120px 10px 20px 10px",
   })}
 `;
 
@@ -540,8 +540,10 @@ const BrandLogo = styled.img`
     width: "120px",
     height: "120px",
     padding: "10px",
+    margin: "0 auto", /* center logo only on mobile */
   })}
 `;
+
 
 const BrandInfo = styled.div`
   flex: 1;
@@ -601,6 +603,16 @@ const BrandDescription = styled.div`
   })}
 `;
 
+const ErrorMessage = styled.div`
+  margin: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  font-size: 14px;
+`;
+
 const ProductList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -615,6 +627,7 @@ const ProductList = () => {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [categoryDetails, setCategoryDetails] = useState(null);
+  const [subcatError, setSubcatError] = useState("");
 
   useEffect(() => {
     getItems();
@@ -674,16 +687,35 @@ useEffect(() => {
       });
   };
 
-  const subcategories = () => {
-    axios
-      .get(url + "/api/subcategory_api")
-      .then((response) => {
-        setSubCat(response.data.data || []);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const subcategories = () => {
+  //   axios
+  //     .get(url + "/api/subcategory_api")
+  //     .then((response) => {
+  //       setSubCat(response.data.data || []);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const subcategories = async () => {
+  try {
+    setSubcatError("");
+
+    const response = await axios.get(url + "/api/subcategory_api");
+
+    setSubCat(response.data.data || []);
+  } catch (err) {
+    console.error("Subcategory API Error:", err);
+
+    setSubcatError(
+      err.response?.data?.message ||
+      "Failed to load subcategories. Please try again."
+    );
+
+    setSubCat([]);
+  }
+};
 
   const selectedCategorySubcategories = useMemo(() => {
     if (!selectedCategory) return [];
@@ -834,7 +866,7 @@ const getCategoryItems = async (categoryId) => {
           </BrandSection>
         )}
 
-        {selectedCategorySubcategories.length > 0 && (
+        {/* {selectedCategorySubcategories.length > 0 && (
           <SubcategoryWrap>
             <SubcategorySelect
               value={selectedSubcategory}
@@ -849,7 +881,49 @@ const getCategoryItems = async (categoryId) => {
               ))}
             </SubcategorySelect>
           </SubcategoryWrap>
-        )}
+        )} */}
+        {subcatError ? (
+  <ErrorMessage>
+    {subcatError}
+    <br />
+    <button
+      onClick={subcategories}
+      style={{
+        marginTop: "10px",
+        padding: "6px 12px",
+        border: "none",
+        borderRadius: "6px",
+        background: "#0b74b5",
+        color: "#fff",
+        cursor: "pointer",
+      }}
+    >
+      Retry
+    </button>
+  </ErrorMessage>
+) : (
+  selectedCategorySubcategories.length > 0 && (
+    <SubcategoryWrap>
+      <SubcategorySelect
+        value={selectedSubcategory}
+        onChange={(e) => setSelectedSubcategory(e.target.value)}
+        className="capitalize"
+      >
+        <option value="">All Subcategories</option>
+
+        {selectedCategorySubcategories.map((sub) => (
+          <option
+            key={sub.id}
+            value={sub.id}
+            className="capitalize"
+          >
+            {sub.name}
+          </option>
+        ))}
+      </SubcategorySelect>
+    </SubcategoryWrap>
+  )
+)}
       </Container>
 
       <Container>
@@ -868,10 +942,8 @@ const getCategoryItems = async (categoryId) => {
             </ProductSection>
           ))
         ) : (
-          <div style={{ display: "flex", justifyContent: "center", margin: "50px 0" }}>
-            <Spinner />
-          </div>
-        )}
+  <EmptyText>No products found.</EmptyText>
+)}
       </Container>
 
       <Footer />

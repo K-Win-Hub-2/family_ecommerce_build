@@ -194,6 +194,7 @@ const Card = styled.div`
 
 const Left = styled.div`
   flex: 2;
+  ${mobile({ order: 1 })}
 `;
 
 const Right = styled.div`
@@ -202,6 +203,7 @@ const Right = styled.div`
   color: white;
   border-radius: 14px;
   padding: 25px;
+  ${mobile({ order: 2 })}
 `;
 
 const RightBottom = styled.div`
@@ -210,6 +212,12 @@ const RightBottom = styled.div`
   color: white;
   border-radius: 14px;
   padding: 25px;
+  ${mobile({ order: 1 })}
+`;
+
+const AppointmentLeft = styled.div`
+  flex: 2;
+  ${mobile({ order: 2 })}
 `;
 
 const SectionTitle = styled.h4`
@@ -488,7 +496,7 @@ const Contact = () => {
                 <FiMail />
                 <div>
                   <Detail>Email</Detail>
-                  <div>info@example.com</div> 
+                  <div>information.medicalworld@gmail.com</div> 
                 </div>
               </InfoRow>
 
@@ -530,7 +538,7 @@ const Contact = () => {
           </Card>
 
           <Card>
-           <Left>
+           <AppointmentLeft>
              <SectionTitle>Book a meeting with our team</SectionTitle>
 
             <Row>
@@ -555,7 +563,7 @@ const Contact = () => {
             <TextArea placeholder="Description" />
 
             <Button>Request Appointment</Button>
-           </Left>
+           </AppointmentLeft>
 
             <RightBottom>
               <Map

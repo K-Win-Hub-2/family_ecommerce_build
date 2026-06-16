@@ -12,42 +12,55 @@ import { Link } from "react-router-dom";
 import ColorNav from "../components/ColorNav";
 import Footer from "../components/Footer";
 import Swal from "sweetalert2";
-import loginImg from "../slider-images/signin.png";
+import logo from "../files/logo.png";
+import loginImg from "../slider-images/login.jpg";
 import Navbar from "../components/Navbar";
 
 // url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") center;
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: #f3f6fb;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${mobile({
+    padding: "15px",
+    boxSizing: "border-box",
+  })}
 `;
 
 const Card = styled.div`
   width: 900px;
-  height: 500px;
+  height: 620px;
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   ${mobile({
-    flexDirection: "column",
-    width: "95%",
+    width: "92%",
+    maxWidth: "360px",
     height: "auto",
+    minHeight: "620px",
+    margin: "20px auto",
+    borderRadius: "16px",
   })}
 `;
 
 const Left = styled.div`
   flex: 1;
-  padding: 60px;
+  padding: 40px 60px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  ${mobile({
+    width: "100%",
+    padding: "30px 24px",
+  })}
 `;
 
 const Right = styled.div`
@@ -55,6 +68,10 @@ const Right = styled.div`
   width: 50%;
   height: 100%;
   overflow: hidden;
+
+  ${mobile({
+    display: "none",
+  })}
 `;
 
 const Image = styled.img`
@@ -76,8 +93,13 @@ const Form = styled.form`
 `;
 const Title = styled.h1`
   color: #1f4fa3;
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 10px;
+
+  ${mobile({
+    fontSize: "26px",
+  })}
 `;
 
 const Subtitle = styled.p`
@@ -97,29 +119,38 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 12px;
-  margin-bottom: 15px;
+  padding: 14px;
+  margin-bottom: 16px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
   outline: none;
+  font-size: 15px;
+
+  &:focus {
+    border-color: #3b82f6;
+  }
 `;
 
 const Forgot = styled.a`
   display: flex;
-  justify-content: end;
-  align-items: center;
+  justify-content: flex-end;
+  color: #2563eb;
   text-decoration: none;
+  margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const Button = styled.button`
   background: #3b82f6;
   color: white;
-  padding: 12px;
+  padding: 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
   font-weight: 500;
   margin-top: 10px;
+  width: 100%;
 
   &:hover {
     background: #2563eb;
@@ -133,10 +164,17 @@ const Divider = styled.div`
 `;
 
 const IsAccount = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  font-size: 15px;
+
+  a {
+    margin-left: 4px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
 `;
+
 
 const SocialBtn = styled.button`
   width: 100%;
@@ -150,6 +188,20 @@ const SocialBtn = styled.button`
 
 const Error = styled.span`
   color: red;
+`;
+
+const Logo = styled.img`
+  width: 75px;
+  height: auto;
+  margin: 0 auto 25px;
+  display: block;
+`;
+
+const FormContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const A = styled.a``;
@@ -232,47 +284,50 @@ const Login = () => {
           {/* <ColorNav/> */}
           <Container>
             <Card>
-              <Left>
-                <Title>Welcome Back</Title>
+  <Left>
+  <Logo src={logo} alt="Logo" />
 
-                <Subtitle>Please enter your details</Subtitle>
+  <FormContainer>
+    <Title>Welcome Back</Title>
 
-                <Form>
-                  <FormGroup>
-                    <Label>Email</Label>
-                    <Input
-                      placeholder="Example@gmail.com"
-                      ref={userRef}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </FormGroup>
+    <Subtitle>Please enter your details</Subtitle>
 
-                  <FormGroup>
-                    <Label>Password</Label>
-                    <Input
-                      type="password"
-                      placeholder="At least 8 characters"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </FormGroup>
+    <Form>
+      <FormGroup>
+        <Label>Email</Label>
+        <Input
+          placeholder="Example@gmail.com"
+          ref={userRef}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </FormGroup>
 
-                  <Forgot>Forgot Password?</Forgot>
+      <FormGroup>
+        <Label>Password</Label>
+        <Input
+          type="password"
+          placeholder="At least 8 characters"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </FormGroup>
 
-                  <Button onClick={handleClick}>Sign in</Button>
+      <Forgot href="#">Forgot Password?</Forgot>
 
-                  <Divider>Or</Divider>
+      <Button type="submit" onClick={handleClick}>
+        Sign in
+      </Button>
 
-                  {/* <SocialBtn>Sign in with Google</SocialBtn>
-                <SocialBtn>Sign in with Facebook</SocialBtn> */}
+      <Divider>Or</Divider>
 
-                  <IsAccount>
-                    Don't have an account?
-                    <Link to="/register"> Sign up</Link>
-                  </IsAccount>
-                </Form>
-              </Left>
+      <IsAccount>
+        Don't have an account?
+        <Link to="/register">Sign up</Link>
+      </IsAccount>
+    </Form>
+  </FormContainer>
+</Left>
 
               {/* RIGHT SIDE */}
               <Right>

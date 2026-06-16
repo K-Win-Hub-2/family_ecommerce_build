@@ -18,7 +18,7 @@ const DesktopContainer = styled.div`
 
 const MobileContainer = styled.div`
   width: 100%;
-  height: 60vh;
+  height: 70vh;
   position: relative;
   overflow: hidden;
 `;
@@ -34,7 +34,7 @@ const DesktopSlide = styled.div`
   width: 100vw;
   height: 100%;
   background-image: url(${props => props.bgImage});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
@@ -110,6 +110,13 @@ const MobileTitle = styled.h1`
   font-size: 24px;
   color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+`;
+
+const MobileSubtitle = styled.p`
+  font-size: 18px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   margin-bottom: 10px;
 `;
 
@@ -262,10 +269,10 @@ const DesktopSlider = () => {
       <DesktopWrapper slideIndex={slideIndex}>
         {desktopSlides.map((item) => (
           <DesktopSlide bgImage={item.image} key={item.id}>
-            <DesktopInfoContainer>
+            {/* <DesktopInfoContainer>
               <DesktopTitle>{item.title}</DesktopTitle>
               <DesktopDescription>{item.desc}</DesktopDescription>
-            </DesktopInfoContainer>
+            </DesktopInfoContainer> */}
           </DesktopSlide>
         ))}
       </DesktopWrapper>
@@ -336,6 +343,7 @@ const MobileSlider = () => {
             {item.img.split(".").pop() !== "mp4" && (
               <MobileInfoContainer>
                 <MobileTitle>{item.title}</MobileTitle>
+                <MobileSubtitle>{item.subtitle}</MobileSubtitle>
                 <MobileDescription>{item.desc}</MobileDescription>
               </MobileInfoContainer>
             )}
