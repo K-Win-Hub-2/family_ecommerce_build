@@ -1327,11 +1327,337 @@ const OrderButton = styled.button`
   cursor: pointer;
 `;
 
+// const Cart = () => {
+//   const cart = useSelector((state) => state.cart);
+//   const url = useSelector((state) => state.user.url);
+  
+//   // FIXED: Pointing selector straight to root level properties based on your localStorage payload
+//   const user = useSelector((state) => state.user);
+
+//   const dispatch = useDispatch();
+//   const [showDialog, setShowDialog] = useState(false);
+//   const [banks, setBanks] = useState([]);
+//   const [selectedBank, setSelectedBank] = useState("");
+//   const [deliveryType, setDeliveryType] = useState("pickup");
+//   const [showTownshipInput, setShowTownshipInput] = useState(false);
+//   const [township, setTownship] = useState("");
+//   const [orderNotes, setOrderNotes] = useState("");
+//   const [paymentScreenshot, setPaymentScreenshot] = useState(null);
+//   const [address, setAddress] = useState("");
+
+//   // Keep internal address state synced up with the user profile's default address
+//   useEffect(() => {
+//     if (user && user.address) {
+//       setAddress(user.address);
+//     }
+//   }, [user]);
+
+//   const defaultTownships = [
+//     "Ahlon", "Bahan", "Botatung", "Dagon Seikkan", "Dagon", "Dala", "Dawbon",
+//     "East Dagon", "Hlaing", "Hlaingthaya", "Insein", "Kamayut", "Kyauktada",
+//     "Kyimyingdaing", "Lanmadaw", "Latha", "Mayangon", "Mingala Taungnyunt",
+//     "Mingaladon", "North Dagon", "North Okkalapa", "Pabedan", "Pazundaung",
+//     "Sanchaung", "Seikkan", "Seikkyi Kanaungto", "Shwepyitha", "South Dagon",
+//     "South Okkalapa", "Tamwe", "Thaketa", "Thingangyun", "Yankin",
+//   ];
+
+//   useEffect(() => {
+//     if (!url) return;
+
+//     axios
+//       .get(url + "/api/bank/list")
+//       .then((res) => {
+//         setBanks(res.data.data || []);
+//       })
+//       .catch((err) => console.log(err));
+//   }, [url]);
+
+//   const onTownshipChanged = (e) => {
+//     setTownship(e.target.value);
+//   };
+
+//   const selectedBankObj = banks.find(
+//     (bank) => bank.id.toString() === selectedBank.toString()
+//   );
+
+//   const onDeliveryTypeChanged = (e) => {
+//     setDeliveryType(e.target.value);
+//     setShowTownshipInput(e.target.value === "township");
+//   };
+
+//   const onOrderNotesChanged = (e) => setOrderNotes(e.target.value);
+
+//   const onPaymentScreenshotChanged = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onload = (e) => {
+//         const img = new Image();
+//         img.src = e.target.result;
+//         img.onload = () => {
+//           const canvas = document.createElement("canvas");
+//           const ctx = canvas.getContext("2d");
+//           const maxWidth = 200;
+//           const maxHeight = 200;
+//           const width = Math.min(maxWidth, img.width);
+//           const height = Math.min(maxHeight, img.height);
+//           canvas.width = width;
+//           canvas.height = height;
+//           ctx.drawImage(img, 0, 0, width, height);
+//           const shortenedBase64 = canvas.toDataURL("image/jpeg");
+//           setPaymentScreenshot(shortenedBase64);
+//         };
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   };
+
+//   const onAddressChanged = (e) => setAddress(e.target.value);
+
+//   const handleQuantityInc = (id) => {
+//     const product = cart.products.find((p) => p.unitid === id);
+//     dispatch(updateQuantity({ id, quantity: product.quantity + 1 }));
+//   };
+
+//   const handleQuantityDec = (id) => {
+//     const product = cart.products.find((p) => p.unitid === id);
+//     if (product.quantity > 1) {
+//       dispatch(updateQuantity({ id, quantity: product.quantity - 1 }));
+//     } else {
+//       dispatch(removeProduct(id));
+//     }
+//   };
+
+//   const removeCart = (id) => {
+//     dispatch(removeProduct(id));
+//   };
+
+//   const onCheckOutClicked = () => {
+//     // FIXED: Accurately tests if the username is loaded directly from the root element
+//     if (!user || !user.name) {
+//       Swal.fire({
+//         title: "Warning!",
+//         text: "You need to login first.",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Login",
+//         cancelButtonText: "Cancel",
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           window.location.href = "/login";
+//         }
+//       });
+//     } else {
+//       setShowDialog(true);
+//     }
+//   };
+
+//   return (
+//     <Container>
+//       <Navbar />
+
+//       <Wrapper>
+//         <Title>Your Cart</Title>
+
+//         <Bottom>
+//           <CartContainer>
+//             <CartHeader>
+//               <div>Products</div>
+//               <div>Price</div>
+//               <div>Quantity</div>
+//               <div>Total</div>
+//               <div>Action</div>
+//             </CartHeader>
+
+//             {cart.products.map((product) => (
+//               <CartRow key={product.unitid}>
+//                 <ProductInfo>
+//                   <ProductImg src={url + `/ecommerce/items/${product.unitimg}`} alt={product.unitname} />
+//                   <div>
+//                     <div>{product.unitname}</div>
+//                     <small>Size: {product.size}</small>
+//                     <br />
+//                     <small className="capitalize">Color: {product.color}</small>
+//                   </div>
+//                 </ProductInfo>
+
+//                 <div>${product.price}</div>
+
+//                 <div>
+//                   <QtyBox>
+//                     <button onClick={() => handleQuantityDec(product.unitid)}>
+//                       <Remove fontSize="small" />
+//                     </button>
+//                     <span>{product.quantity}</span>
+//                     <button onClick={() => handleQuantityInc(product.unitid)}>
+//                       <Add fontSize="small" />
+//                     </button>
+//                   </QtyBox>
+//                 </div>
+
+//                 <div>${product.price * product.quantity}</div>
+
+//                 <div>
+//                   <RemoveBtn onClick={() => removeCart(product.unitid)}>
+//                     <FaTrash />
+//                   </RemoveBtn>
+//                 </div>
+//               </CartRow>
+//             ))}
+
+//             <CartRowTotal>
+//               <div></div>
+//               <div></div>
+//               <div style={{ fontSize: "24px", fontWeight: "bold", marginRight: "5px" }}>
+//                 Sub Total Price:
+//               </div>
+//               <div style={{ fontSize: "24px" }}>${cart.total}</div>
+//               <div></div>
+//             </CartRowTotal>
+//           </CartContainer>
+
+//           <CheckoutContainer>
+//             <Section>
+//               <SectionTitle>Your Information</SectionTitle>
+//               <div>
+//                 <Label>Name</Label>
+//                 <Input 
+//                   placeholder="Name" 
+//                   value={user.name || ""} 
+//                   readOnly 
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Phone Number</Label>
+//                 <Input 
+//                   placeholder="Phone Number" 
+//                   value={user.phone || ""} 
+//                   readOnly 
+//                 />
+//               </div>
+//             </Section>
+
+//             <Section>
+//               <SectionTitle>Address</SectionTitle>
+//               <Filter>
+//                 <DivF>
+//                   <Radio
+//                     type="radio"
+//                     name="deliveryType"
+//                     value="pickup"
+//                     checked={deliveryType === "pickup"}
+//                     onChange={onDeliveryTypeChanged}
+//                   />
+//                   <label>Pickup</label>
+
+//                   <Radio
+//                     type="radio"
+//                     name="deliveryType"
+//                     value="township"
+//                     checked={deliveryType === "township"}
+//                     onChange={onDeliveryTypeChanged}
+//                   />
+//                   <label>Township</label>
+//                 </DivF>
+//               </Filter>
+//               <Filter>
+//                 {deliveryType === "township" && (
+//                   <Select
+//                     name="township"
+//                     value={township}
+//                     onChange={onTownshipChanged}
+//                   >
+//                     <option value="" disabled>
+//                       Select Township
+//                     </option>
+//                     {defaultTownships.map((t, index) => (
+//                       <FilterOption key={index} value={t}>
+//                         {t}
+//                       </FilterOption>
+//                     ))}
+//                   </Select>
+//                 )}
+//               </Filter>
+//               <div>
+//                 <Label>Address</Label>
+//                 <Input 
+//                   placeholder="Address" 
+//                   value={address}  
+//                   onChange={onAddressChanged}
+//                 />
+//               </div>
+//             </Section>
+
+//             <Section>
+//               <SectionTitle>Payment</SectionTitle>
+//               <BankCard />
+//               <div>
+//                 <Label>Payment</Label>
+//                 <Select
+//                   value={selectedBank}
+//                   onChange={(e) => setSelectedBank(e.target.value)}
+//                 >
+//                   <option value="" disabled>
+//                     Select payment
+//                   </option>
+//                   {banks.map((bank) => (
+//                     <option key={bank.id} value={bank.id}>
+//                       {bank.bank_name}
+//                     </option>
+//                   ))}
+//                 </Select>
+//                 {selectedBank && (
+//                   <div style={{ marginTop: '5px', fontSize: '14px', color: '#2f80a5' }}>
+//                     Selected: <strong>{selectedBankObj?.bank_name}</strong>
+//                   </div>
+//                 )}
+//               </div>
+
+//               <div>
+//                 <Label>Payment Screenshot</Label>
+//                 <Input 
+//                   type="file" 
+//                   onChange={onPaymentScreenshotChanged}
+//                 />
+//               </div>
+//               <div>
+//                 <Label>Order Notes</Label>
+//                 <TextArea 
+//                   placeholder="Order notes..." 
+//                   value={orderNotes}
+//                   onChange={onOrderNotesChanged}
+//                 />
+//               </div>
+//             </Section>
+
+//             <OrderButton onClick={onCheckOutClicked}>Place Order</OrderButton>
+//           </CheckoutContainer>
+//         </Bottom>
+//       </Wrapper>
+
+//       <CheckoutDialog
+//         total={cart.total}
+//         open={showDialog}
+//         close={() => setShowDialog(false)}
+//         deliveryType={deliveryType}
+//         township={township}
+//         selectedBank={selectedBank}
+//         selectedBankName={selectedBankObj?.bank_name}
+//         orderNotes={orderNotes}
+//         paymentScreenshot={paymentScreenshot}
+//         address={address}
+//       />
+
+//       <Footer />
+//     </Container>
+//   );
+// };
+
+// ... styled-components keep exactly the same as your setup ...
+
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const url = useSelector((state) => state.user.url);
-  
-  // FIXED: Pointing selector straight to root level properties based on your localStorage payload
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -1345,7 +1671,7 @@ const Cart = () => {
   const [paymentScreenshot, setPaymentScreenshot] = useState(null);
   const [address, setAddress] = useState("");
 
-  // Keep internal address state synced up with the user profile's default address
+  // Sync internal address cleanly when user logs in dynamically on this page
   useEffect(() => {
     if (user && user.address) {
       setAddress(user.address);
@@ -1372,9 +1698,7 @@ const Cart = () => {
       .catch((err) => console.log(err));
   }, [url]);
 
-  const onTownshipChanged = (e) => {
-    setTownship(e.target.value);
-  };
+  const onTownshipChanged = (e) => setTownship(e.target.value);
 
   const selectedBankObj = banks.find(
     (bank) => bank.id.toString() === selectedBank.toString()
@@ -1428,12 +1752,10 @@ const Cart = () => {
     }
   };
 
-  const removeCart = (id) => {
-    dispatch(removeProduct(id));
-  };
+  const removeCart = (id) => dispatch(removeProduct(id));
 
   const onCheckOutClicked = () => {
-    // FIXED: Accurately tests if the username is loaded directly from the root element
+    // Check if user is authenticated reliably via the name property
     if (!user || !user.name) {
       Swal.fire({
         title: "Warning!",
@@ -1455,10 +1777,8 @@ const Cart = () => {
   return (
     <Container>
       <Navbar />
-
       <Wrapper>
         <Title>Your Cart</Title>
-
         <Bottom>
           <CartContainer>
             <CartHeader>
@@ -1480,9 +1800,7 @@ const Cart = () => {
                     <small className="capitalize">Color: {product.color}</small>
                   </div>
                 </ProductInfo>
-
                 <div>${product.price}</div>
-
                 <div>
                   <QtyBox>
                     <button onClick={() => handleQuantityDec(product.unitid)}>
@@ -1494,9 +1812,7 @@ const Cart = () => {
                     </button>
                   </QtyBox>
                 </div>
-
                 <div>${product.price * product.quantity}</div>
-
                 <div>
                   <RemoveBtn onClick={() => removeCart(product.unitid)}>
                     <FaTrash />
@@ -1521,19 +1837,11 @@ const Cart = () => {
               <SectionTitle>Your Information</SectionTitle>
               <div>
                 <Label>Name</Label>
-                <Input 
-                  placeholder="Name" 
-                  value={user.name || ""} 
-                  readOnly 
-                />
+                <Input placeholder="Name" value={user.name || ""} readOnly />
               </div>
               <div>
                 <Label>Phone Number</Label>
-                <Input 
-                  placeholder="Phone Number" 
-                  value={user.phone || ""} 
-                  readOnly 
-                />
+                <Input placeholder="Phone Number" value={user.phone || ""} readOnly />
               </div>
             </Section>
 
@@ -1549,7 +1857,6 @@ const Cart = () => {
                     onChange={onDeliveryTypeChanged}
                   />
                   <label>Pickup</label>
-
                   <Radio
                     type="radio"
                     name="deliveryType"
@@ -1562,29 +1869,17 @@ const Cart = () => {
               </Filter>
               <Filter>
                 {deliveryType === "township" && (
-                  <Select
-                    name="township"
-                    value={township}
-                    onChange={onTownshipChanged}
-                  >
-                    <option value="" disabled>
-                      Select Township
-                    </option>
+                  <Select name="township" value={township} onChange={onTownshipChanged}>
+                    <option value="" disabled>Select Township</option>
                     {defaultTownships.map((t, index) => (
-                      <FilterOption key={index} value={t}>
-                        {t}
-                      </FilterOption>
+                      <FilterOption key={index} value={t}>{t}</FilterOption>
                     ))}
                   </Select>
                 )}
               </Filter>
               <div>
                 <Label>Address</Label>
-                <Input 
-                  placeholder="Address" 
-                  value={address}  
-                  onChange={onAddressChanged}
-                />
+                <Input placeholder="Address" value={address} onChange={onAddressChanged} />
               </div>
             </Section>
 
@@ -1593,17 +1888,10 @@ const Cart = () => {
               <BankCard />
               <div>
                 <Label>Payment</Label>
-                <Select
-                  value={selectedBank}
-                  onChange={(e) => setSelectedBank(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select payment
-                  </option>
+                <Select value={selectedBank} onChange={(e) => setSelectedBank(e.target.value)}>
+                  <option value="" disabled>Select payment</option>
                   {banks.map((bank) => (
-                    <option key={bank.id} value={bank.id}>
-                      {bank.bank_name}
-                    </option>
+                    <option key={bank.id} value={bank.id}>{bank.bank_name}</option>
                   ))}
                 </Select>
                 {selectedBank && (
@@ -1612,24 +1900,15 @@ const Cart = () => {
                   </div>
                 )}
               </div>
-
               <div>
                 <Label>Payment Screenshot</Label>
-                <Input 
-                  type="file" 
-                  onChange={onPaymentScreenshotChanged}
-                />
+                <Input type="file" onChange={onPaymentScreenshotChanged} />
               </div>
               <div>
                 <Label>Order Notes</Label>
-                <TextArea 
-                  placeholder="Order notes..." 
-                  value={orderNotes}
-                  onChange={onOrderNotesChanged}
-                />
+                <TextArea placeholder="Order notes..." value={orderNotes} onChange={onOrderNotesChanged} />
               </div>
             </Section>
-
             <OrderButton onClick={onCheckOutClicked}>Place Order</OrderButton>
           </CheckoutContainer>
         </Bottom>
@@ -1647,7 +1926,6 @@ const Cart = () => {
         paymentScreenshot={paymentScreenshot}
         address={address}
       />
-
       <Footer />
     </Container>
   );

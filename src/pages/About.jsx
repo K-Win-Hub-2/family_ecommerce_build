@@ -177,7 +177,7 @@ const Left = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 60px;
+  font-size: 42px;
   font-weight: 700;
   color: #2b57b8;
 
@@ -188,16 +188,18 @@ const HeroTitle = styled.h1`
 `;
 
 const HeroDesc = styled.p`
-  font-size: 25px;
-  margin: 20px 0;
+  font-size: 20px;
+  margin-bottom: 20px; /* Changed from 'margin: 20px 0' to avoid double spacing between paragraphs */
   color: #555;
   line-height: 28px;
   max-width: 500px;
+  text-indent: 40px; /* 👈 This will indent the first line of every paragraph */
 
   @media (max-width: 768px) {
     font-size: 18px;
     line-height: 1.6;
     max-width: 100%;
+    text-indent: 20px; /* Optional: Smaller indent for mobile screens */
   }
 `;
 
@@ -386,7 +388,7 @@ const Flex = styled.div`
 `;
 
 const ContentTitle = styled.h2`
-  font-size: 60px;
+  font-size: 42px;
   margin-bottom: 20px;
 
   @media (max-width: 768px) {
@@ -395,12 +397,16 @@ const ContentTitle = styled.h2`
 `;
 
 const Description = styled.p`
-  font-size: 25px;
+  font-size: 20px;
   line-height: 30px;
+  margin-bottom: 24px; /* Adds space between the separated paragraphs */
+  text-indent: 40px;    /* Indents the first line of each paragraph */
 
   @media (max-width: 768px) {
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1;
+    text-indent: 20px; 
+    margin-bottom: 16px;
   }
 `;
 
@@ -1242,10 +1248,16 @@ const About = () => {
               </HeroTitle>
 
               <HeroDesc>
-                  At Medical World, we combine innovation, creativity, and manufacturing excellence to build impactful brands and meaningful digital experiences.
-                  Leveraging our in-house manufacturing capabilities, we deliver high-volume production with precision, consistency, and efficiency. Through a well-optimized supply chain and streamlined operations, we provide reliable, cost-effective solutions that help our clients save both time and resources while maintaining the highest quality standards. 
-                  Our commitment is to transform ideas into successful brands and deliver experiences that create lasting value for our customers.
-              </HeroDesc>
+  At Medical World, we combine innovation, creativity, and manufacturing excellence to build impactful brands and meaningful digital experiences.
+</HeroDesc>
+
+<HeroDesc>
+  Leveraging our in-house manufacturing capabilities, we deliver high-volume production with precision, consistency, and efficiency. Through a well-optimized supply chain and streamlined operations, we provide reliable, cost-effective solutions that help our clients save both time and resources while maintaining the highest quality standards.
+</HeroDesc>
+
+<HeroDesc>
+  Our commitment is to transform ideas into successful brands and deliver experiences that create lasting value for our customers.
+</HeroDesc>
 
               {/* <Button>Learn More</Button> */}
             </Left>
@@ -1269,12 +1281,16 @@ const About = () => {
                 <ContentTitle>About Our Medical World</ContentTitle>
 
                 <Description>
-                  Medical World Co., Ltd. was established in 2015 as a leading manufacturer and distributor of uniforms and accessories in Myanmar. 
+  Medical World Co., Ltd. was established in 2015 as a leading manufacturer and distributor of uniforms and accessories in Myanmar.
+</Description>
 
-                  Since our inception, we have been committed to delivering high-quality uniform solutions tailored to the needs of government organizations, healthcare institutions, and private-sector businesses. With more than a decade of industry experience, Medical World has built a strong reputation for excellence, reliability, and customer-focused service. 
+<Description>
+  Since our inception, we have been committed to delivering high-quality uniform solutions tailored to the needs of government organizations, healthcare institutions, and private-sector businesses. With more than a decade of industry experience, Medical World has built a strong reputation for excellence, reliability, and customer-focused service.
+</Description>
 
-                  We provide end-to-end uniform solutions, from consultation and design development to manufacturing and distribution. Our expertise includes customized uniform design services, helping organizations create professional and distinctive corporate identities. We also offer advanced logo embroidery and printing services using modern production technology, ensuring durability, precision, and exceptional quality.
-                </Description>
+<Description>
+  We provide end-to-end uniform solutions, from consultation and design development to manufacturing and distribution. Our expertise includes customized uniform design services, helping organizations create professional and distinctive corporate identities. We also offer advanced logo embroidery and printing services using modern production technology, ensuring durability, precision, and exceptional quality.
+</Description>
               </TextBox>
             </ContentFlex>
           </ContentSection>

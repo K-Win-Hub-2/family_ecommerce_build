@@ -358,6 +358,7 @@ const Title = styled.h3`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-transform: capitalize;
   
   ${mobile({
     fontSize: "14px"
@@ -537,9 +538,9 @@ const New = ({ item, title }) => {
         <Title>{item.item_name}</Title>
 
         <PriceRow>
-          <Price>${promoprice || orderprice || "0.00"}</Price>
+          <Price>{promoprice || orderprice || "0.00"}MMK</Price>
           {promoprice && orderprice && (
-            <OldPrice>${orderprice}</OldPrice>
+            <OldPrice>{orderprice}MMK</OldPrice>
           )}
         </PriceRow>
 

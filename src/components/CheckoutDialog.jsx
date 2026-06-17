@@ -497,10 +497,222 @@ const TextArea = styled.textarea`
   }
 `;
 
+// export default function CheckoutDialog(props) {
+//   const [address, setAddress] = useState("");
+//   const [township, setTownship] = useState("");
+//   const [charges] = useState(0); // Default to 0 if not handled dynamically
+//   const [remark, setRemark] = useState("");
+//   const [bank_id, setBankId] = useState("");
+//   const [screenshot, setShortenedImageBase64] = useState("");
+//   const [deliveryType, setDeliveryType] = useState("pickup");
+//   const [, setShowTownshipInput] = useState(false);
+//   const [showBankInfo, setshowBankInfo] = useState(false);
+//   const [banks, setBanks] = useState([]);
+
+//   const navigate = useNavigate();
+//   const dispatch = useDispatch();
+
+//   // FIXED: Access keys directly from state.user since your data is at the root
+//   const user = useSelector((state) => state.user);
+//   const url = useSelector((state) => state.user.url);
+//   const cart = useSelector((state) => state.cart);
+
+//   // Fetch banks data
+//   useEffect(() => {
+//     if (!url) return;
+
+//     axios
+//       .get(url + "/api/bank/list")
+//       .then((res) => {
+//         setBanks(res.data.data || []);
+//       })
+//       .catch((err) => console.log(err));
+//   }, [url]);
+
+//   // Initialize form data from props when dialog opens
+//   useEffect(() => {
+//     if (props.open) {
+//       setTownship(props.township || "");
+//       setBankId(props.selectedBank || "");
+//       setRemark(props.orderNotes || "");
+//       setShortenedImageBase64(props.paymentScreenshot || "");
+//       setDeliveryType(props.deliveryType || "pickup");
+//       setShowTownshipInput(props.deliveryType === "township");
+//       setAddress(props.address || user.address || "");
+//     }
+//   }, [props.open, props.township, props.selectedBank, props.orderNotes, props.paymentScreenshot, props.deliveryType, props.address, user.address]);
+
+//   const onRemarkChanged = (e) => setRemark(e.target.value);
+
+//   const orderSave = async () => {
+//     try {
+//       const payload = {
+//         // FIXED: Grabs the ID accurately (e.g., 4308) directly from the user slice root
+//         id: user.id || null, 
+//         name: user.name,
+//         phone: user.phone || "",
+
+//         // Delivery logic
+//         address: deliveryType === "pickup" ? "" : address,
+//         township: deliveryType === "pickup" ? "" : township,
+//         pickup: deliveryType === "pickup" ? 1 : 0,
+
+//         charges: charges || 0,
+//         remark: remark || "",
+
+//         products: cart.products.map((item) => ({
+//           unitid: item.unitid,
+//           quantity: item.quantity,
+//           price: item.price,
+//         })),
+
+//         quantity: cart.total_pcs,
+//         amount: cart.total,
+
+//         // Payment proof
+//         screenshot: screenshot || props.paymentScreenshot || "",
+
+//         // Bank
+//         bank_id: bank_id || props.selectedBank ? Number(bank_id || props.selectedBank) : null,
+//       };
+
+//       console.log("Final Payload Sent to Server:", payload);
+
+//       const response = await axios.post(
+//         url + "/api/ecommerce_order_store",
+//         payload
+//       );
+
+//       console.log("Order confirmation response:", response);
+
+//       dispatch(resetProduct());
+//       navigate("/order_list");
+//     } catch (error) {
+//       console.error("Failed to store e-commerce order:", error.message);
+//       alert("Failed to store e-commerce order. Please try again.");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <Dialog open={props.open} onClose={props.close} id="checkout">
+//         <DialogTitle>
+//           <b>Delivery and Payment Information</b>
+//         </DialogTitle>
+//         <DialogContent>
+//           <DialogContentText>
+//             Please enter information to check out!
+//           </DialogContentText>
+//           <Form>
+//             <label>Name</label>
+//             <Input
+//               type="text"
+//               id="name"
+//               name="name"
+//               placeholder="name"
+//               value={user.name || ""}
+//               readOnly
+//             />
+            
+//             <label>Phone</label>
+//             <Input
+//               type="text"
+//               id="phone"
+//               name="phone"
+//               placeholder="phone"
+//               value={user.phone || ""}
+//               readOnly
+//             />
+            
+//             <label>Address</label>
+//             <Input
+//               type="text"
+//               id="address"
+//               name="address"
+//               placeholder="address"
+//               value={address}
+//               readOnly
+//             />
+
+//             <Filter>
+//               <div>
+//                 <label>Delivery Type: <strong>{deliveryType === "pickup" ? "Pickup" : "Township"}</strong></label>
+//               </div>
+//             </Filter>
+            
+//             <Filter>
+//               {deliveryType === "township" && township && (
+//                 <div>
+//                   <label>Selected Township: <strong>{township}</strong></label>
+//                 </div>
+//               )}
+//             </Filter>
+            
+//             <Filter>
+//               <label>
+//                 Payment: <strong>{props.selectedBankName || 'N/A'}</strong>
+//               </label>
+//             </Filter>
+
+//             {props.paymentScreenshot && (
+//               <div>
+//                 <label>Payment Screenshot Uploaded</label>
+//                 <img 
+//                   src={props.paymentScreenshot} 
+//                   alt="Payment Screenshot" 
+//                   style={{ maxWidth: '100%', height: 'auto', marginTop: '10px' }}
+//                 />
+//               </div>
+//             )}
+
+//             <label>Pay amount</label>
+//             <Input
+//               type="text"
+//               id="payamount"
+//               disabled
+//               placeholder="Pay Amount"
+//               value={props.total}
+//             />
+            
+//             <label>Order Notes</label>
+//             <TextArea
+//               value={remark}
+//               onChange={onRemarkChanged}
+//               placeholder="Add any additional notes..."
+//               style={{
+//                 width: '100%',
+//                 padding: '10px',
+//                 border: '1px solid #2f80a5',
+//                 borderRadius: '10px',
+//                 outline: 'none',
+//                 minHeight: '80px',
+//                 resize: 'vertical'
+//               }}
+//             />
+//           </Form>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button onClick={props.close} className="bg-blue-500">Cancel</Button>
+//           <Button onClick={orderSave}>Order</Button>
+//         </DialogActions>
+//       </Dialog>
+      
+//       <BankInfoDialog
+//         open={showBankInfo}
+//         close={() => setshowBankInfo(false)}
+//         setBankId={setBankId}
+//       />
+//     </div>
+//   );
+// }
+
+
+// ... styled-components keep exactly the same as your setup ...
+
 export default function CheckoutDialog(props) {
   const [address, setAddress] = useState("");
   const [township, setTownship] = useState("");
-  const [charges] = useState(0); // Default to 0 if not handled dynamically
+  const [charges] = useState(0); 
   const [remark, setRemark] = useState("");
   const [bank_id, setBankId] = useState("");
   const [screenshot, setShortenedImageBase64] = useState("");
@@ -512,15 +724,12 @@ export default function CheckoutDialog(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // FIXED: Access keys directly from state.user since your data is at the root
   const user = useSelector((state) => state.user);
   const url = useSelector((state) => state.user.url);
   const cart = useSelector((state) => state.cart);
 
-  // Fetch banks data
   useEffect(() => {
     if (!url) return;
-
     axios
       .get(url + "/api/bank/list")
       .then((res) => {
@@ -529,7 +738,7 @@ export default function CheckoutDialog(props) {
       .catch((err) => console.log(err));
   }, [url]);
 
-  // Initialize form data from props when dialog opens
+  // Synchronize dynamic updates directly from props and global Redux user object changes
   useEffect(() => {
     if (props.open) {
       setTownship(props.township || "");
@@ -540,19 +749,18 @@ export default function CheckoutDialog(props) {
       setShowTownshipInput(props.deliveryType === "township");
       setAddress(props.address || user.address || "");
     }
-  }, [props.open, props.township, props.selectedBank, props.orderNotes, props.paymentScreenshot, props.deliveryType, props.address, user.address]);
+  }, [props.open, props.township, props.selectedBank, props.orderNotes, props.paymentScreenshot, props.deliveryType, props.address, user]);
 
   const onRemarkChanged = (e) => setRemark(e.target.value);
 
   const orderSave = async () => {
     try {
       const payload = {
-        // FIXED: Grabs the ID accurately (e.g., 4308) directly from the user slice root
+        // Fallback checks will prioritize real-time user object data keys cleanly
         id: user.id || null, 
-        name: user.name,
+        name: user.name || "",
         phone: user.phone || "",
 
-        // Delivery logic
         address: deliveryType === "pickup" ? "" : address,
         township: deliveryType === "pickup" ? "" : township,
         pickup: deliveryType === "pickup" ? 1 : 0,
@@ -568,15 +776,16 @@ export default function CheckoutDialog(props) {
 
         quantity: cart.total_pcs,
         amount: cart.total,
-
-        // Payment proof
         screenshot: screenshot || props.paymentScreenshot || "",
-
-        // Bank
         bank_id: bank_id || props.selectedBank ? Number(bank_id || props.selectedBank) : null,
       };
 
       console.log("Final Payload Sent to Server:", payload);
+
+      if (!payload.id) {
+        alert("User session profile ID missing. Please verify login state.");
+        return;
+      }
 
       const response = await axios.post(
         url + "/api/ecommerce_order_store",
@@ -584,7 +793,6 @@ export default function CheckoutDialog(props) {
       );
 
       console.log("Order confirmation response:", response);
-
       dispatch(resetProduct());
       navigate("/order_list");
     } catch (error) {
@@ -596,43 +804,18 @@ export default function CheckoutDialog(props) {
   return (
     <div>
       <Dialog open={props.open} onClose={props.close} id="checkout">
-        <DialogTitle>
-          <b>Delivery and Payment Information</b>
-        </DialogTitle>
+        <DialogTitle><b>Delivery and Payment Information</b></DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter information to check out!
-          </DialogContentText>
+          <DialogContentText>Please enter information to check out!</DialogContentText>
           <Form>
             <label>Name</label>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="name"
-              value={user.name || ""}
-              readOnly
-            />
+            <Input type="text" id="name" name="name" value={user.name || ""} readOnly />
             
             <label>Phone</label>
-            <Input
-              type="text"
-              id="phone"
-              name="phone"
-              placeholder="phone"
-              value={user.phone || ""}
-              readOnly
-            />
+            <Input type="text" id="phone" name="phone" value={user.phone || ""} readOnly />
             
             <label>Address</label>
-            <Input
-              type="text"
-              id="address"
-              name="address"
-              placeholder="address"
-              value={address}
-              readOnly
-            />
+            <Input type="text" id="address" name="address" value={address} readOnly />
 
             <Filter>
               <div>
@@ -642,66 +825,35 @@ export default function CheckoutDialog(props) {
             
             <Filter>
               {deliveryType === "township" && township && (
-                <div>
-                  <label>Selected Township: <strong>{township}</strong></label>
-                </div>
+                <div><label>Selected Township: <strong>{township}</strong></label></div>
               )}
             </Filter>
             
             <Filter>
-              <label>
-                Payment: <strong>{props.selectedBankName || 'N/A'}</strong>
-              </label>
+              <label>Payment: <strong>{props.selectedBankName || 'N/A'}</strong></label>
             </Filter>
 
             {props.paymentScreenshot && (
               <div>
                 <label>Payment Screenshot Uploaded</label>
-                <img 
-                  src={props.paymentScreenshot} 
-                  alt="Payment Screenshot" 
-                  style={{ maxWidth: '100%', height: 'auto', marginTop: '10px' }}
-                />
+                <img src={props.paymentScreenshot} alt="Payment Screenshot" style={{ maxWidth: '100%', height: 'auto', marginTop: '10px' }} />
               </div>
             )}
 
             <label>Pay amount</label>
-            <Input
-              type="text"
-              id="payamount"
-              disabled
-              placeholder="Pay Amount"
-              value={props.total}
-            />
+            <Input type="text" id="payamount" disabled value={props.total} />
             
             <label>Order Notes</label>
-            <TextArea
-              value={remark}
-              onChange={onRemarkChanged}
-              placeholder="Add any additional notes..."
-              style={{
-                width: '100%',
-                padding: '10px',
-                border: '1px solid #2f80a5',
-                borderRadius: '10px',
-                outline: 'none',
-                minHeight: '80px',
-                resize: 'vertical'
-              }}
-            />
+            <TextArea value={remark} onChange={onRemarkChanged} placeholder="Add any additional notes..." style={{ width: '100%', padding: '10px', border: '1px solid #2f80a5', borderRadius: '10px', outline: 'none', minHeight: '80px', resize: 'vertical' }} />
           </Form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close} className="bg-blue-500">Cancel</Button>
+          <Button onClick={props.close}>Cancel</Button>
           <Button onClick={orderSave}>Order</Button>
         </DialogActions>
       </Dialog>
       
-      <BankInfoDialog
-        open={showBankInfo}
-        close={() => setshowBankInfo(false)}
-        setBankId={setBankId}
-      />
+      <BankInfoDialog open={showBankInfo} close={() => setshowBankInfo(false)} setBankId={setBankId} />
     </div>
   );
 }

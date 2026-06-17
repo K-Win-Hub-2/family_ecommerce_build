@@ -56,9 +56,15 @@ const BankText = styled.div`
 const BankCardItem = ({ bank }) => {
   return (
     <Row>
-      <PaymentImg src={bank.image} alt={bank.bank_name} />
+      {/* Target the bank_logo string from your JSON structure here */}
+      <PaymentImg src={bank.bank_logo} alt={bank.bank_name} />
 
       <BankText>
+        <div>
+          {/* Note: I swapped 'Account Name' to map to bank_name for clarity, 
+              and 'Holder Name' to account_holder_name. Feel free to adjust if needed! */}
+          <b>Bank:</b> {bank.bank_name}
+        </div>
         <div>
           <b>Account Name :</b> {bank.account_holder_name}
         </div>

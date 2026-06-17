@@ -477,7 +477,7 @@ const New = ({ item, title }) => {
         <Title>{item.item_name}</Title>
 
         <PriceRow>
-          <Price>${promoprice || orderprice || "0.00"}</Price>
+          <Price>{promoprice || orderprice || "0.00"}MMK</Price>
         </PriceRow>
 
         <ButtonRow>

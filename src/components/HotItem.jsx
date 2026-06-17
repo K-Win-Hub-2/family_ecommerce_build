@@ -454,7 +454,7 @@ const HotItem = ({ item, title }) => {
         <Description>{item.description}</Description>
 
         <PriceRow>
-          <Price>${promoprice || orderprice || "0.00"}</Price>
+          <Price>{promoprice || orderprice || "0.00"}MMK</Price>
         </PriceRow>
 
         <ButtonRow>

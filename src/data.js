@@ -1,6 +1,7 @@
 // import slider1 from './slider-images/slider1.mp4'
 import slider1 from './slider-images/banner4.jpg'
 import slider2 from './slider-images/banner5.jpg'
+import slider3 from './slider-images/banner6.JPG'
 
 
 export const sliderItems = [
@@ -19,7 +20,15 @@ export const sliderItems = [
       subtitle: "Trusted by Thousands",
       desc: "Join thousands of satisfied customers who rely on our premium products for their professional needs.",
       bg: "fcf1ed",
-    }
+    },
+    {
+      id: 3,
+      img: slider3,
+      title: "Quality Products:",
+      subtitle: "Premium Uniforms & Accessories",
+      desc: "Discover our extensive collection of high-quality uniforms and accessories, designed for comfort and durability.",
+      bg: "f5fafd",
+    },
   ];
 
   export const categories = [
