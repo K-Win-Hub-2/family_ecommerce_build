@@ -73,6 +73,7 @@
 //   flex-wrap: wrap;
 //   gap: 30px;
 //   justify-content: center;
+//   align-items: center;
 //   transition: all 0.4s ease-in-out;
 // `;
 
@@ -91,6 +92,42 @@
 //     background: #0b74b5;
 //     color: white;
 //     transform: translateY(-2px);
+//   }
+// `;
+
+// // Dropdown styles for "Other Brands"
+// const DropdownContainer = styled.div`
+//   position: relative;
+//   display: inline-block;
+// `;
+
+// const DropdownMenu = styled.div`
+//   position: absolute;
+//   top: 110%;
+//   left: 0;
+//   background-color: white;
+//   min-width: 160px;
+//   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.15);
+//   border: 1px solid #0b74b5;
+//   border-radius: 8px;
+//   z-index: 10;
+//   display: ${(props) => (props.show ? "block" : "none")};
+//   overflow: hidden;
+// `;
+
+// const DropdownItem = styled.div`
+//   color: #0b74b5;
+//   padding: 12px 16px;
+//   text-decoration: none;
+//   display: block;
+//   font-size: 14px;
+//   cursor: pointer;
+//   background: ${(props) => (props.active ? "#e2eef7" : "#fff")};
+//   transition: background 0.2s ease;
+
+//   &:hover {
+//     background-color: #0b74b5;
+//     color: white;
 //   }
 // `;
 
@@ -300,6 +337,9 @@
 //   const [isLoading, setIsLoading] = useState(true);
 //   const [categoryDetails, setCategoryDetails] = useState(null);
 //   const [subcatError, setSubcatError] = useState("");
+  
+//   // State to manage Dropdown Menu Visibility
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
 //   useEffect(() => {
 //     getItems();
@@ -370,7 +410,6 @@
 //     }
 //   };
 
-//   // FIX: Checks for both category_id or category_name to handle alternate API responses safely
 //   const selectedCategorySubcategories = useMemo(() => {
 //     if (!selectedCategory) return [];
 //     return subcat.filter(
@@ -422,7 +461,6 @@
 //     });
 //   }, [items, selectedCategory, selectedSubcategory]);
 
-//   // FIX: Keeps rendering aligned with updated conditional checks on id/name attributes
 //   const groupedItems = useMemo(() => {
 //     const validSubcategories = selectedCategory
 //       ? subcat.filter((sub) => sub.category_id === selectedCategory.id || sub.category_name === selectedCategory.category_name)
@@ -446,6 +484,11 @@
 //       .filter((group) => group.items.length > 0);
 //   }, [filteredItems, subcat, selectedCategory, selectedSubcategory]);
 
+//   // Derived filtered layout lists for the UI presentation layer
+//   const staticMainBrands = ["family hospital", "branded", "ecofamily", "NICE"];
+//   const mainRowCategories = cate.filter(cat => staticMainBrands.includes(cat.category_name));
+//   const arfiBrandCategory = cate.find(cat => cat.category_name === "Arfi Brand");
+
 //   return (
 //     <div>
 //       <Container id="top">
@@ -455,7 +498,8 @@
 //         <TopBar>
 //           <CategoryNavWrapper>
 //             <CategoryButtonWrap>
-//               {cate.map((ca) => (
+//               {/* Main row brand list display */}
+//               {mainRowCategories.map((ca) => (
 //                 <CategoryButton
 //                   key={ca.id}
 //                   active={selectedCategory?.id === ca.id}
@@ -463,6 +507,7 @@
 //                     setSelectedCategory(ca);
 //                     setSelectedSubcategory("");
 //                     getCategoryItems(ca.id);
+//                     setIsDropdownOpen(false); // Close dropdown if a main brand is clicked
 //                   }}
 //                   className="capitalize"
 //                 >
@@ -471,6 +516,31 @@
 //                     : ca.category_name}
 //                 </CategoryButton>
 //               ))}
+
+//               {/* Other Brands Dropdown Button */}
+//               <DropdownContainer>
+//                 <CategoryButton 
+//                   active={selectedCategory?.category_name === "Arfi Brand"}
+//                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+//                 >
+//                   Other Brands ▾
+//                 </CategoryButton>
+//                 <DropdownMenu show={isDropdownOpen}>
+//                   {arfiBrandCategory && (
+//                     <DropdownItem
+//                       active={selectedCategory?.id === arfiBrandCategory.id}
+//                       onClick={() => {
+//                         setSelectedCategory(arfiBrandCategory);
+//                         setSelectedSubcategory("");
+//                         getCategoryItems(arfiBrandCategory.id);
+//                         setIsDropdownOpen(false); // Auto-hide menu on choice select
+//                       }}
+//                     >
+//                       {arfiBrandCategory.category_name}
+//                     </DropdownItem>
+//                   )}
+//                 </DropdownMenu>
+//               </DropdownContainer>
 //             </CategoryButtonWrap>
 //           </CategoryNavWrapper>
 
@@ -669,7 +739,6 @@ const CategoryButton = styled.button`
   }
 `;
 
-// Dropdown styles for "Other Brands"
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
@@ -911,8 +980,6 @@ const ProductList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryDetails, setCategoryDetails] = useState(null);
   const [subcatError, setSubcatError] = useState("");
-  
-  // State to manage Dropdown Menu Visibility
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -1058,7 +1125,6 @@ const ProductList = () => {
       .filter((group) => group.items.length > 0);
   }, [filteredItems, subcat, selectedCategory, selectedSubcategory]);
 
-  // Derived filtered layout lists for the UI presentation layer
   const staticMainBrands = ["family hospital", "branded", "ecofamily", "NICE"];
   const mainRowCategories = cate.filter(cat => staticMainBrands.includes(cat.category_name));
   const arfiBrandCategory = cate.find(cat => cat.category_name === "Arfi Brand");
@@ -1072,7 +1138,6 @@ const ProductList = () => {
         <TopBar>
           <CategoryNavWrapper>
             <CategoryButtonWrap>
-              {/* Main row brand list display */}
               {mainRowCategories.map((ca) => (
                 <CategoryButton
                   key={ca.id}
@@ -1081,7 +1146,7 @@ const ProductList = () => {
                     setSelectedCategory(ca);
                     setSelectedSubcategory("");
                     getCategoryItems(ca.id);
-                    setIsDropdownOpen(false); // Close dropdown if a main brand is clicked
+                    setIsDropdownOpen(false);
                   }}
                   className="capitalize"
                 >
@@ -1091,7 +1156,6 @@ const ProductList = () => {
                 </CategoryButton>
               ))}
 
-              {/* Other Brands Dropdown Button */}
               <DropdownContainer>
                 <CategoryButton 
                   active={selectedCategory?.category_name === "Arfi Brand"}
@@ -1107,7 +1171,7 @@ const ProductList = () => {
                         setSelectedCategory(arfiBrandCategory);
                         setSelectedSubcategory("");
                         getCategoryItems(arfiBrandCategory.id);
-                        setIsDropdownOpen(false); // Auto-hide menu on choice select
+                        setIsDropdownOpen(false);
                       }}
                     >
                       {arfiBrandCategory.category_name}
@@ -1144,7 +1208,7 @@ const ProductList = () => {
               </BrandName>
               <BrandDescription
                 dangerouslySetInnerHTML={{
-                  __html: categoryDetails.description || `Explore our premium ${categoryDetails.category_name} collection. Quality products designed for professionals who demand the best.`
+                  __html: categoryDetails.description || `Explore our premium ${categoryDetails.category_name} collection.`
                 }}
               />
             </BrandInfo>

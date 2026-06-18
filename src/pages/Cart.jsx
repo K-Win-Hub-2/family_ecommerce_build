@@ -1791,7 +1791,7 @@ const Cart = () => {
 
             {cart.products.map((product) => (
               <CartRow key={product.unitid}>
-                <ProductInfo>
+                {/* <ProductInfo>
                   <ProductImg src={url + `/ecommerce/items/${product.unitimg}`} alt={product.unitname} />
                   <div>
                     <div>{product.unitname}</div>
@@ -1799,7 +1799,25 @@ const Cart = () => {
                     <br />
                     <small className="capitalize">Color: {product.color}</small>
                   </div>
-                </ProductInfo>
+                </ProductInfo> */}
+                <ProductInfo>
+  <ProductImg 
+    src={
+      product.unitimg.startsWith("http") 
+        ? product.unitimg 
+        : product.unitimg.startsWith("/ecommerce") || product.unitimg.startsWith("ecommerce")
+          ? url + (product.unitimg.startsWith("/") ? "" : "/") + product.unitimg
+          : url + `/ecommerce/items/${product.unitimg}`
+    } 
+    alt={product.unitname} 
+  />
+  <div>
+    <div>{product.unitname}</div>
+    <small>Size: {product.size}</small>
+    <br />
+    <small className="capitalize">Color: {product.color}</small>
+  </div>
+</ProductInfo>
                 <div>${product.price}</div>
                 <div>
                   <QtyBox>
