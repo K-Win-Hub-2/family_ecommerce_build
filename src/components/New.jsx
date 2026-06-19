@@ -9,7 +9,7 @@ const Card = styled.div`
   border-radius: 20px;
   border: 2px solid #cfd8dc;
   overflow: hidden;
-  transition: 0.3s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -22,8 +22,15 @@ const Card = styled.div`
   
   @media (max-width: 768px) {
     border-radius: 16px;
+    
     &:hover {
-      transform: none;
+      transform: none; /* Disables desktop hover lift */
+    }
+
+    /* Active touch down animation feedback */
+    &:active {
+      transform: scale(0.98);
+      background: #eceff1;
     }
   }
 `;
@@ -119,7 +126,7 @@ const BuyBtn = styled.button`
   color: white;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 
   &:hover {
     background: #08557f;
@@ -128,6 +135,10 @@ const BuyBtn = styled.button`
   @media (max-width: 768px) {
     padding: 8px;
     font-size: 14px;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 `;
 
@@ -156,11 +167,9 @@ const defaultImageUrl = 'http://familyuniformapp.medicalworld.com.mm/ecommerce/i
 const New = ({ item, title }) => {
   const url = useSelector(state => state.user.url);
 
-  // 1. Get the baseline price from the first unit array element
   const firstUnit = item.counting_units && item.counting_units[0];
   const orderprice = firstUnit ? firstUnit.order_price : null;
 
-  // 2. Calculate promotional reduction programmatically based on discount_price
   let promoprice = null;
   if (orderprice && item.discount_price > 0) {
     promoprice = orderprice - (orderprice * (item.discount_price / 100));
@@ -172,7 +181,6 @@ const New = ({ item, title }) => {
 
   return (
     <Card>
-      {/* Renders percentage off if it's a promotional item, otherwise defaults to 'New' label */}
       <NewBadge>
         {item.discount_price > 0 ? `${item.discount_price}%` : 'New'}
       </NewBadge>

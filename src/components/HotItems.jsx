@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
+import { mobile } from "../responsive";
+import axios from 'axios';
 import { useSelector } from 'react-redux'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import HotItem from './HotItem'
+import HotItem from './HotItem';
 
 const MainContainer = styled.div`
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
@@ -19,11 +22,13 @@ const HeaderContainer = styled.div`
   align-items: center;
   margin-bottom: 20px;
   padding: 0 20px;
-
-  @media (max-width: 768px) {
-    padding: 0 10px;
-    margin-bottom: 15px;
-  }
+  width: 100%;
+  box-sizing: border-box;
+  
+  ${mobile({
+    padding: "0 10px",
+    marginBottom: "15px"
+  })}
 `;
 
 const ArrowButton = styled.button`
@@ -47,24 +52,25 @@ const ArrowButton = styled.button`
     background: #ccc;
     cursor: not-allowed;
   }
-
-  @media (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
+  
+  ${mobile({
+    width: "32px",
+    height: "32px"
+  })}
 `;
 
 const Container = styled.div`
-  display: flex;
-  padding: 20px;
+  width: 100%;
   overflow: hidden;
   position: relative;
-  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
+  /* Added to make sure touch interactions don't conflict with browser defaults */
+  touch-action: pan-y; 
 
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
+  ${mobile({
+    padding: "10px 5px"
+  })}
 `;
 
 const ItemsWrapper = styled.div`
@@ -72,21 +78,21 @@ const ItemsWrapper = styled.div`
   gap: 20px;
   transition: transform 0.3s ease;
 
-  @media (max-width: 768px) {
-    gap: 15px;
-  }
+  ${mobile({
+    gap: "15px"
+  })}
 `;
 
 const ItemContainer = styled.div`
   flex: 0 0 300px;
   min-width: 300px;
 
-  @media (max-width: 768px) {
-    flex: 0 0 100%;
-    min-width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+  ${mobile({
+    flex: "0 0 100%",
+    minWidth: "100%",
+    width: "100%",
+    boxSizing: "border-box" /* Fixed typo from boxBoxing */
+  })}
 `;
 
 const SectionTitle = styled.h2`
@@ -95,33 +101,40 @@ const SectionTitle = styled.h2`
   text-align: center;
   color: #2b57b8;
   margin: 0;
-
-  @media (max-width: 768px) {
-    font-size: 20px;
-  }
+  
+  ${mobile({
+    fontSize: "20px"
+  })}
 `
 
 const HotItems = ({ title, url }) => {
   const [items, setItems] = useState([]);
   const url1 = useSelector(state => state.user.url);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(300);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [containerWidth, setContainerWidth] = useState(300);
   const containerRef = useRef(null);
+  
+  // Touch States
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // Minimum distance required for a swipe action (in pixels)
+  const minSwipeDistance = 50;
 
   useEffect(() => {
-    const handleResize = () => {
+    const updateWidth = () => {
       const mobileCheck = window.innerWidth <= 768;
       setIsMobile(mobileCheck);
       if (containerRef.current) {
-        // Grab real padding box width to offset the card transition accurately
-        setContainerWidth(containerRef.current.clientWidth - (mobileCheck ? 20 : 40));
+        const paddingOffset = mobileCheck ? 10 : 40;
+        setContainerWidth(containerRef.current.offsetWidth - paddingOffset);
       }
     };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
   const scrollLeft = () => {
@@ -131,23 +144,53 @@ const HotItems = ({ title, url }) => {
   };
 
   const scrollRight = () => {
-    const visibleItems = isMobile ? 1 : 4; 
+    const visibleItems = isMobile ? 1 : 4;
     if (currentIndex < items.length - visibleItems) {
       setCurrentIndex(currentIndex + 1);
     }
   };
+
+  // Touch handlers
+  const handleTouchStart = (e) => {
+    setTouchEnd(null); // Reset end touch
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      scrollRight();
+    } else if (isRightSwipe) {
+      scrollLeft();
+    }
+  };
+
+  const translationOffset = isMobile 
+    ? currentIndex * (containerWidth + 15) 
+    : currentIndex * 320;
 
   useEffect(() => {
     const getItems = async () => {
       try {
         const res = await axios.get(url1 + "/api/" + url);
         setItems(res.data);
-      } catch (err) { }
+      } catch (err) {
+        console.error("Error fetching items:", err);
+      }
     };
-    getItems();
+    if (url1 && url) getItems();
   }, [url1, url]);
 
-  return (
+  return ( 
     <div>
       <MainContainer>
         <HeaderContainer>
@@ -161,12 +204,14 @@ const HotItems = ({ title, url }) => {
             </ArrowButton>
           </div>
         </HeaderContainer>
-        <Container ref={containerRef}>
-          <ItemsWrapper 
-            style={{ 
-              transform: `translateX(-${currentIndex * (isMobile ? (containerWidth + 15) : 320)}px)` 
-            }}
-          >
+        
+        <Container 
+          ref={containerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <ItemsWrapper style={{ transform: `translateX(-${translationOffset}px)` }}>
             {items.map(item => (
               <ItemContainer key={item.id}>
                 <HotItem item={item} title={title} />

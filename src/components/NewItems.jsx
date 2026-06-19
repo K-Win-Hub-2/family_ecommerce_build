@@ -65,10 +65,10 @@ const Container = styled.div`
   position: relative;
   padding: 20px;
   box-sizing: border-box;
+  touch-action: pan-y; /* Permits vertical scrolling but handles swipe horizontally */
 
   ${mobile({
-    padding: "10px 5px",
-    overflow: "hidden"
+    padding: "10px 5px"
   })}
 `;
 
@@ -90,7 +90,7 @@ const ItemContainer = styled.div`
     flex: "0 0 100%",
     minWidth: "100%",
     width: "100%",
-    boxBoxing: "border-box"
+    boxSizing: "border-box" /* Fixed typo from boxBoxing */
   })}
 `;
 
@@ -113,6 +113,11 @@ const NewItems = ({ title, url }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [containerWidth, setContainerWidth] = useState(300);
   const containerRef = useRef(null);
+
+  // Touch States
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     const updateWidth = () => {
@@ -139,6 +144,30 @@ const NewItems = ({ title, url }) => {
     const visibleItems = isMobile ? 1 : 4;
     if (currentIndex < items.length - visibleItems) {
       setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  // Touch handlers
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      scrollRight();
+    } else if (isRightSwipe) {
+      scrollLeft();
     }
   };
 
@@ -173,7 +202,12 @@ const NewItems = ({ title, url }) => {
           </div>
         </HeaderContainer>
         
-        <Container ref={containerRef}>
+        <Container 
+          ref={containerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <ItemsWrapper style={{ transform: `translateX(-${translationOffset}px)` }}>
             {items.map(item => (
               <ItemContainer key={item.id}>

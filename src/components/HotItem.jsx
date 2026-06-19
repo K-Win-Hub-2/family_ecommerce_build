@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
+import { mobile } from "../responsive";
 
 const Card = styled.div`
   background: #f4f6f8;
   border-radius: 20px;
   border: 2px solid #cfd8dc;
   overflow: hidden;
-  transition: 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -21,25 +22,34 @@ const Card = styled.div`
   
   @media (max-width: 768px) {
     border-radius: 16px;
+    
+    /* Disables desktop hover on mobile and introduces standard active touch press effect */
     &:hover {
       transform: none;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      background: #eceff1;
     }
   }
 `;
 
 const ImageSection = styled.div`
-  background: #e9eef2;
   height: 260px;
+  background: #f8fafc;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 const ProductImage = styled.img`
   height: 100%;
   width: 100%;
   object-fit: contain;
-  padding: 10px;
+  padding: 15px;
+  box-sizing: border-box;
 `;
 
 const Content = styled.div`
@@ -47,78 +57,58 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  @media (max-width: 768px) {
-    padding: 12px;
-    gap: 6px;
-  }
+  margin-top: auto;
+  
+  ${mobile({
+    padding: "12px",
+    gap: "6px"
+  })}
 `;
 
 const Title = styled.h3`
   color: #0b6fa4;
   font-weight: 700;
   margin: 0;
-  font-size: 18px;
-  text-transform: capitalize;
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-`;
-
-const Description = styled.p`
-  font-size: 14px;
-  color: #6b7280;
-  margin: 0;
+  font-size: 16px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;  
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
+  text-transform: capitalize;
+  
+  ${mobile({
+    fontSize: "14px"
+  })}
 `;
 
 const PriceRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: auto;
+  
+  ${mobile({
+    gap: "6px"
+  })}
 `;
 
 const Price = styled.span`
   font-size: 20px;
   font-weight: bold;
   color: #0b6fa4;
-
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
+  
+  ${mobile({
+    fontSize: "16px"
+  })}
 `;
 
 const OldPrice = styled.span`
   text-decoration: line-through;
   color: gray;
   font-size: 14px;
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-  }
-`;
-
-const Discount = styled.span`
-  background: red;
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-
-  @media (max-width: 768px) {
-    font-size: 11px;
-    padding: 3px 8px;
-  }
+  
+  ${mobile({
+    fontSize: "12px"
+  })}
 `;
 
 const ButtonRow = styled.div`
@@ -136,7 +126,7 @@ const BuyBtn = styled.button`
   color: white;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 
   &:hover {
     background: #08557f;
@@ -145,34 +135,41 @@ const BuyBtn = styled.button`
   @media (max-width: 768px) {
     padding: 8px;
     font-size: 14px;
+    
+    &:active {
+      transform: scale(0.95);
+    }
   }
 `;
 
-const HeartIcon = styled.div`
+const NewBadge = styled.div`
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 16px;
+  right: 16px;
+  background: #ff0000;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: bold;
+  z-index: 5;
   
-  @media (max-width: 768px) {
-    top: 8px;
-    right: 8px;
-  }
+  ${mobile({
+    padding: "4px 10px",
+    fontSize: "11px",
+    top: "10px",
+    right: "10px"
+  })}
 `;
 
-const defaultImageUrl = 'http://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png';
+const defaultImageUrl = 'http://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png'; 
 
 const HotItem = ({ item, title }) => {
   const url = useSelector(state => state.user.url);
 
-  // 1. Locally access baseline price data from the nested array structure
   const firstUnit = item.counting_units && item.counting_units[0];
   const orderprice = firstUnit ? firstUnit.order_price : null;
 
-  // 2. Compute promotion prices inside memory instead of spamming network APIs
   let promoprice = null;
   if (orderprice && item.discount_price > 0) {
     promoprice = orderprice - (orderprice * (item.discount_price / 100));
@@ -184,11 +181,9 @@ const HotItem = ({ item, title }) => {
 
   return (
     <Card>
-      <HeartIcon>
-        <Discount>
-          {item.discount_price > 0 ? `-${item.discount_price}%` : 'Hot Sale'}
-        </Discount>
-      </HeartIcon>
+      <NewBadge>
+        {item.discount_price > 0 ? `${item.discount_price}%` : 'Hot Sale'}
+      </NewBadge>
 
       <ImageSection>
         <ProductImage
@@ -200,7 +195,6 @@ const HotItem = ({ item, title }) => {
 
       <Content>
         <Title>{item.item_name}</Title>
-        <Description>{item.description || "No description available."}</Description>
 
         <PriceRow>
           <Price>{promoprice || orderprice || "0.00"} MMK</Price>
