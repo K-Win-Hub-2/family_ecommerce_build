@@ -1164,9 +1164,9 @@ const About = () => {
   }, []);
   
   const factoryImages = [
+    pho3,
     pho1,
     pho2,
-    pho3,
     pho4,
     pho5,
     pho6,
