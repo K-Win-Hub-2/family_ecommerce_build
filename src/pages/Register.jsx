@@ -172,8 +172,8 @@ const Register = () => {
       return;
     }
 
-    const apiUrl = url ? `${url}/api/register` : "http://192.168.100.163:8000/api/register";
-    // const apiUrl = url ? `${url}/api/register` : "http://familyuniformapp.medicalworld.com.mm/api/register";
+    // const apiUrl = url ? `${url}/api/register` : "http://192.168.100.163:8000/api/register";
+    const apiUrl = url ? `${url}/api/register` : "http://familyuniformapp.medicalworld.com.mm/api/register";
 
     axios
       .post(apiUrl, {

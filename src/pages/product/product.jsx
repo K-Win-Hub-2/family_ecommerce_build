@@ -130,7 +130,8 @@ const ProductTitle = styled.h1`
 
 const ProductMeta = styled.div`
   font-size: 20px;
-  lineHeight: 1.9;
+  font-weight: 600;
+  lineHeight: 1;
   margin-bottom: 34px;
   text-transform: capitalize;
   color: #156ea8;
@@ -386,9 +387,6 @@ const relatedResponsive = {
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 }
 };
 
-// ==========================================
-// 2. MAIN COMPONENT
-// ==========================================
 const Product = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -404,7 +402,7 @@ const Product = () => {
     const [unitid, setUnitId] = useState("");
     const [unitname, setUnitName] = useState("");
     const [unitcode, setUnitCode] = useState("");
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
     const [color, setColor] = useState("");
     const [fabric, setFabric] = useState("");
     const [size, setSize] = useState("");
@@ -427,6 +425,7 @@ const Product = () => {
     const [filteredSizes, setFilteredSizes] = useState([]);
     const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
     const [selectedImage, setSelectedImage] = useState("");
+    const [websiteDisplayName, setWebsiteDisplayName] = useState("");
 
     const [relatedpants, setRelatedPants] = useState(null);
     const [relateditems, setRelatedItems] = useState({ items: [] });
@@ -485,6 +484,10 @@ const Product = () => {
                     setSelectedImage(
                         url + `/ecommerce/items/${response.data.item?.photo_path || ""}`
                     );
+                    
+                    if (response.data.item?.website_display_name) {
+                        setWebsiteDisplayName(response.data.item.website_display_name);
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -692,9 +695,12 @@ const Product = () => {
             axios
                 .get(`${url}/api/counting-unit/${targetUnitId}`)
                 .then((res) => {
-                    if (res.data && res.data.image) {
-                        setSelectedImage(url + res.data.image);
-                        setUnitImg(res.data.image); 
+                    if (res.data) {
+                        if (res.data.image) {
+                            setSelectedImage(url + res.data.image);
+                            setUnitImg(res.data.image); 
+                        }
+                        setWebsiteDisplayName(res.data.website_display_name || "");
                     }
                 })
                 .catch((err) => console.error(err));
@@ -716,6 +722,8 @@ const Product = () => {
         setColor(selectedUnit.colour_name);
         setFabric(selectedUnit.fabric_name);
         setDesign(selectedUnit.design_name);
+        
+        setWebsiteDisplayName(selectedUnit.website_display_name || "");
         
         if (!unitimg && item.photo_path) {
             setUnitImg(`/ecommerce/items/${item.photo_path}`);
@@ -783,12 +791,38 @@ const Product = () => {
     const getColorCode = (name) => {
         if (!name) return "#ccc";
         const value = name.toLowerCase().trim();
-        if (value.includes("magenta")) return "#e54a7c";
-        if (value.includes("pink")) return "#ff94b4";
-        if (value.includes("purple")) return "#741bb5";
-        if (value.includes("navy blue") || value.includes("navy")) return "#101646";
-        if (value.includes("black")) return "#1f1f1f";
-        if (value.includes("white")) return "#f5f5f5";
+        if (value.includes("magenta")) return "#E0427A";
+        if (value.includes("pink")) return "#FC8AA6";
+        if (value.includes("purple")) return "#6211C1";
+        if (value.includes("dream purple")) return "#C193C7";
+        if (value.includes("greenish")) return "#58919A";
+        if (value.includes("teal green")) return "#00A5BE";
+        if (value.includes("algae green")) return "#a4ad85ff";
+        if (value.includes("forest green")) return "#007E59";
+        if (value.includes("navy blue")) return "#13193C";
+        if (value.includes("sapphire blue")) return "#2E69C2";
+        if (value.includes("sky blue")) return "#599ECD";
+        if (value.includes("baby sky blue")) return "#A3D3EE";
+        if (value.includes("ice blue")) return "#A1E6D3";
+        if (value.includes("oxyblood red")) return "#5C1222";
+        if (value.includes("grey")) return "#949496";
+        if (value.includes("karki")) return "#D2C2A2";
+        if (value.includes("kaki")) return "#D2C2A2";
+        if (value.includes("peach")) return "#FFCBA4";
+        if (value.includes("warm pink")) return "#F48FB1";
+        if (value.includes("icy purple")) return "#D1C4E9";
+        if (value.includes("light blue")) return "#ADD8E6";
+        if (value.includes("dark blue")) return "#00008B";
+        if (value.includes("greenish blue")) return "#008B8B";
+        if (value.includes("delphinium blue")) return "#6A5ACD";
+        if (value.includes("icy blue")) return "#E0F7FA";
+        if (value.includes("olive green")) return "#556B2F";
+        if (value.includes("royal purple")) return "#7851A9";
+        if (value.includes("deep skyblue")) return "#00BFFF";
+        if (value.includes("fresh green")) return "#00FF7F";
+        if (value.includes("green")) return "#008000";
+        if (value.includes("blue")) return "#0000FF";
+        if (value.includes("duck head green")) return "#004B49";
         return "#999";
     };
 
@@ -827,6 +861,11 @@ const Product = () => {
 
                 <InfoSection>
                     <ProductTitle>{item.item_name}</ProductTitle>
+                    {(websiteDisplayName || item.website_display_name) && (
+                        <ProductMeta>
+                            <div>({websiteDisplayName || item.website_display_name})</div>
+                        </ProductMeta>
+                    )}
                     <ProductMeta>
                         <div><BoldText>Availability</BoldText> — {displayAvailability} In stock</div>
                     </ProductMeta>

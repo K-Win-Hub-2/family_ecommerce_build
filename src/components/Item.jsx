@@ -369,7 +369,7 @@ const Item = ({ item, title }) => {
   const orderprice = firstUnit ? firstUnit.order_price : null;
 
   let promoprice = null;
-  if (orderprice && item.discount_price >= 0) {
+  if (orderprice && item.discount_price > 0) {
     promoprice = orderprice - (orderprice * (item.discount_price / 100));
   }
 
@@ -379,7 +379,7 @@ const Item = ({ item, title }) => {
 
   return (
     <Card>
-      {item.discount_price >= 0 && <NewBadge>{item.discount_price}%</NewBadge>}
+      {item.discount_price > 0 && <NewBadge>{item.discount_price}%</NewBadge>}
 
       <ImageSection>
         <ProductImage
@@ -394,7 +394,7 @@ const Item = ({ item, title }) => {
 
         <PriceRow>
           <Price>{promoprice || orderprice || "0.00"} MMK</Price>
-          {promoprice && orderprice && (
+          {promoprice && orderprice && item.discount_price > 0 && (
             <OldPrice>{orderprice} MMK</OldPrice>
           )}
         </PriceRow>
