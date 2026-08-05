@@ -272,6 +272,7 @@
 
 
 import { createSlice } from "@reduxjs/toolkit";
+let cartIdCounter = 0;
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
@@ -293,35 +294,32 @@ const cartSlice = createSlice({
             state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
         },
         addProduct: (state, action) => {
-            const { unitid, quantity, price } = action.payload;
-            const product = state.products.find(p => p.unitid === unitid);
-
-            if (product) {
-                // Update the quantity and price if the product already exists
-                product.quantity += quantity;
-                product.price = price;  // Optionally update the price, depending on your logic
-            } else {
-                // If the product does not exist, add it to the products array
-                state.products.push(action.payload);
-            }
-
-            // Recalculate totals
-            state.total_pcs = state.products.reduce((sum, p) => sum + p.quantity, 0);
-            state.total = state.products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+            const newProduct = {
+                ...action.payload,
+                cartId: `cart_${Date.now()}_${++cartIdCounter}`,
+            };
+            state.products.push(newProduct);
+            cartSlice.caseReducers.recalculateTotals(state);
         },
         updateQuantity: (state, action) => {
             const { id, quantity } = action.payload;
-            const product = state.products.find(p => p.unitid === id);
+            const product = state.products.find(p => p.cartId === id);
             if (product) {
                 product.quantity = quantity;
-                // Recalculate totals
                 cartSlice.caseReducers.recalculateTotals(state);
             }
         },
         removeProduct: (state, action) => {
             const id = action.payload;
-            state.products = state.products.filter(product => product.unitid !== id);
-            // Recalculate totals
+            const target = state.products.find(product => product.cartId === id);
+            if (target && target.matchGroupId) {
+                // Removing a shirt also removes its linked match item(s).
+                state.products = state.products.filter(
+                    product => product.matchGroupId !== target.matchGroupId
+                );
+            } else {
+                state.products = state.products.filter(product => product.cartId !== id);
+            }
             cartSlice.caseReducers.recalculateTotals(state);
         },
         addCheckOutInfo: (state, action) => {

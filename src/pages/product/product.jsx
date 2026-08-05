@@ -15,12 +15,14 @@ import CheckSize from "../../components/CheckSize";
 import sample from "../../files/sample.pdf";
 import Swal from "sweetalert2";
 import InstockDialog from "../../components/InstockDialog";
+import MatchItemDialog from "../../components/MatchItemDialog";
 import { FaRegHeart } from "react-icons/fa6";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 import ColorNav from "../../components/ColorNav";
 import Spinner from "../../common/Spinner";
+import NoImage from "../../../src/files/noimage/noimage.png";
 
 const Container = styled.div`
   background: #f7f7f7;
@@ -391,9 +393,9 @@ const Product = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const carouselRef = useRef(null);
+    const matchGroupRef = useRef(null);
 
     const url = useSelector((state) => state.user.url);
-    const cartProducts = useSelector((state) => state.cart.products || []);
 
     const [item, setItem] = useState({});
     const [units, setUnits] = useState([]);
@@ -427,8 +429,9 @@ const Product = () => {
     const [selectedImage, setSelectedImage] = useState("");
     const [websiteDisplayName, setWebsiteDisplayName] = useState("");
 
-    const [relatedpants, setRelatedPants] = useState(null);
+    const [relatedpants, setRelatedPants] = useState([]);
     const [relateditems, setRelatedItems] = useState({ items: [] });
+    const [matchModalOpen, setMatchModalOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [validImages, setValidImages] = useState([]);
 
@@ -439,12 +442,12 @@ const Product = () => {
     const formatSizeLabel = (sizeName) => {
         if (!sizeName) return "";
         const normalized = sizeName.toLowerCase().trim();
-        if (normalized.includes("xxl")) return "XXL";
-        if (normalized.includes("xl")) return "XL";
-        if (normalized.includes("xs")) return "XS";
-        if (normalized.includes("lg")) return "L";
-        if (normalized.includes("sm")) return "S";
-        if (normalized.includes("me")) return "M";
+        // if (normalized.includes("xxl")) return "XXL";
+        // if (normalized.includes("xl")) return "XL";
+        // if (normalized.includes("xs")) return "XS";
+        // if (normalized.includes("lg")) return "L";
+        // if (normalized.includes("sm")) return "S";
+        // if (normalized.includes("me")) return "M";
         return sizeName.toUpperCase();
     };
 
@@ -467,18 +470,27 @@ const Product = () => {
                         response.data.counting_unit_all ||
                         []
                     );
-                    setInstockFlag(response.data.valueofinstock);
+                    setInstockFlag((response.data.counting_units || []).reduce(
+                        (total, unit) => total + Number(unit.current_quantity || 0),
+                        0
+                    ));
                     setPreorderFlag(response.data.valueofpreorder);
 
-                    const relatedObj = response.data.related_item || response.data.related_pants;
-                    if (relatedObj) {
-                        setRelatedPants(relatedObj);
-                    }
-                    
-                    if (response.data.related_items) {
-                        setRelatedItems({ items: response.data.related_items });
-                    } else if (relatedObj) {
-                        setRelatedItems({ items: [relatedObj] });
+                    const itemObj = response.data.item || {};
+                    const relatedPantsObj =
+                        response.data.related_pants ||
+                        itemObj.related_item ||
+                        itemObj.related_pants;
+
+                    const relatedItemsRaw =
+                        response.data.related_items ||
+                        response.data.related_item;
+                    if (Array.isArray(relatedItemsRaw)) {
+                        setRelatedItems({ items: relatedItemsRaw });
+                    } else if (relatedItemsRaw) {
+                        setRelatedItems({ items: [relatedItemsRaw] });
+                    } else if (relatedPantsObj) {
+                        setRelatedItems({ items: [relatedPantsObj] });
                     }
 
                     setSelectedImage(
@@ -542,6 +554,9 @@ const Product = () => {
 
             dispatch(addOrder({ orderid, testname, testqty, testprice }));
         } else {
+            const matchGroupId = `match_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+            matchGroupRef.current = matchGroupId;
+
             dispatch(
                 addProduct({
                     unitid,
@@ -553,52 +568,14 @@ const Product = () => {
                     fabric,
                     quantity,
                     price,
-                    productId: id 
+                    productId: id,
+                    matchGroupId,
+                    isMatchParent: true
                 })
             );
 
-            let targetId = null;
-            let suggestionMessage = "";
-
-            if (relatedpants && relatedpants.id) {
-                const targetProductIdStr = String(relatedpants.id);
-                const currentProductIdStr = String(id);
-
-                const existingCurrentQty = cartProducts
-                    .filter(p => String(p.productId) === currentProductIdStr)
-                    .reduce((sum, p) => sum + (p.quantity || 0), 0);
-                
-                const totalCurrentQtyInCart = existingCurrentQty + quantity;
-
-                const totalRelatedQtyInCart = cartProducts
-                    .filter(p => 
-                        String(p.productId) === targetProductIdStr || 
-                        String(p.unitcode).includes(targetProductIdStr) || 
-                        String(p.unitname).includes(targetProductIdStr)
-                    )
-                    .reduce((sum, p) => sum + (p.quantity || 0), 0);
-
-                if (totalCurrentQtyInCart > totalRelatedQtyInCart) {
-                    targetId = relatedpants.id;
-                    suggestionMessage = ` You need to add the matching product (<strong>${relatedpants.item_name || "Related Item"}</strong>)`;
-                }
-            }
-
-            if (targetId) {
-                Swal.fire({
-                    title: "Needed to add to cart!",
-                    html: suggestionMessage, 
-                    icon: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#156ea8",
-                    cancelButtonColor: "#aaa",
-                    confirmButtonText: "Go to Matching Product",
-                    cancelButtonText: "Stay Here"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/product/${targetId}`;
-                    }
-                });
+            if (relatedpants && relatedpants.length > 0) {
+                setMatchModalOpen(true);
             } else {
                 Swal.fire({
                     title: "Success!",
@@ -609,6 +586,37 @@ const Product = () => {
                 });
             }
         }
+    };
+
+    const handleAddMatchToCart = () => {
+        const matchGroupId = matchGroupRef.current;
+        (relatedpants || []).forEach((match) => {
+            dispatch(
+                addProduct({
+                    unitid: match.id,
+                    unitname: match.unit_name,
+                    unitcode: match.unit_code,
+                    unitimg: match.image,
+                    color: match.colour_name,
+                    size: formatSizeLabel(match.size_name),
+                    fabric: match.fabric_name,
+                    quantity,
+                    price: match.order_price,
+                    productId: match.item_id,
+                    matchGroupId,
+                    isMatchParent: false
+                })
+            );
+        });
+
+        setMatchModalOpen(false);
+        Swal.fire({
+            title: "Success!",
+            text: "Successfully added to cart.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
     };
 
     const handleWishlistClick = () => {
@@ -659,6 +667,7 @@ const Product = () => {
                     {
                         colour_name: unit.colour_name,
                         colour_description: unit.colour_description || unit.colour_name,
+                        color_hex_code: unit.colour?.color_hex_code || null,
                     },
                 ])
             ).values(),
@@ -724,6 +733,7 @@ const Product = () => {
         setDesign(selectedUnit.design_name);
         
         setWebsiteDisplayName(selectedUnit.website_display_name || "");
+        setRelatedPants(selectedUnit.match_item || []);
         
         if (!unitimg && item.photo_path) {
             setUnitImg(`/ecommerce/items/${item.photo_path}`);
@@ -788,44 +798,6 @@ const Product = () => {
     });
 }, [productImages]);
 
-    const getColorCode = (name) => {
-        if (!name) return "#ccc";
-        const value = name.toLowerCase().trim();
-        if (value.includes("magenta")) return "#E0427A";
-        if (value.includes("pink")) return "#FC8AA6";
-        if (value.includes("purple")) return "#6211C1";
-        if (value.includes("dream purple")) return "#C193C7";
-        if (value.includes("greenish")) return "#58919A";
-        if (value.includes("teal green")) return "#00A5BE";
-        if (value.includes("algae green")) return "#a4ad85ff";
-        if (value.includes("forest green")) return "#007E59";
-        if (value.includes("navy blue")) return "#13193C";
-        if (value.includes("sapphire blue")) return "#2E69C2";
-        if (value.includes("sky blue")) return "#599ECD";
-        if (value.includes("baby sky blue")) return "#A3D3EE";
-        if (value.includes("ice blue")) return "#A1E6D3";
-        if (value.includes("oxyblood red")) return "#5C1222";
-        if (value.includes("grey")) return "#949496";
-        if (value.includes("karki")) return "#D2C2A2";
-        if (value.includes("kaki")) return "#D2C2A2";
-        if (value.includes("peach")) return "#FFCBA4";
-        if (value.includes("warm pink")) return "#F48FB1";
-        if (value.includes("icy purple")) return "#D1C4E9";
-        if (value.includes("light blue")) return "#ADD8E6";
-        if (value.includes("dark blue")) return "#00008B";
-        if (value.includes("greenish blue")) return "#008B8B";
-        if (value.includes("delphinium blue")) return "#6A5ACD";
-        if (value.includes("icy blue")) return "#E0F7FA";
-        if (value.includes("olive green")) return "#556B2F";
-        if (value.includes("royal purple")) return "#7851A9";
-        if (value.includes("deep skyblue")) return "#00BFFF";
-        if (value.includes("fresh green")) return "#00FF7F";
-        if (value.includes("green")) return "#008000";
-        if (value.includes("blue")) return "#0000FF";
-        if (value.includes("duck head green")) return "#004B49";
-        return "#999";
-    };
-
     const displayAvailability = selectedSize ? stock : allStock;
 
     if (isLoading) {
@@ -878,16 +850,43 @@ const Product = () => {
                         {availableGenders.includes("f") && (
                             <SizeBox selected={selectedGender === "f"} onClick={() => choosegen("f")}>Female</SizeBox>
                         )}
+                        {availableGenders.includes("un") && (
+                            <SizeBox selected={selectedGender === "un"} onClick={() => choosegen("un")}>Unisex</SizeBox>
+                        )}
+                        {availableGenders.includes("st") && (
+                            <SizeBox selected={selectedGender === "st"} onClick={() => choosegen("st")}>ST</SizeBox>
+                        )}
+                        {availableGenders.includes("t") && (
+                            <SizeBox selected={selectedGender === "t"} onClick={() => choosegen("t")}>T</SizeBox>
+                        )}
+                        {availableGenders.includes("c") && (
+                            <SizeBox selected={selectedGender === "c"} onClick={() => choosegen("c")}>C</SizeBox>
+                        )}
+                        {availableGenders.includes("a") && (
+                            <SizeBox selected={selectedGender === "a"} onClick={() => choosegen("a")}>A</SizeBox>
+                        )}
+                        {availableGenders.includes("sh") && (
+                            <SizeBox selected={selectedGender === "sh"} onClick={() => choosegen("sh")}>SH</SizeBox>
+                        )}
+                        {availableGenders.includes("fs") && (
+                            <SizeBox selected={selectedGender === "fs"} onClick={() => choosegen("fs")}>FS</SizeBox>
+                        )}
+                        {availableGenders.includes("slp") && (
+                            <SizeBox selected={selectedGender === "slp"} onClick={() => choosegen("slp")}>SLP</SizeBox>
+                        )}
+                        {availableGenders.includes("other") && (
+                            <SizeBox selected={selectedGender === "other"} onClick={() => choosegen("other")}>Other</SizeBox>
+                        )}
                     </SizeRow>
 
                     {selectedGender && (
                         <>
                             <SectionTitle>Color</SectionTitle>
                             <ColorRow>
-                                {filteredColors.map((col, index) => (
+                                {filteredColors.filter(col => col.color_hex_code).map((col, index) => (
                                     <ColorCircle
                                         key={index}
-                                        bg={getColorCode(col.colour_description || col.colour_name)}
+                                        bg={col.color_hex_code}
                                         selected={selectedColor === col.colour_name}
                                         onClick={() => handleColorChange(col)}
                                         title={col.colour_description || col.colour_name}
@@ -922,7 +921,7 @@ const Product = () => {
                             ><Add /></QtyButton>
                         </QtyBox>
 
-                        {instockFlag == 1 ? (
+                        {instockFlag > 0 ? (
                             <AddCartButton onClick={handleClick}>Add to cart</AddCartButton>
                         ) : (
                             <AddCartButton style={{ opacity: 0.6, cursor: "not-allowed" }}>Stock Unavailable</AddCartButton>
@@ -933,7 +932,7 @@ const Product = () => {
                         </WishlistButton>
                     </CartRow>
 
-                    {/* {relatedpants && relatedpants.id && (
+                                        {/* {relatedpants && relatedpants.id && (
                         <div style={{ marginTop: "30px" }}>
                             <SectionTitle>Related Pants</SectionTitle>
                             <Link to={`/product/${relatedpants.id}`} style={{ textDecoration: "none" }}>
@@ -1024,6 +1023,15 @@ const Product = () => {
             />
 
             <InstockDialog open={isInstock} close={() => setIsInstock(false)} />
+
+            <MatchItemDialog
+                open={matchModalOpen}
+                close={() => setMatchModalOpen(false)}
+                items={relatedpants || []}
+                url={url}
+                onAdd={handleAddMatchToCart}
+                fallbackImage={NoImage}
+            />
         </Container>
     );
 };

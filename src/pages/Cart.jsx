@@ -1738,21 +1738,25 @@ const Cart = () => {
 
   const onAddressChanged = (e) => setAddress(e.target.value);
 
-  const handleQuantityInc = (id) => {
-    const product = cart.products.find((p) => p.unitid === id);
-    dispatch(updateQuantity({ id, quantity: product.quantity + 1 }));
-  };
-
-  const handleQuantityDec = (id) => {
-    const product = cart.products.find((p) => p.unitid === id);
-    if (product.quantity > 1) {
-      dispatch(updateQuantity({ id, quantity: product.quantity - 1 }));
-    } else {
-      dispatch(removeProduct(id));
+  const handleQuantityInc = (cartId) => {
+    const product = cart.products.find((p) => p.cartId === cartId);
+    if (product) {
+      dispatch(updateQuantity({ id: cartId, quantity: product.quantity + 1 }));
     }
   };
 
-  const removeCart = (id) => dispatch(removeProduct(id));
+  const handleQuantityDec = (cartId) => {
+    const product = cart.products.find((p) => p.cartId === cartId);
+    if (product) {
+      if (product.quantity > 1) {
+        dispatch(updateQuantity({ id: cartId, quantity: product.quantity - 1 }));
+      } else {
+        dispatch(removeProduct(cartId));
+      }
+    }
+  };
+
+  const removeCart = (cartId) => dispatch(removeProduct(cartId));
 
   const onCheckOutClicked = () => {
     // Check if user is authenticated reliably via the name property
@@ -1790,51 +1794,48 @@ const Cart = () => {
             </CartHeader>
 
             {cart.products.map((product) => (
-              <CartRow key={product.unitid}>
-                {/* <ProductInfo>
-                  <ProductImg src={url + `/ecommerce/items/${product.unitimg}`} alt={product.unitname} />
+              <CartRow key={product.cartId}>
+                <ProductInfo>
+                  <ProductImg 
+                    src={
+                      product?.unitimg?.startsWith("http") 
+                        ? product.unitimg 
+                        : product?.unitimg?.startsWith("/ecommerce") || product?.unitimg?.startsWith("ecommerce")
+                          ? url + (product?.unitimg?.startsWith("/") ? "" : "/") + product.unitimg
+                          : url + `/ecommerce/items/${product.unitimg}`
+                    } 
+                    alt={product.unitname} 
+                  />
                   <div>
                     <div>{product.unitname}</div>
                     <small>Size: {product.size}</small>
                     <br />
                     <small className="capitalize">Color: {product.color}</small>
                   </div>
-                </ProductInfo> */}
-                <ProductInfo>
-  <ProductImg 
-    src={
-      product.unitimg.startsWith("http") 
-        ? product.unitimg 
-        : product.unitimg.startsWith("/ecommerce") || product.unitimg.startsWith("ecommerce")
-          ? url + (product.unitimg.startsWith("/") ? "" : "/") + product.unitimg
-          : url + `/ecommerce/items/${product.unitimg}`
-    } 
-    alt={product.unitname} 
-  />
-  <div>
-    <div>{product.unitname}</div>
-    <small>Size: {product.size}</small>
-    <br />
-    <small className="capitalize">Color: {product.color}</small>
-  </div>
-</ProductInfo>
+                </ProductInfo>
                 <div>${product.price}</div>
                 <div>
                   <QtyBox>
-                    <button onClick={() => handleQuantityDec(product.unitid)}>
+                    <button onClick={() => handleQuantityDec(product.cartId)}>
                       <Remove fontSize="small" />
                     </button>
                     <span>{product.quantity}</span>
-                    <button onClick={() => handleQuantityInc(product.unitid)}>
+                    <button onClick={() => handleQuantityInc(product.cartId)}>
                       <Add fontSize="small" />
                     </button>
                   </QtyBox>
                 </div>
                 <div>${product.price * product.quantity}</div>
                 <div>
-                  <RemoveBtn onClick={() => removeCart(product.unitid)}>
-                    <FaTrash />
-                  </RemoveBtn>
+                  {product.isMatchParent === false ? (
+                    <small style={{ color: "#2f80a5", fontSize: "13px" }}>
+                      Match item
+                    </small>
+                  ) : (
+                    <RemoveBtn onClick={() => removeCart(product.cartId)}>
+                      <FaTrash />
+                    </RemoveBtn>
+                  )}
                 </div>
               </CartRow>
             ))}

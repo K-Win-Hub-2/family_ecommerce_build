@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
+import Voucher from "./pages/voucher/Voucher";
 
 import {
   BrowserRouter as Router,
@@ -42,6 +43,9 @@ const App = () => {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wish" element={<WishList />} />
+        <Route path="/order_list" element={<OrderList />} />
+        <Route path="/voucher" element={<Voucher />} />
+
         <Route path="/order/:name" element={<Order />} />
         <Route path="/preorder/:id" element={<PreOrder />} />
         <Route path="/preorder" element={<PreOrderList />} />
@@ -56,7 +60,6 @@ const App = () => {
         <Route path="/order_invoice/:id" element={<Invoice />} />
 
         <Route path="/order_history" element={<OrderHistory />} />
-        <Route path="/order_list" element={<OrderList />} />
         <Route path="/track_order_list" element={<TrackOrderList />} />
         <Route path="/track_preorder_list" element={<TrackPreOrderList />} />
 
