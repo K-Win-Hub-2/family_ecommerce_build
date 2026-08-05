@@ -19,7 +19,10 @@ import MatchItemDialog from "../../components/MatchItemDialog";
 import { FaRegHeart } from "react-icons/fa6";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
+import {
+  IoMdArrowDropleftCircle,
+  IoMdArrowDroprightCircle,
+} from "react-icons/io";
 import ColorNav from "../../components/ColorNav";
 import Spinner from "../../common/Spinner";
 import NoImage from "../../../src/files/noimage/noimage.png";
@@ -120,7 +123,7 @@ const InfoSection = styled.div`
 const ProductTitle = styled.h1`
   font-size: 40px;
   font-weight: 400;
-  lineHeight: 1.15;
+  lineheight: 1.15;
   color: #034f96;
   margin: 0 0 18px;
   text-transform: capitalize;
@@ -133,7 +136,7 @@ const ProductTitle = styled.h1`
 const ProductMeta = styled.div`
   font-size: 20px;
   font-weight: 600;
-  lineHeight: 1;
+  lineheight: 1;
   margin-bottom: 34px;
   text-transform: capitalize;
   color: #156ea8;
@@ -386,7 +389,7 @@ const relatedResponsive = {
   superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5 },
   desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
   tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
-  mobile: { breakpoint: { max: 464, min: 0 }, items: 1 }
+  mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 
 const Product = () => {
@@ -397,37 +400,37 @@ const Product = () => {
 
     const url = useSelector((state) => state.user.url);
 
-    const [item, setItem] = useState({});
-    const [units, setUnits] = useState([]);
-    const [allUnits, setAllUnits] = useState([]);
+  const [item, setItem] = useState({});
+  const [units, setUnits] = useState([]);
+  const [allUnits, setAllUnits] = useState([]);
 
-    const [unitid, setUnitId] = useState("");
-    const [unitname, setUnitName] = useState("");
-    const [unitcode, setUnitCode] = useState("");
-    const [quantity, setQuantity] = useState(0);
-    const [color, setColor] = useState("");
-    const [fabric, setFabric] = useState("");
-    const [size, setSize] = useState("");
-    const [price, setPrice] = useState(0);
-    const [stock, setStock] = useState(0);
-    const [design, setDesign] = useState("");
-    const [unitimg, setUnitImg] = useState("");
+  const [unitid, setUnitId] = useState("");
+  const [unitname, setUnitName] = useState("");
+  const [unitcode, setUnitCode] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [color, setColor] = useState("");
+  const [fabric, setFabric] = useState("");
+  const [size, setSize] = useState("");
+  const [price, setPrice] = useState(0);
+  const [stock, setStock] = useState(0);
+  const [design, setDesign] = useState("");
+  const [unitimg, setUnitImg] = useState("");
 
-    const [isInstock, setIsInstock] = useState(false);
-    const [instockFlag, setInstockFlag] = useState("");
-    const [preorderFlag, setPreorderFlag] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
-    const [checkColor, setCheckColor] = useState(false);
+  const [isInstock, setIsInstock] = useState(false);
+  const [instockFlag, setInstockFlag] = useState("");
+  const [preorderFlag, setPreorderFlag] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [checkColor, setCheckColor] = useState(false);
 
-    const [selectedGender, setSelectedGender] = useState(null);
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [selectedSize, setSelectedSize] = useState(null);
-    const [filteredUnits, setFilteredUnits] = useState([]);
-    const [filteredColors, setFilteredColors] = useState([]);
-    const [filteredSizes, setFilteredSizes] = useState([]);
-    const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
-    const [selectedImage, setSelectedImage] = useState("");
-    const [websiteDisplayName, setWebsiteDisplayName] = useState("");
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [filteredUnits, setFilteredUnits] = useState([]);
+  const [filteredColors, setFilteredColors] = useState([]);
+  const [filteredSizes, setFilteredSizes] = useState([]);
+  const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [websiteDisplayName, setWebsiteDisplayName] = useState("");
 
     const [relatedpants, setRelatedPants] = useState([]);
     const [relateditems, setRelatedItems] = useState({ items: [] });
@@ -435,9 +438,9 @@ const Product = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [validImages, setValidImages] = useState([]);
 
-    const id = location.pathname.split("/")[2];
-    const visibleItems = 4;
-    const totalItems = relateditems?.items?.length || 0;
+  const id = location.pathname.split("/")[2];
+  const visibleItems = 4;
+  const totalItems = relateditems?.items?.length || 0;
 
     const formatSizeLabel = (sizeName) => {
         if (!sizeName) return "";
@@ -451,11 +454,11 @@ const Product = () => {
         return sizeName.toUpperCase();
     };
 
-    const allStock = useMemo(() => {
-        return allUnits.reduce((total, unit) => {
-            return total + Number(unit.current_quantity || 0);
-        }, 0);
-    }, [allUnits]);
+  const allStock = useMemo(() => {
+    return allUnits.reduce((total, unit) => {
+      return total + Number(unit.current_quantity || 0);
+    }, 0);
+  }, [allUnits]);
 
     useEffect(() => {
         const getProduct = () => {
@@ -493,64 +496,66 @@ const Product = () => {
                         setRelatedItems({ items: [relatedPantsObj] });
                     }
 
-                    setSelectedImage(
-                        url + `/ecommerce/items/${response.data.item?.photo_path || ""}`
-                    );
-                    
-                    if (response.data.item?.website_display_name) {
-                        setWebsiteDisplayName(response.data.item.website_display_name);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        };
+          setSelectedImage(
+            url + `/ecommerce/items/${response.data.item?.photo_path || ""}`,
+          );
 
-        getProduct();
-    }, [id, url]);
-
-    const handleQuantity = (type) => {
-        setQuantity((prevQuantity) => {
-            if (type === "dec") {
-                return prevQuantity > 1 ? prevQuantity - 1 : prevQuantity;
-            }
-            if (!selectedSize || displayAvailability <= 0) return prevQuantity;
-            if (type === "inc") {
-                return prevQuantity < displayAvailability ? prevQuantity + 1 : prevQuantity;
-            }
-            return prevQuantity;
+          if (response.data.item?.website_display_name) {
+            setWebsiteDisplayName(response.data.item.website_display_name);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     };
 
-    const scrollProducts = (direction) => {
-        if (carouselRef.current) {
-            if (direction === "left") {
-                carouselRef.current.previous();
-            } else {
-                carouselRef.current.next();
-            }
-        }
-    };
+    getProduct();
+  }, [id, url]);
 
-    const handleClick = () => {
-        if (!selectedSize || !selectedColor || !selectedGender) {
-            Swal.fire({
-                title: "Please select options",
-                text: "Choose gender, color and size first.",
-                icon: "warning",
-            });
-            return;
-        }
+  const handleQuantity = (type) => {
+    setQuantity((prevQuantity) => {
+      if (type === "dec") {
+        return prevQuantity > 1 ? prevQuantity - 1 : prevQuantity;
+      }
+      if (!selectedSize || displayAvailability <= 0) return prevQuantity;
+      if (type === "inc") {
+        return prevQuantity < displayAvailability
+          ? prevQuantity + 1
+          : prevQuantity;
+      }
+      return prevQuantity;
+    });
+  };
 
-        if (stock === 0) {
-            setIsInstock(true);
-            const testname = `${item.item_name} ${selectedGender} ${fabric} ${color} ${size}`;
-            const testqty = quantity;
-            const testprice = price;
-            const orderid = unitid;
+  const scrollProducts = (direction) => {
+    if (carouselRef.current) {
+      if (direction === "left") {
+        carouselRef.current.previous();
+      } else {
+        carouselRef.current.next();
+      }
+    }
+  };
+
+  const handleClick = () => {
+    if (!selectedSize || !selectedColor || !selectedGender) {
+      Swal.fire({
+        title: "Please select options",
+        text: "Choose gender, color and size first.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    if (stock === 0) {
+      setIsInstock(true);
+      const testname = `${item.item_name} ${selectedGender} ${fabric} ${color} ${size}`;
+      const testqty = quantity;
+      const testprice = price;
+      const orderid = unitid;
 
             dispatch(addOrder({ orderid, testname, testqty, testprice }));
         } else {
@@ -619,46 +624,46 @@ const Product = () => {
         });
     };
 
-    const handleWishlistClick = () => {
-        if (!selectedSize || !selectedColor || !selectedGender) {
-            Swal.fire({
-                title: "Please select options",
-                text: "Choose gender, color and size first.",
-                icon: "warning",
-            });
-            return;
-        }
+  const handleWishlistClick = () => {
+    if (!selectedSize || !selectedColor || !selectedGender) {
+      Swal.fire({
+        title: "Please select options",
+        text: "Choose gender, color and size first.",
+        icon: "warning",
+      });
+      return;
+    }
 
-        dispatch(
-            addWishlist({
-                unitid,
-                unitname,
-                unitcode,
-                unitimg,
-                color,
-                size,
-                fabric,
-                quantity,
-                price,
-                productId: id
-            })
-        );
+    dispatch(
+      addWishlist({
+        unitid,
+        unitname,
+        unitcode,
+        unitimg,
+        color,
+        size,
+        fabric,
+        quantity,
+        price,
+        productId: id,
+      }),
+    );
 
-        Swal.fire({
-            title: "Added to Wishlist!",
-            text: "Successfully added to your wishlist.",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false
-        });
-    };
+    Swal.fire({
+      title: "Added to Wishlist!",
+      text: "Successfully added to your wishlist.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  };
 
-    const availableGenders = [...new Set(units.map((unit) => unit.gender_name))];
+  const availableGenders = [...new Set(units.map((unit) => unit.gender_name))];
 
-    const choosegen = (gender) => {
-        setSelectedGender(gender);
-        const filtered = allUnits.filter((unit) => unit.gender_name === gender);
-        setFilteredUnits(filtered);
+  const choosegen = (gender) => {
+    setSelectedGender(gender);
+    const filtered = allUnits.filter((unit) => unit.gender_name === gender);
+    setFilteredUnits(filtered);
 
         const uniqueColors = [
             ...new Map(
@@ -673,52 +678,54 @@ const Product = () => {
             ).values(),
         ];
 
-        setFilteredColors(uniqueColors);
-        setSelectedColor(null);
-        setSelectedSize(null);
-        setFilteredSizes([]);
-        setPrice(0);
-        setStock(0);
-    };
+    setFilteredColors(uniqueColors);
+    setSelectedColor(null);
+    setSelectedSize(null);
+    setFilteredSizes([]);
+    setPrice(0);
+    setStock(0);
+  };
 
-    const handleColorChange = (colorObj) => {
-        setSelectedColor(colorObj.colour_name);
-        setColor(colorObj.colour_name);
+  const handleColorChange = (colorObj) => {
+    setSelectedColor(colorObj.colour_name);
+    setColor(colorObj.colour_name);
 
-        const filtered = allUnits.filter(
-            (unit) =>
-                unit.gender_name === selectedGender &&
-                unit.colour_name === colorObj.colour_name
-        );
+    const filtered = allUnits.filter(
+      (unit) =>
+        unit.gender_name === selectedGender &&
+        unit.colour_name === colorObj.colour_name,
+    );
 
-        setPrimaryStoreUnit(filtered);
-        const sizes = [...new Set(filtered.map((unit) => unit.size_name))];
-        setFilteredSizes(sizes);
+    setPrimaryStoreUnit(filtered);
+    const sizes = [...new Set(filtered.map((unit) => unit.size_name))];
+    setFilteredSizes(sizes);
 
-        setSelectedSize(null);
-        setPrice(0);
-        setStock(0);
+    setSelectedSize(null);
+    setPrice(0);
+    setStock(0);
 
-        if (filtered.length > 0) {
-            const targetUnitId = filtered[0].id;
-            axios
-                .get(`${url}/api/counting-unit/${targetUnitId}`)
-                .then((res) => {
-                    if (res.data) {
-                        if (res.data.image) {
-                            setSelectedImage(url + res.data.image);
-                            setUnitImg(res.data.image); 
-                        }
-                        setWebsiteDisplayName(res.data.website_display_name || "");
-                    }
-                })
-                .catch((err) => console.error(err));
-        }
-    };
+    if (filtered.length > 0) {
+      const targetUnitId = filtered[0].id;
+      axios
+        .get(`${url}/api/counting-unit/${targetUnitId}`)
+        .then((res) => {
+          if (res.data) {
+            if (res.data.image) {
+              setSelectedImage(url + res.data.image);
+              setUnitImg(res.data.image);
+            }
+            setWebsiteDisplayName(res.data.website_display_name || "");
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  };
 
-    const handleSizeChange = (sizeName) => {
-        const filtered = primaryStoreUnit.filter((unit) => unit.size_name === sizeName);
-        if (!filtered.length) return;
+  const handleSizeChange = (sizeName) => {
+    const filtered = primaryStoreUnit.filter(
+      (unit) => unit.size_name === sizeName,
+    );
+    if (!filtered.length) return;
 
         const selectedUnit = filtered[0];
         setSelectedSize(sizeName);
@@ -740,14 +747,14 @@ const Product = () => {
         }
     };
 
-    const productImages = useMemo(() => {
+  const productImages = useMemo(() => {
     if (!item?.photo_path || item.photo_path.trim() === "") return [];
-    
+
     const frontUrl = url + `/ecommerce/items/${item.photo_path}`;
     const imagesArray = [{ id: "front", url: frontUrl }];
-    
+
     if (!item.photo_path.includes("front")) {
-        return imagesArray;
+      return imagesArray;
     }
 
     const leftPath = item.photo_path.replace("front", "left");
@@ -755,92 +762,107 @@ const Product = () => {
     const bodyPath = item.photo_path.replace("front", "body");
 
     if (leftPath && !leftPath.includes("null") && leftPath.trim() !== "") {
-        imagesArray.push({ id: "left", url: url + `/ecommerce/items/${leftPath}` });
+      imagesArray.push({
+        id: "left",
+        url: url + `/ecommerce/items/${leftPath}`,
+      });
     }
     if (rightPath && !rightPath.includes("null") && rightPath.trim() !== "") {
-        imagesArray.push({ id: "right", url: url + `/ecommerce/items/${rightPath}` });
+      imagesArray.push({
+        id: "right",
+        url: url + `/ecommerce/items/${rightPath}`,
+      });
     }
     if (bodyPath && !bodyPath.includes("null") && bodyPath.trim() !== "") {
-        imagesArray.push({ id: "body", url: url + `/ecommerce/items/${bodyPath}` });
+      imagesArray.push({
+        id: "body",
+        url: url + `/ecommerce/items/${bodyPath}`,
+      });
     }
 
     return imagesArray;
-}, [item, url]);
+  }, [item, url]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (productImages.length === 0) {
-        setValidImages([]);
-        return;
+      setValidImages([]);
+      return;
     }
 
-    const frontImage = productImages.find(img => img.id === "front");
-    const variantImages = productImages.filter(img => img.id !== "front");
+    const frontImage = productImages.find((img) => img.id === "front");
+    const variantImages = productImages.filter((img) => img.id !== "front");
 
     if (variantImages.length === 0) {
-        setValidImages(productImages);
-        return;
+      setValidImages(productImages);
+      return;
     }
 
     setValidImages([frontImage]);
 
     variantImages.forEach((imgObj) => {
-        const img = new Image();
-        img.src = imgObj.url;
-        img.onload = () => {
-            setValidImages((prev) => {
-                if (prev.some(item => item.id === imgObj.id)) return prev;
-                return [...prev, imgObj];
-            });
-        };
-        img.onerror = () => {
-            console.warn(`Image variation ${imgObj.id} returned 404/error, hiding from UI.`);
-        };
+      const img = new Image();
+      img.src = imgObj.url;
+      img.onload = () => {
+        setValidImages((prev) => {
+          if (prev.some((item) => item.id === imgObj.id)) return prev;
+          return [...prev, imgObj];
+        });
+      };
+      img.onerror = () => {
+        console.warn(
+          `Image variation ${imgObj.id} returned 404/error, hiding from UI.`,
+        );
+      };
     });
 }, [productImages]);
 
-    const displayAvailability = selectedSize ? stock : allStock;
+  const displayAvailability = selectedSize ? stock : allStock;
 
-    if (isLoading) {
-        return (
-            <Container>
-                <Navbar />
-                <Spinner />
-            </Container>
-        );
-    }
-
+  if (isLoading) {
     return (
-        <Container>
-            <Navbar />
-            <MainSection>
+      <Container>
+        <Navbar />
+        <Spinner />
+      </Container>
+    );
+  }
 
-                <GallerySection>
-                    <ThumbnailColumn>
-                        {validImages.map((imgObj) => (
-                            <Thumbnail
-                                key={imgObj.id}
-                                src={imgObj.url}
-                                alt={`thumb-${imgObj.id}`}
-                                active={selectedImage === imgObj.url}
-                                onClick={() => setSelectedImage(imgObj.url)}
-                            />
-                        ))}
-                    </ThumbnailColumn>
-                    <MainImageWrap>
-                        <MainImage src={selectedImage || (validImages[0] ? validImages[0].url : "")} alt={item.item_name} />
-                    </MainImageWrap>
-                </GallerySection>
+  return (
+    <Container>
+      <Navbar />
+      <MainSection>
+        <GallerySection>
+          <ThumbnailColumn>
+            {validImages.map((imgObj) => (
+              <Thumbnail
+                key={imgObj.id}
+                src={imgObj.url}
+                alt={`thumb-${imgObj.id}`}
+                active={selectedImage === imgObj.url}
+                onClick={() => setSelectedImage(imgObj.url)}
+              />
+            ))}
+          </ThumbnailColumn>
+          <MainImageWrap>
+            <MainImage
+              src={selectedImage || (validImages[0] ? validImages[0].url : "")}
+              alt={item.item_name}
+            />
+          </MainImageWrap>
+        </GallerySection>
 
-                <InfoSection>
-                    <ProductTitle>{item.item_name}</ProductTitle>
-                    {(websiteDisplayName || item.website_display_name) && (
-                        <ProductMeta>
-                            <div>({websiteDisplayName || item.website_display_name})</div>
-                        </ProductMeta>
-                    )}
-                    <ProductMeta>
-                        <div><BoldText>Availability</BoldText> — {displayAvailability} In stock</div>
-                    </ProductMeta>
+        <InfoSection>
+          <ProductTitle>{item.item_name}</ProductTitle>
+          {(websiteDisplayName || item.website_display_name) && (
+            <ProductMeta>
+              <div>({websiteDisplayName || item.website_display_name})</div>
+            </ProductMeta>
+          )}
+          <ProductMeta>
+            <div>
+              <BoldText>Availability</BoldText> — {displayAvailability} In stock
+            </div>
+          </ProductMeta>
 
                     <SectionTitle>Gender</SectionTitle>
                     <SizeRow>
@@ -896,30 +918,45 @@ const Product = () => {
                         </>
                     )}
 
-                    <Divider />
-                    <SectionTitle>Size</SectionTitle>
-                    <SizeRow>
-                        {filteredSizes.map((sz, index) => (
-                            <SizeBox key={index} selected={selectedSize === sz} onClick={() => handleSizeChange(sz)}>
-                                {formatSizeLabel(sz)}
-                            </SizeBox>
-                        ))}
-                    </SizeRow>
+          <Divider />
+          <SectionTitle>Size</SectionTitle>
+          <SizeRow>
+            {filteredSizes.map((sz, index) => (
+              <SizeBox
+                key={index}
+                selected={selectedSize === sz}
+                onClick={() => handleSizeChange(sz)}
+              >
+                {formatSizeLabel(sz)}
+              </SizeBox>
+            ))}
+          </SizeRow>
 
-                    <Divider />
-                    <ProductMeta>
-                        <BoldText>Price</BoldText> — {price ? `${Number(price).toLocaleString()} MMK` : "***Price will show after choosing item***"}
-                    </ProductMeta>
+          <Divider />
+          <ProductMeta>
+            <BoldText>Price</BoldText> —{" "}
+            {price
+              ? `${Number(price).toLocaleString()} MMK`
+              : "***Price will show after choosing item***"}
+          </ProductMeta>
 
-                    <CartRow>
-                        <QtyBox>
-                            <QtyButton onClick={() => handleQuantity("dec")}><Remove /></QtyButton>
-                            <QtyValue>{quantity}</QtyValue>
-                            <QtyButton
-                                onClick={() => handleQuantity("inc")}
-                                disabled={!selectedSize || displayAvailability <= 0 || quantity >= displayAvailability}
-                            ><Add /></QtyButton>
-                        </QtyBox>
+          <CartRow>
+            <QtyBox>
+              <QtyButton onClick={() => handleQuantity("dec")}>
+                <Remove />
+              </QtyButton>
+              <QtyValue>{quantity}</QtyValue>
+              <QtyButton
+                onClick={() => handleQuantity("inc")}
+                disabled={
+                  !selectedSize ||
+                  displayAvailability <= 0 ||
+                  quantity >= displayAvailability
+                }
+              >
+                <Add />
+              </QtyButton>
+            </QtyBox>
 
                         {instockFlag > 0 ? (
                             <AddCartButton onClick={handleClick}>Add to cart</AddCartButton>
@@ -927,10 +964,13 @@ const Product = () => {
                             <AddCartButton style={{ opacity: 0.6, cursor: "not-allowed" }}>Stock Unavailable</AddCartButton>
                         )}
 
-                        <WishlistButton onClick={handleWishlistClick} title="Add to Wishlist">
-                            <FaRegHeart />
-                        </WishlistButton>
-                    </CartRow>
+            <WishlistButton
+              onClick={handleWishlistClick}
+              title="Add to Wishlist"
+            >
+              <FaRegHeart />
+            </WishlistButton>
+          </CartRow>
 
                                         {/* {relatedpants && relatedpants.id && (
                         <div style={{ marginTop: "30px" }}>
@@ -948,79 +988,83 @@ const Product = () => {
                             </Link>
                         </div>
                     )} */}
-                </InfoSection>
-            </MainSection>
+        </InfoSection>
+      </MainSection>
 
-            <RelatedWrap>
-                <RelatedTitle>Related Products</RelatedTitle>
+      <RelatedWrap>
+        <RelatedTitle>Related Products</RelatedTitle>
 
-                <ArrowWrapper>
-                    <ArrowButton
-                      className="left"
-                      onClick={() => scrollProducts("left")}
-                      disabled={currentSlide === 0}
-                      style={{
-                        opacity: currentSlide === 0 ? 0.3 : 1,
-                        cursor: currentSlide === 0 ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      <IoMdArrowDropleftCircle />
-                    </ArrowButton>
+        <ArrowWrapper>
+          <ArrowButton
+            className="left"
+            onClick={() => scrollProducts("left")}
+            disabled={currentSlide === 0}
+            style={{
+              opacity: currentSlide === 0 ? 0.3 : 1,
+              cursor: currentSlide === 0 ? "not-allowed" : "pointer",
+            }}
+          >
+            <IoMdArrowDropleftCircle />
+          </ArrowButton>
 
-                    <ArrowButton
-                      className="right"
-                      onClick={() => scrollProducts("right")}
-                      disabled={currentSlide >= totalItems - visibleItems}
-                      style={{
-                        opacity: currentSlide >= totalItems - visibleItems ? 0.3 : 1,
-                        cursor: currentSlide >= totalItems - visibleItems ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      <IoMdArrowDroprightCircle />
-                    </ArrowButton>
+          <ArrowButton
+            className="right"
+            onClick={() => scrollProducts("right")}
+            disabled={currentSlide >= totalItems - visibleItems}
+            style={{
+              opacity: currentSlide >= totalItems - visibleItems ? 0.3 : 1,
+              cursor:
+                currentSlide >= totalItems - visibleItems
+                  ? "not-allowed"
+                  : "pointer",
+            }}
+          >
+            <IoMdArrowDroprightCircle />
+          </ArrowButton>
 
-                    <Carousel
-                      ref={carouselRef}
-                      responsive={relatedResponsive}
-                      arrows={false}
-                      infinite={false}
-                      keyBoardControl
-                      swipeable
-                      draggable
-                      showDots={false}
-                      containerClass="py-2"
-                      itemClass="px-2"
-                      transitionDuration={500}
-                      afterChange={(previousSlide, { currentSlide }) => {
-                        setCurrentSlide(currentSlide);
-                      }}
-                    >
-                        {relateditems.items && relateditems.items.map((it) => (
-                            <RelatedCard key={it.id}>
-                              <Link
-                                to={`/product/${it.id}`}
-                                style={{ textDecoration: "none", color: "inherit" }}
-                              >
-                                <RelatedImage
-                                  src={url + `/ecommerce/items/${it.photo_path}`}
-                                  alt={it.item_name}
-                                />
-                                <RelatedName>{it.item_name || it.name}</RelatedName>
-                              </Link>
-                            </RelatedCard>
-                        ))}
-                    </Carousel>
-                </ArrowWrapper>
-            </RelatedWrap>
+          <Carousel
+            ref={carouselRef}
+            responsive={relatedResponsive}
+            arrows={false}
+            infinite={false}
+            keyBoardControl
+            swipeable
+            draggable
+            showDots={false}
+            containerClass="py-2"
+            itemClass="px-2"
+            transitionDuration={500}
+            afterChange={(previousSlide, { currentSlide }) => {
+              setCurrentSlide(currentSlide);
+            }}
+          >
+            {relateditems.items &&
+              relateditems.items.map((it) => (
+                <RelatedCard key={it.id}>
+                  <Link
+                    to={`/product/${it.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <RelatedImage
+                      src={url + `/ecommerce/items/${it.photo_path}`}
+                      alt={it.item_name}
+                    />
+                    <RelatedName>{it.item_name || it.name}</RelatedName>
+                  </Link>
+                </RelatedCard>
+              ))}
+          </Carousel>
+        </ArrowWrapper>
+      </RelatedWrap>
 
-            <Footer />
+      <Footer />
 
-            <CheckColor
-                name={selectedColor}
-                open={checkColor}
-                close={() => setCheckColor(false)}
-                item={item}
-            />
+      <CheckColor
+        name={selectedColor}
+        open={checkColor}
+        close={() => setCheckColor(false)}
+        item={item}
+      />
 
             <InstockDialog open={isInstock} close={() => setIsInstock(false)} />
 

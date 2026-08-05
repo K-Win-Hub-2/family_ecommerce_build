@@ -109,14 +109,14 @@ const userSlice = createSlice({
     }
 });
 
-export const { 
-    loginStart, 
-    loginSuccess, 
-    loginFailure, 
-    setUserInfo, 
-    LogoutProcess, 
-    setBaseUrl,
-    updateTotalOrder 
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  setUserInfo,
+  LogoutProcess,
+  setBaseUrl,
+  updateTotalOrder,
 } = userSlice.actions;
 
 export default userSlice.reducer;
