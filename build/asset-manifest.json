@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.eb0d5ec0.css",
-    "main.js": "/static/js/main.5d0fc300.js",
+    "main.css": "/static/css/main.6afd9853.css",
+    "main.js": "/static/js/main.37dc9a0f.js",
     "static/media/factory.mp4": "/static/media/factory.71beff15516a06d0d966.mp4",
     "static/media/banner4.jpg": "/static/media/banner4.ccc558c6992aa48e2211.jpg",
     "static/media/banner5.jpg": "/static/media/banner5.dbdef88d169dd381d72f.jpg",
@@ -103,14 +103,15 @@
     "static/media/ami_life.jpg": "/static/media/ami_life.0281523defd69e1a9549.jpg",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/noimage.png": "/static/media/noimage.45cd7f5d2cbc44f2f700.png",
     "static/media/factory.png": "/static/media/factory.7050659eb84c9e5c4374.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.eb0d5ec0.css.map": "/static/css/main.eb0d5ec0.css.map",
-    "main.5d0fc300.js.map": "/static/js/main.5d0fc300.js.map"
+    "main.6afd9853.css.map": "/static/css/main.6afd9853.css.map",
+    "main.37dc9a0f.js.map": "/static/js/main.37dc9a0f.js.map"
   },
   "entrypoints": [
-    "static/css/main.eb0d5ec0.css",
-    "static/js/main.5d0fc300.js"
+    "static/css/main.6afd9853.css",
+    "static/js/main.37dc9a0f.js"
   ]
 }
