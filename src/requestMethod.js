@@ -1,8 +1,8 @@
 import axios from "axios";
 
-// const BASE_URL = "http://familyuniformapp.medicalworld.com.mm/api";
+const BASE_URL = "https://familyuniformapp.medicalworld.com.mm/api";
 // const BASE_URL = "http://192.168.100.163:8000/api";
-const BASE_URL = "http://localhost:8000/api";
+// const BASE_URL = "http://localhost:8000/api";
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyY2RhYTcwODRjNDk3OWQ3OGFkOTgzMiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1OTg1OTI1MiwiZXhwIjoxNjYwMTE4NDUyfQ.nMWbwP8uE5CKtBJst4FSSmfkjD16Y4JGrC0H4ipTHiE";
 
