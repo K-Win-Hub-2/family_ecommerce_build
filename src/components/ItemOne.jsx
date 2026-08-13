@@ -693,8 +693,7 @@ import React from "react";
 import { SearchOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { addWishlist } from "../redux/wishlistRedux";
+import { useSelector } from "react-redux";
 
 const Card = styled.div`
   background: #f4f6f8;
@@ -828,12 +827,10 @@ const OldPrice = styled.span`
 `;
 
 const defaultImageUrl =
-  "http://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png";
+  "https://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png";
 
 const ItemOne = ({ item }) => {
   const url = useSelector((state) => state.user.url);
-  const dispatch = useDispatch();
-  const wishlist = useSelector((state) => state.wishlist.products);
 
   // 1. Locally access base price from the array matrix structure
   const firstUnit = item.counting_units && item.counting_units[0];
@@ -850,19 +847,6 @@ const ItemOne = ({ item }) => {
 
   const handleImageError = (e) => {
     e.target.src = defaultImageUrl;
-  };
-
-  const isInWishlist = wishlist.find((p) => p.unitid === item.unitid);
-
-  const handleWishlist = () => {
-    dispatch(
-      addWishlist({
-        unitid: item.unitid,
-        unitname: item.unitname,
-        unitimg: item.unitimg,
-        price: item.price,
-      })
-    );
   };
 
   return (

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../common/Spinner";
-import { FaBoxOpen } from "react-icons/fa";
 import Logo from "../../files/logo.png";
 
 const PrintGlobalStyle = createGlobalStyle`
@@ -221,12 +220,6 @@ const SignatureBox = styled.div`
 const SignatureTitle = styled.div`
   font-weight: 700;
   margin-bottom: 16px;
-`;
-
-const SignatureLine = styled.div`
-  border-bottom: 1px solid #777;
-  height: 15px;
-  margin-bottom: 4px;
 `;
 
 const SignatureRow = styled.div`

@@ -43,7 +43,7 @@ const Categories = () => {
       }catch(err){}
     };
     getCategories();
-  },[]);
+  },[url]);
 
   return (
     <MainContainer>

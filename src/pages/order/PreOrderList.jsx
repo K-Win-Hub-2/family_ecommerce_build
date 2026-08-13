@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { IoMdEye } from "react-icons/io";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
@@ -173,7 +172,6 @@ const ModalDetails = styled.div`
 `;
 
 const PreOrderList = () => {
-  const url = useSelector((state) => state.user.url);
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);

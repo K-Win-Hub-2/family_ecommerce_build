@@ -1,44 +1,15 @@
 
 import React  from 'react';
 import styled from 'styled-components';
-import {mobile} from "../responsive";
-import { Navigate, useNavigate,Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useSelector} from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import ColorNav from './ColorNav';
 import Footer from './Footer';
-import InvoiceDialog from './InvoiceDialog';
 import Invoice from './Invoice';
 
-import PaymentDialog from './PaymentDialog';
-import Search from '@mui/icons-material/Search';
-
-const Div = styled.div`
-margin-top:90px;
-`
-const Wrapper = styled.div`
-    width: 100vw;
-   
-    padding: 50px;
-    background-color: #fcf5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-`
-const Title = styled.h1`
-    font-size: 35px;
-    margin-bottom: 30px;
-    text-align: center;
-`
-const Description = styled.div`
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 20px;
-    text-align: center;
-`
 const Table = styled.table`
     width: 100%;
     height: auto;
@@ -83,27 +54,6 @@ const TableButton1 = styled.button`
     margin-left : 10px;
     border : none;
 `
-const TableButton2 = styled.button`
-    padding: 3px;
-    background-color: rgba(2,127,157,1);
-    color: white;
-    font-size: 17px;
-    font-weight: 600;
-    border-radius: 3px;
-    text-align: center;
-    margin-left : 10px;
-    border : none;
-`
-
-const Span = styled.span`
-    background-color: rgba(2,127,157,1);
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 4px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-`
 
 export const Tabs = styled.div`
   overflow: hidden;
@@ -141,15 +91,10 @@ const TrackPreOrderList = () => {
   
     const [lists,setLists] = useState();
   
-    const username = useSelector(state=>state.user);
-
     const url= useSelector(state => state.user.url);
     const [value,setValue] = useState()
-    const [searchCustomer,setSearchCustomer] = useState({
-      customer_name : "",  
-     });
    
- 
+  
       const [selectedOption, setSelectedOption] = useState('');
 
     const handleInputChange = (e) => {
@@ -257,7 +202,7 @@ const TrackPreOrderList = () => {
                 
                 
                 {
-                     lists && lists.length != 0 ? lists.map((item, index) => (
+                     lists && lists.length !== 0 ? lists.map((item, index) => (
                         <Tr key={item.id}>
                             <Td>{++index}</Td>
                             <Td>{item.customer_name} </Td>

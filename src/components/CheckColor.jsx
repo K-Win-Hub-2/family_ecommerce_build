@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,11 +14,6 @@ const Title = styled.h1`
 `
 const DialogTitle = styled.div`
     padding: 8px 0px;
-`
-const Img = styled.img`
-    width: 500px;
-    max-width: 400px;
-    height: auto;
 `
 const Div = styled.div`
      width: 150px;

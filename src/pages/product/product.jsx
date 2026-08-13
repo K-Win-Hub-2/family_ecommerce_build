@@ -11,8 +11,6 @@ import { addWishlist } from "../../redux/wishlistRedux";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import CheckColor from "../../components/CheckColor";
-import CheckSize from "../../components/CheckSize";
-import sample from "../../files/sample.pdf";
 import Swal from "sweetalert2";
 import InstockDialog from "../../components/InstockDialog";
 import MatchItemDialog from "../../components/MatchItemDialog";
@@ -23,7 +21,6 @@ import {
   IoMdArrowDropleftCircle,
   IoMdArrowDroprightCircle,
 } from "react-icons/io";
-import ColorNav from "../../components/ColorNav";
 import Spinner from "../../common/Spinner";
 import NoImage from "../../../src/files/noimage/noimage.png";
 
@@ -413,19 +410,19 @@ const Product = () => {
   const [size, setSize] = useState("");
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
-  const [design, setDesign] = useState("");
+  const [, setDesign] = useState("");
   const [unitimg, setUnitImg] = useState("");
 
   const [isInstock, setIsInstock] = useState(false);
   const [instockFlag, setInstockFlag] = useState("");
-  const [preorderFlag, setPreorderFlag] = useState("");
+  const [, setPreorderFlag] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [checkColor, setCheckColor] = useState(false);
 
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [filteredUnits, setFilteredUnits] = useState([]);
+  const [, setFilteredUnits] = useState([]);
   const [filteredColors, setFilteredColors] = useState([]);
   const [filteredSizes, setFilteredSizes] = useState([]);
   const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
@@ -444,7 +441,6 @@ const Product = () => {
 
     const formatSizeLabel = (sizeName) => {
         if (!sizeName) return "";
-        const normalized = sizeName.toLowerCase().trim();
         // if (normalized.includes("xxl")) return "XXL";
         // if (normalized.includes("xl")) return "XL";
         // if (normalized.includes("xs")) return "XS";

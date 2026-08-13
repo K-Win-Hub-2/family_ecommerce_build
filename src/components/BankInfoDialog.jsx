@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import * as React from "react";
-import { useLocation, Link } from "react-router-dom";
+
 
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -15,8 +14,6 @@ import kbzbank from "../files/kbzbank.png";
 import aya from "../files/aya.png";
 import cbpay from "../files/cbpay.jpg";
 import kbzpay from "../files/kbzpay.png";
-import wave from "../files/wave.png";
-import waveqr from "../files/waveqr.jpg";
 import kbzpayqr from "../files/kbzpayqr.jpg";
 import cbpayqr from "../files/cbpayqr.jpg";
 import ayasaving from "../files/ayabank.png";
@@ -33,9 +30,6 @@ const BankLogo = styled.div`
   width: 20%;
   cursor: pointer;
   padding: 25px;
-`;
-const Logo = styled.img`
-  width: 100%;
 `;
 const Imp = styled.span`
   font-weight: bold;
@@ -65,16 +59,9 @@ const getBankQr = (bankName) => {
 export default function BankInfoDialog(props) {
   
 
-  const [KBZBank, isKBZBank] = useState(false);
-  const [AYABank, isAYABank] = useState(false);
-  const [CBPay, isCBPay] = useState(false);
-  const [KBZPay, isKBZPay] = useState(false);
-  const [Wave, isWave] = useState(false);
   const [getBank, setBank] = useState([]);
   const [bankDetailData, setBankDetailData] = useState(null);
   const url = useSelector((state) => state.user.url);
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
   // console.log(url);
   useEffect(() => {
     const getBank = () => {
@@ -87,7 +74,7 @@ export default function BankInfoDialog(props) {
         .catch((error) => console.log(error));
     };
     getBank();
-  }, []);
+  }, [url]);
 
   const getBankDetail = (id) => {
     axios
@@ -102,6 +89,7 @@ export default function BankInfoDialog(props) {
   };
   useEffect(() => {
     getBankDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 console.log('getBank',getBank);
 const updatedResponseArray = getBank.map(item => {

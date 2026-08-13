@@ -360,7 +360,7 @@ const NewBadge = styled.div`
   })}
 `;
 
-const defaultImageUrl = 'http://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png'; 
+const defaultImageUrl = 'https://familyuniformapp.medicalworld.com.mm/ecommerce/items/default.png'; 
 
 const Item = ({ item, title }) => {
   const url = useSelector(state => state.user.url);

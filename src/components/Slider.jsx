@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 import { sliderItems } from "../data";
 import slider1 from "../slider-images/banner1.jpg";
@@ -40,30 +39,6 @@ const DesktopSlide = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-`;
-
-const DesktopInfoContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  bottom: 50px;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 5;
-  padding: 0 20px;
-`;
-
-const DesktopTitle = styled.h1`
-  font-size: 48px;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin-bottom: 10px;
-`;
-
-const DesktopDescription = styled.p`
-  font-size: 20px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  margin-bottom: 20px;
 `;
 
 const MobileWrapper = styled.div`

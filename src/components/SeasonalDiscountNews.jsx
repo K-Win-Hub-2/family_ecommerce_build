@@ -1,8 +1,6 @@
 import React from 'react'
-import SendIcon from '@mui/icons-material/Send';
 import styled from 'styled-components';
 import {mobile} from "../responsive"
-import bg from "../files/bg.png"
 
 const Container = styled.div`
     height: 60vh;

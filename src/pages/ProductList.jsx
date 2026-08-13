@@ -986,10 +986,12 @@ const ProductList = () => {
     getItems();
     categories();
     subcategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     homesearchitem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hsearch]);
 
   useEffect(() => {
@@ -1000,6 +1002,7 @@ const ProductList = () => {
         getCategoryItems(familyHospital.id);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cate, selectedCategory]);
 
   const homesearchitem = () => {

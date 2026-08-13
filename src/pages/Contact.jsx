@@ -147,7 +147,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
-import ColorNav from "../components/ColorNav";
 import Footer from "../components/Footer";
 import { useSelector } from "react-redux";
 import { mobile } from "../responsive";
@@ -347,19 +346,6 @@ const SocialItem = styled.div`
 
   &:hover svg {
     transform: scale(1.2);
-  }
-`;
-
-const Appointment = styled.div`
-  margin-top: 30px;
-  background: white;
-  border-radius: 14px;
-  padding: 25px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: 0.3s;
-
-  &:hover {
-    transform: translateY(-3px);
   }
 `;
 

@@ -1,15 +1,13 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { useState } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
@@ -18,50 +16,18 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
 `
-const Title = styled.h1`
-    font-size: 24px;
-    font-weight: 300;
-`
 const Input = styled.input`
     flex: 1;
     min-width: 500px;
     margin: 20px 10px 0px 0px;
     padding: 10px;
 `
-const Filter = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-`
-
-const FilterTitle = styled.span`
-    font-size: 15px;
-    font-weight: 200;
-    margin-bottom: 3px;
-`
-// hello world
-
-const FilterSelect = styled.select`
-    
-    padding: 5px;
-`
-
-const FilterOption = styled.option``
-
-const QRBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 10px;
-`
 
 
 export default function BankInfoDialog(props) {
-  const dispatch = useDispatch(); 
   const [file, setFile] = useState(null);
   const [remark, setRemark] = useState('');
-  const [payamount, setPayamount] = useState('');
+  const [payamount] = useState('');
   const url= useSelector(state => state.user.url);
 
   const onFileChange = (event) => {  

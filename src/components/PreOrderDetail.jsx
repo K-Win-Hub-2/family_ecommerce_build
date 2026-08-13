@@ -66,15 +66,6 @@ const Td = styled.td`
     padding: 10px 0px 10px 0px;
     ${mobile({width: "90%"})}
 `
-const Span = styled.span`
-    background-color: rgba(2,127,157,1);
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 6px;
-    border-radius: 50px;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-`
 const BigBox = styled.div`
     width: 100%;
     height: auto;
@@ -118,10 +109,6 @@ const PreOrderDetail = () => {
 
     const [ inputs, setInputs ] = useState({});
     const [ oinputs, setOInputs ] = useState([]);
-    const [ attachs, setAttachs ] = useState([]);
-    const [ecounting, setEcounting] = useState([]);
-    const [color, setColor] = useState([]);
-    const [size, setSize] = useState([]);
     const url= useSelector(state => state.user.url);
     const username = useSelector(state=>state.user);
 
@@ -129,6 +116,7 @@ const PreOrderDetail = () => {
 
     useEffect(() => {
         fetchOrderDetail()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
     const fetchOrderDetail = async () => {
@@ -136,7 +124,6 @@ const PreOrderDetail = () => {
         .then(res=>{
             console.log("PreordrData is:",res.data);
             if (res.data && res.data.length > 0) {
-                const orderDetail = res.data[0];
             setInputs({
                 id: res.data[0].id,
                 order_code: res.data[0].order_code,
@@ -145,7 +132,6 @@ const PreOrderDetail = () => {
                 customer_phone: res.data[0].customer_phone,
                 deliver_address: res.data[0].deliver_address,
                 order_status: res.data[0].order_status,
-                order_code: res.data[0].order_code,
                 grand_total: res.data[0].grand_total, 
                 total_quantity: res.data[0].total_quantity
                 

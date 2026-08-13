@@ -1,11 +1,10 @@
-import React,{ useState} from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import styled from 'styled-components';
-import { useSelector} from 'react-redux'
 import { useNavigate} from 'react-router-dom'
 
 const Title = styled.h1`
@@ -15,11 +14,6 @@ const Title = styled.h1`
 `
 const DialogTitle = styled.div`
     padding: 8px 0px;
-`
-const Img = styled.img`
-    width: 500px;
-    max-width: 400px;
-    height: auto;
 `
 
 const InstockDialog = (props) => {

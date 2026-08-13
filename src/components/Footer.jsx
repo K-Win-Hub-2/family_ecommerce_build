@@ -186,9 +186,7 @@ import LogoPhoto from '../files/logo.png';
 
 import kbzbank from "../files/kbzbank.png";
 import aya from "../files/aya.png";
-import cbpay from "../files/cbpay.jpg";
 import kbzpay from "../files/kbzpay.png";
-import wave from "../files/wave.png";
 import master from "../files/master.png";
 import visa from "../files/visa.png";
 
@@ -210,18 +208,9 @@ const Column = styled.div`
   margin-bottom: 20px;
 `;
 
-const Logo = styled.h2`
-  margin-bottom: 15px;
-`;
-
 const Title = styled.h3`
   margin-bottom: 15px;
   font-weight: 600;
-`;
-
-const Description = styled.p`
-  line-height: 1.6;
-  font-size: 14px;
 `;
 
 const List = styled.ul`
@@ -302,7 +291,7 @@ const Footer = () => {
             for Government Departments and Private Business sectors.
           </Description> */}
 
-          <img src={LogoPhoto} width="200" height="200"/>
+          <img src={LogoPhoto} width="200" height="200" alt=""/>
         </Column>
 
         {/* CENTER */}

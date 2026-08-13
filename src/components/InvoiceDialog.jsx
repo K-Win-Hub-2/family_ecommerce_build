@@ -1,20 +1,11 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux';
 import {mobile} from "../responsive";
 
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-`
 const Wrapper = styled.div`
 height: auto;
 padding:20px;
@@ -40,8 +31,6 @@ const Phone = styled.span`
    float : right;
    color : secondary;
 `
-
-const FilterOption = styled.option``
 
 const Table = styled.table`
     width: 100%;
@@ -129,7 +118,7 @@ export default function InvoiceDialog(props) {
                 {
                     props.unit.map((unit, index) => (
                         props.ecounting.map((ec, i) => (
-                            unit.id == ec.counting_unit_id ?
+                            unit.id === ec.counting_unit_id ?
                         <Tr key={unit.id}>
                             <Td>{++index}</Td>
                             <Td>{unit.unit_name}</Td>

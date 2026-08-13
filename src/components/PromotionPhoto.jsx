@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import family from '../feedImg/family.jpg'
-import brandedms from '../feedImg/brandedms.jpg'
-import wcoat from '../feedImg/wcoat.jpg'
-import shoe from '../feedImg/shoe.jpg'
 import axios from 'axios'
-import { DataObjectTwoTone } from '@mui/icons-material'
 import { useSelector} from 'react-redux'
 import ImageSlider, { Slide } from "react-auto-image-slider";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
 
 
 const Container = styled.div`
@@ -25,12 +19,6 @@ const FeedBox = styled.div`
     display: flex;
     padding: 20px;
     
-`
-const SectionTitle = styled.h2`
-    font-weight: bold;
-    font-size:30px;
-    margin-left: 20px;
-    color: #2b57b8;
 `
 
 
@@ -50,7 +38,7 @@ const PromotionPhoto = () => {
       };
       getProducts();
       
-    },[]);
+    },[url]);
 
     return (
         <Container>
@@ -64,7 +52,7 @@ const PromotionPhoto = () => {
                                 {/* <div style={{maxHeight:'210px'}} key={el.id}> */}
                                 {/* <img  src={url+'/promotion_images/'+el.promotionphoto_photo} key={el.id} width="100%"/> */}
                                 <Slide>
-                                <img  src={url+'/promotion_images/'+el.promotionphoto_photo} style={{maxHeight:'210px'}}/>
+                                <img  src={url+'/promotion_images/'+el.promotionphoto_photo} style={{maxHeight:'210px'}} alt={el.promotionphoto_title}/>
                                 </Slide>
                                 {/* </div> */}
                                 {/* <h5 className="card-title text-center mt-2" style={{ opacity: 0.5,color:'#2b57b8'}}>{el.promotionphoto_title}</h5> */}

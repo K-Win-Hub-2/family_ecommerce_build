@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import family from '../feedImg/family.jpg'
-import brandedms from '../feedImg/brandedms.jpg'
-import wcoat from '../feedImg/wcoat.jpg'
-import shoe from '../feedImg/shoe.jpg'
 import axios from 'axios'
-import { DataObjectTwoTone } from '@mui/icons-material'
 import { useSelector} from 'react-redux'
-import ImageSlider, { Slide } from "react-auto-image-slider";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
 
 
 const Container = styled.div`
@@ -24,21 +17,15 @@ const FeedBox = styled.div`
     display: flex;
     padding: 20px;
 `
-const SectionTitle = styled.h2`
-    font-weight: bold;
-    font-size:30px;
-    margin-left: 20px;
-    color: #2b57b8;
-`
 
 
 const YoutubeSlider = () => {
 
-    const [products,setProducts] =  useState([]);
+    const [,setProducts] =  useState([]);
     const [utube1,setUtube1] =  useState('');
     const [utube2,setUtube2] =  useState('');
     const [utube3,setUtube3] =  useState('');
-    const [utube4,setUtube4] =  useState('');
+    const [,setUtube4] =  useState('');
 
     const url= useSelector(state => state.user.url);
   
@@ -56,7 +43,7 @@ const YoutubeSlider = () => {
       };
       getProducts();
       
-    },[]);
+    },[url]);
 
     return (
         <Container>

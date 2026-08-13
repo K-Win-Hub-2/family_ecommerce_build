@@ -4,8 +4,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { forwardRef } from 'react';
-import { useState } from 'react';
 
 function AlertDialog(props) {
   

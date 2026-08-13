@@ -2,7 +2,6 @@ import Cart from "./pages/Cart";
 import WishList from "./pages/wishlist/WishList";
 import HomePage from "./pages/Home";
 import Login from "./pages/Login";
-import Pay from "./pages/Pay";
 import Product from "./pages/product/product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";

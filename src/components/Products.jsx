@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { popularProducts } from '../data'
 // import Product from './Product'
 import Product from '../pages/product/product';
 import axios from 'axios'
-import { DataObjectTwoTone } from '@mui/icons-material'
 import { useSelector} from 'react-redux'
 
 const Container = styled.div`
@@ -18,7 +16,6 @@ const Products = ({cat,filters,sort,fil}) => {
   console.log(cat,filters,sort);
 
   const [products,setProducts] =  useState([]);
-  const [filteredProducts,setFilteredProducts] = useState([]);
   const url= useSelector(state => state.user.url);
 
   useEffect(()=>{
@@ -32,7 +29,7 @@ const Products = ({cat,filters,sort,fil}) => {
     };
     getProducts();
     
-  },[cat]);
+  },[cat,url]);
 
  
   return (
@@ -45,11 +42,11 @@ const Products = ({cat,filters,sort,fil}) => {
           <Product item={item} key={item.id}/>
       ))} */}
       {
-        fil == 0 ?
+        fil === 0 ?
       products.slice(0,6).map((item)=> (
         <Product filter={filters.part} item={item} key={item.id}/>
       )) : products.slice(0,6).map((item)=> (
-        item.name == fil ?
+        item.name === fil ?
         <Product filter={filters.part} item={item} key={item.id}/> : ''
       ))
       }

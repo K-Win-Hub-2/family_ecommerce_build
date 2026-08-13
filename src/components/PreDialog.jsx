@@ -1,14 +1,11 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react'
 import {mobile} from "../responsive";
 import { Link } from 'react-router-dom'
 import family from '../files/family.png'
@@ -68,14 +65,6 @@ const Btn= styled.button`
     cursor: pointer;
     font-weight: 300; 
 `
-const Price= styled.span`
-    font-size : 16px;
-    font-style : inherint;
-    color: #5C3317;
-    cursor: pointer;
-    font-weight: 300; 
-    margin-left: 40px
-`
 
 
 const Bank = styled.div`
@@ -88,10 +77,6 @@ const Bank = styled.div`
 
 
 export default function PreDialog(props) {
-
-    const closeDialog = () =>{
-        
-    }
 
   return (
     <div>

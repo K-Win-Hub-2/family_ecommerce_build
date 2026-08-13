@@ -1,8 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.eb0d5ec0.css",
-    "main.js": "/static/js/main.5d0fc300.js",
-    "static/media/factory.mp4": "/static/media/factory.71beff15516a06d0d966.mp4",
+    "main.css": "/static/css/main.032b307c.css",
+    "main.js": "/static/js/main.9bf29323.js",
     "static/media/banner4.jpg": "/static/media/banner4.ccc558c6992aa48e2211.jpg",
     "static/media/banner5.jpg": "/static/media/banner5.dbdef88d169dd381d72f.jpg",
     "static/media/shweohh.png": "/static/media/shweohh.8324c63ec202a21d09ea.png",
@@ -33,7 +32,6 @@
     "static/media/f6.jpg": "/static/media/f6.51e9fd6f561eba34f17b.jpg",
     "static/media/f17.jpg": "/static/media/f17.4dc0b58bb1e7b40e8314.jpg",
     "static/media/f1.jpg": "/static/media/f1.3d2264015552573f9b2a.jpg",
-    "static/media/bg.png": "/static/media/bg.a90499bd671932d7ede8.png",
     "static/media/logo.png": "/static/media/logo.f9321e0d7d3e52f60ec0.png",
     "static/media/f30.jpg": "/static/media/f30.7e04f8f784ccd8bbf8a4.jpg",
     "static/media/ecofamily.png": "/static/media/ecofamily.760261ffb38553db6ceb.png",
@@ -42,11 +40,8 @@
     "static/media/f23.jpg": "/static/media/f23.7117652520f65e80f77d.jpg",
     "static/media/f4.jpg": "/static/media/f4.74d6c9818ddc276d1aca.jpg",
     "static/media/f29.jpg": "/static/media/f29.0123e36e799dd3c6518c.jpg",
-    "static/media/brandedms.jpg": "/static/media/brandedms.3d03a3b893f92211530b.jpg",
-    "static/media/sample.pdf": "/static/media/sample.a37c077a340a4cc8e7fb.pdf",
     "static/media/f31.jpg": "/static/media/f31.03b5cd725a71dc706023.jpg",
     "static/media/f24.jpg": "/static/media/f24.16b4a9c9181033250e95.jpg",
-    "static/media/wcoat.jpg": "/static/media/wcoat.a6ad8b22d7b3d86f50db.jpg",
     "static/media/f25.jpg": "/static/media/f25.95e30a1d55e2f22ee165.jpg",
     "static/media/f27.jpg": "/static/media/f27.1df35d3e54f5127a71c6.jpg",
     "static/media/f28.jpg": "/static/media/f28.e931490d0686aa5e03d1.jpg",
@@ -61,16 +56,12 @@
     "static/media/myanmar_private_hospital_association.jpg": "/static/media/myanmar_private_hospital_association.6fd2130cd1073e02f96b.jpg",
     "static/media/branded.png": "/static/media/branded.751cc2efb83d42fb792f.png",
     "static/media/kbzpayqr.jpg": "/static/media/kbzpayqr.963aa85de44216957426.jpg",
-    "static/media/waveqr.jpg": "/static/media/waveqr.fba1486521a9bc178f84.jpg",
     "static/media/family.png": "/static/media/family.a6e84c63f625b06910b3.png",
     "static/media/about.jpg": "/static/media/about.67f6ebd13777fb12fc7b.jpg",
     "static/media/cbpayqr.jpg": "/static/media/cbpayqr.cde95ecd279d1017f88b.jpg",
-    "static/media/shoe.jpg": "/static/media/shoe.d4431526041d4938ac50.jpg",
     "static/media/asiamyanmar.jpg": "/static/media/asiamyanmar.01ad361b1b323748f735.jpg",
     "static/media/kaytu.jpg": "/static/media/kaytu.523b5bce6e493afedb3d.jpg",
     "static/media/ministry_of_health.jpg": "/static/media/ministry_of_health.c2491528a545338e50a9.jpg",
-    "static/media/human.jpg": "/static/media/human.3f9f6da28bacf4d348e7.jpg",
-    "static/media/wave.png": "/static/media/wave.7e14ef2a2ca6cb3876be.png",
     "static/media/khaing_yadanar_hospital.jpg": "/static/media/khaing_yadanar_hospital.a61654aab477d4b47efd.jpg",
     "static/media/about1.jpg": "/static/media/about1.3ffe2e8371717396f22c.jpg",
     "static/media/mtw.jpg": "/static/media/mtw.3a1739cc7133af49108c.jpg",
@@ -103,14 +94,15 @@
     "static/media/ami_life.jpg": "/static/media/ami_life.0281523defd69e1a9549.jpg",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/noimage.png": "/static/media/noimage.45cd7f5d2cbc44f2f700.png",
     "static/media/factory.png": "/static/media/factory.7050659eb84c9e5c4374.png",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.eb0d5ec0.css.map": "/static/css/main.eb0d5ec0.css.map",
-    "main.5d0fc300.js.map": "/static/js/main.5d0fc300.js.map"
+    "main.032b307c.css.map": "/static/css/main.032b307c.css.map",
+    "main.9bf29323.js.map": "/static/js/main.9bf29323.js.map"
   },
   "entrypoints": [
-    "static/css/main.eb0d5ec0.css",
-    "static/js/main.5d0fc300.js"
+    "static/css/main.032b307c.css",
+    "static/js/main.9bf29323.js"
   ]
 }

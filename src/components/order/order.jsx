@@ -1,20 +1,15 @@
-import React, { useEffect, useState,cache } from "react";
+import React, { useEffect, useState } from "react";
 import ColorNav from "../ColorNav";
 import Footer from "../Footer";
 import styled from "styled-components";
 import { mobile } from "../../responsive";
-import { Add, Remove, SettingsEthernet } from "@mui/icons-material";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from 'react-hook-form';
 import {
-  addOrder,
-  removeOrder,
   addAttach,
   removeAttach,
-  resetOrder,
-  resetAttach,
   editOrder,
   editAttach,
 } from "../../redux/designRedux";
@@ -52,32 +47,7 @@ const Text = styled.span`
   text-align: center;
   margin-top: 20px;
 `;
-const Text1 = styled.span`
-  padding: 5px 15px;
-  color: #32549b;
-  font-size: 20px;
-  font-weight: bold;
-  font-style: oblique;
-`;
 const Input = styled.input``;
-const A = styled.a``;
-
-const Button = styled.button`
-  padding: 8px;
-  background-color: teal;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  float: right;
-  color: white;
-`;
-const Btn = styled.button`
-  padding: 4px;
-  background-color: #32549b;
-  border: none;
-  border-radius: 20px;
-  color: white;
-`;
 
 const Check = styled.p`
   background-color: #027f9d;
@@ -138,37 +108,6 @@ const Option = styled.option``;
 const Qty = styled.input`
   width: 70px;
 `;
-const MainText = styled.div`
-  padding: 10px 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: 0.7s ease;
-  ${mobile({ padding: "10px 0px" })}
-`;
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-`;
-
-const Center = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const Right = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 10px;
-  margin-left: 20px;
-`;
 
 const Order = () => {
   const location = useLocation();
@@ -197,9 +136,7 @@ console.log('formattedItemName',formattedItemName);
   const [file, setFile] = useState("");
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
-  const pre = useSelector((state) => state.design.orders);
   const preattach = useSelector((state) => state.design.attachs);
-  const photo = useSelector((state) => state.design.paymentscreenshot);
   const username = useSelector((state) => state.user);
   const edittestname = useSelector((state) => state.design.edit_testname);
   const edittestqty = useSelector((state) => state.design.edit_testqty);
@@ -225,16 +162,15 @@ console.log('formattedItemName',formattedItemName);
   const [fabricname, setFabricName] = useState("");
   const [colourname, setColorName] = useState("");
   const [sizename, setSizeName] = useState("");
-  const [filteredSizes, setFilteredSizes] = useState([]);
+  const [, setFilteredSizes] = useState([]);
   const [loading,setLoading]=useState(true);
   const url = useSelector((state) => state.user.url);
-  const [eid, setEid] = useState(0);
   // const {
   //   register,
   //   handleSubmit,
   //   formState: { errors },
   // } = useForm();
-  const { register, handleSubmit,reset,setValue , formState: { errors } } = useForm({
+  const { register, handleSubmit,reset,setValue } = useForm({
     defaultValues: {
       price: 0 // Set the initial value of price to 0
     }
@@ -285,7 +221,8 @@ const getDesigns = async (design_id) => {
 
   useEffect(()=>{
     cacheData ? setDesigns(cacheData) : getDesigns(design_id)
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[cacheData, design_id]);
   // if (design_id == 1) {
   //   const getDesigns = async () => {
   //     try {
@@ -405,7 +342,7 @@ const getDesigns = async (design_id) => {
     // filterSizesByGender(gender.id);
   };
   const filterSizesByGender = (id) => {
-    const filteredSizes = sizes.filter(size => size.gender_id == id);
+    const filteredSizes = sizes.filter(size => size.gender_id === id);
     setFilteredSizes(filteredSizes);
   };
   const addFabric = (fabric) => {
@@ -425,11 +362,6 @@ const getDesigns = async (design_id) => {
     // localStorage.setItem('addToCart', size.size_name);
     // ...
     // localStorage.setItem('size_name', size.size_name);
-  };
- 
-  const handleChange = (event) => {
-    const selectedGenderId = event.target.value;
-    // Do something with the selected gender ID
   };
 
   // const additem = () =>{
@@ -519,7 +451,7 @@ const getDesigns = async (design_id) => {
 
 
   const attach = () => {
-    if (document.getElementById("qty1").value == "") {
+    if (document.getElementById("qty1").value === "") {
       Swal.fire({
         title: "Warning!",
         text: "Please Enter Quantity.",
@@ -603,7 +535,7 @@ const addToCart = (data) => {
   const remove = (id) => {
     // alert(id);
     const storedItems = JSON.parse(localStorage.getItem('addToCart')) || [];
-    let saveItem= storedItems.filter(items => items.id != id);
+    let saveItem= storedItems.filter(items => items.id !== id);
     localStorage.setItem('addToCart',JSON.stringify(saveItem));
     setCartItems(saveItem); 
     // JSON.parse
@@ -618,35 +550,35 @@ const addToCart = (data) => {
   
 
   const changeprice = () => {
-    if (document.getElementById("item_name").innerHTML == "") {
+    if (document.getElementById("item_name").innerHTML === "") {
       Swal.fire({
         title: "Warning!",
         text: "You Need to Choose Design.",
         type: "error",
       });
       document.getElementById("qty").value = "";
-    } else if (document.getElementById("gen_name").innerHTML == "") {
+    } else if (document.getElementById("gen_name").innerHTML === "") {
       Swal.fire({
         title: "Warning!",
         text: "You Need to Choose Gender.",
         type: "error",
       });
       document.getElementById("qty").value = "";
-    } else if (document.getElementById("fab_name").innerHTML == "") {
+    } else if (document.getElementById("fab_name").innerHTML === "") {
       Swal.fire({
         title: "Warning!",
         text: "You Need to Choose Fabric.",
         type: "error",
       });
       document.getElementById("qty").value = "";
-    } else if (document.getElementById("col_name").innerHTML == "") {
+    } else if (document.getElementById("col_name").innerHTML === "") {
       Swal.fire({
         title: "Warning!",
         text: "You Need to Choose Colour.",
         type: "error",
       });
       document.getElementById("qty").value = "";
-    } else if (document.getElementById("siz_name").innerHTML == "") {
+    } else if (document.getElementById("siz_name").innerHTML === "") {
       Swal.fire({
         title: "Warning!",
         text: "You Need to Choose Size.",
@@ -746,142 +678,6 @@ const addToCart = (data) => {
     //     }
     //   }
     // }
-  };
-
-  const storepreorder = () => {
-    let formdata = {
-      customer_id: username.id,
-      customer_name: username.name,
-      phone: username.phone,
-      address: username.address,
-      orders: cartItems,
-    };
-
-    const res = axios .post(url + "/api/ecommerce_preorder_store", formdata)
-              .then(function (response) {
-          alert('success store');
-        dispatch(resetOrder());
-        navigate("/order_list");
-      })
-      .catch(function (error) {
-        alert("fail store");
-      });
-  };
-
-  // const storepreorder=()=>{
-  //   const response =  axios.post(url + "/api/ecommerce_preorder_store", {
-  //     customer_id: username.id,
-  //     customer_name: username.name,
-  //     customer_phone: username.phone,
-  //     customer_address: username.address,
-  //     design_id:design_name.id
-      
-      
-     
-      
-     
-     
-     
-  //   });
-  // }
-  const sendmail = (val) => {
-    axios
-      .post(url + "/api/send/invoice_email", {
-        id: username.id,
-        name: username.name,
-        phone: username.phone,
-        address: username.address,
-        email: username.email,
-        preorders: pre,
-        attachs: preattach,
-        type: val,
-      })
-      .then((response) => {
-        //Success Message in Sweetalert modal
-        Swal.fire({
-          title: response.data["message"],
-          text: "Thanks For Your Pre-Orders! Your will be delivered within four to six weeks!",
-          type: "success",
-        });
-      })
-      .catch((err) => {
-        console.log("error");
-      });
-  };
-
-  const storeattach = () => {
-    let formdata = {
-      id: username.id,
-      name: username.name,
-      phone: username.phone,
-      address: username.address,
-    };
-    const res = axios
-      .post(url + "/api/ecommerce_attachorder_store", formdata)
-      .then(function (response) {
-        setEid(response.data);
-        preattachstore(response.data);
-      })
-      .catch(function (error) {
-        alert("fail store");
-      });
-  };
-
-  const preattachstore = (id) => {
-    let totqty = 0;
-    let totamt = 0;
-    preattach.map((el) => {
-      totqty += parseInt(el.testqty);
-      totamt += parseInt(el.testprice) * parseInt(el.testqty);
-      const data = {
-        attachs: el.files,
-        qty: el.testqty,
-        description: el.description,
-        price: 0,
-        totqty: totqty,
-        totamount: totamt,
-        id: id,
-      };
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" },
-      };
-      const res = axios
-        .post(url + "/api/ecommerce_attach_store", data, config)
-        .then(function (response) {
-          //   alert('success store');
-          dispatch(resetAttach());
-          navigate("/order_list");
-          axios
-            .post(
-              url + "/api/send/invoice_email",
-              {
-                id: username.id,
-                name: username.name,
-                phone: username.phone,
-                address: username.address,
-                email: username.email,
-                preorders: pre,
-                attachs: preattach,
-                type: 2,
-              },
-              config
-            )
-            .then((response) => {
-              //Success Message in Sweetalert modal
-              Swal.fire({
-                title: response.data["message"],
-                text: "Thanks For Your Pre-Orders! Your will be delivered within four to six weeks!",
-                type: "success",
-              });
-            })
-            .catch((err) => {
-              console.log("error");
-            });
-        })
-        .catch(function (error) {
-          alert("fail store");
-        });
-    });
   };
 
   const edit = (id) => {
@@ -1298,7 +1094,7 @@ const addToCart = (data) => {
             </div>
           </div>
 
-          {paymentchannel == "1" ? (
+          {paymentchannel === "1" ? (
             <div>
               <div className="row m-3">
                 <div className="offset-4 col-md-2 form-group">
@@ -1400,7 +1196,7 @@ const addToCart = (data) => {
                 {preattach.map((t) => (
                   <div className="row mt-2 text-center">
                     <div className="col-md-3">
-                      <img src={t.file} width="140px" height="auto" />
+                      <img src={t.file} width="140px" height="auto" alt="preorder attachment" />
                     </div>
                     <div className="col-md-2 mt-5">
                       <span>{t.testqty}</span>
@@ -1454,7 +1250,6 @@ const addToCart = (data) => {
                       <Select id={"type"} onClick={addit}></Select> */}
                       <Lable className="px-2">Design</Lable>
                       <Select {...register("design_id")} id={"item_name"} 
-                    //   value={designs.find(design => design.design_name === formattedItemName)?.id || ""}
                       >
                         <option value="">Select Design</option>
                         {
@@ -1618,9 +1413,9 @@ const addToCart = (data) => {
                     <div className="row mt-2 text-center" key={p.orderid}>
                       <div className="col-md-3">
                         <span>
-                          {p.design_id ? designs.filter(des => des.id == p.design_id)[0]?.design_name : ""} <br />
+                          {p.design_id ? designs.filter(des => des.id === p.design_id)[0]?.design_name : ""} <br />
                           {p.fabric_id ? fabrics.filter(fabric => fabric.id === p.fabric_id)[0]?.fabric_name : ""} <br />
-                          {p.colour_id ? colors.filter(colr => colr.id == p.colour_id)[0]?.colour_name : ""} <br />
+                          {p.colour_id ? colors.filter(colr => colr.id === p.colour_id)[0]?.colour_name : ""} <br />
                           {p.gender_id ? genders.filter(gen => gen.id === p.gender_id)[0]?.gender_name : ""} <br />
                         </span>
                       </div>

@@ -2,11 +2,8 @@
 import React  from 'react';
 import styled from 'styled-components';
 import {mobile} from "../responsive";
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import ColorNav from '../components/ColorNav';
 import Footer from '../components/Footer';
 
@@ -58,16 +55,6 @@ const Message = styled.textarea`
     margin: 10px 0px;
     padding: 5px;
 `
-const Button = styled.button`
-    width: 100%;
-    height: 40px;
-    border: none;
-    background-color: #32549b;
-    color: white;
-    cursor: pointer;
-    margin-top: 20px;
-`
-
 const Profile = () => {
 
     const username = useSelector(state => state.user);

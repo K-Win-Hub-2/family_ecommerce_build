@@ -1,5 +1,4 @@
 import SearchIcon from '@mui/icons-material/Search';
-import Badge from '@mui/material/Badge';
 import React, { useState,useEffect }  from 'react'
 import styled from 'styled-components'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -9,7 +8,6 @@ import {mobile} from "../responsive"
 import {LogoutProcess} from "../redux/userRedux"
 import {  useDispatch,useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import {FaBars} from 'react-icons/fa'
 import PreDialog from '../components/PreDialog'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -23,17 +21,6 @@ const Container = styled.div`
     background-color: transparent;
     ${mobile({height: "50px"})}
 `
-const Wrapper = styled.div`
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.7s ease;
-    background: rgb(255,255,255);
-    background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.18953518907563027) 100%);
-
-    ${mobile({padding: "10px 0px"})}
-`
 const WrapperOne = styled.div`
     display: flex;
     justify-content: space-between;
@@ -42,12 +29,6 @@ const WrapperOne = styled.div`
     ${mobile({padding: "10px 0px"})}
 `
 
-const Left = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-`
 const LeftOne = styled.div`
     flex: 1;
     display: flex;
@@ -61,43 +42,12 @@ const Language = styled.span`
     ${mobile({display: "none"})}
 `
 
-const SearchContainer = styled.div`
-    border: 1px solid lightgray;
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-    padding: 5px;
-`
-
-const Input = styled.input`
-    border: none;
-    ${mobile({width: "50px"})}
-`
-
 const Center = styled.div`
     flex: 1;
     display: inline;
     text-align: center;
 `
 
-const Logo = styled.h1`
-    font-weight: bold;
-    font-size:30px;
-    color : white;
-    display: block;
-    text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(206,89,55,0);
-    ${mobile({fontSize: "24px"})}
-`
-
-const Right = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 40px;
-    margin-left : 20px;
-    ${mobile({flex:2,justifyContent: "center"})}
-`
 const RightOne = styled.div`
     flex: 1;
     display: flex;
@@ -169,10 +119,10 @@ const ColorNav = () => {
     const [ok,setOk] = useState(false);
 
     useEffect(()=>{
-        if(username != ''){
+        if(username !== ''){
            setIsUser(true);
         }
-    },[])
+    },[username])
     
     const logout = () =>{
         dispatch(LogoutProcess());
@@ -201,7 +151,7 @@ const ColorNav = () => {
     const url = useSelector(state => state.user.url);
 
     const SearchItems = () => {
-        if(search != ''){
+        if(search !== ''){
             axios.post(url + '/api/searchitem', {
                 item: search
             }).then(res => {
@@ -219,7 +169,7 @@ const ColorNav = () => {
        
     }
 
-    if(ok == true){
+    if(ok === true){
         dispatch(showSearch());
         navigate('/products/1/family hospital', { state: { itemsS: itemsS, click: true } })
     }

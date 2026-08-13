@@ -1,9 +1,7 @@
 import React  from 'react';
-import { Navigate, useNavigate,Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ColorNav from './ColorNav';
 import Footer from './Footer';
 import { useSelector} from 'react-redux'
 import Navbar from './Navbar';
@@ -11,19 +9,11 @@ import Navbar from './Navbar';
 
 const OrderHistory = () => {
 
-    const [ inputs, setInputs ] = useState({});
-    const [ oinputs, setOInputs ] = useState([]);
-    const [ attachs, setAttachs ] = useState([]);
-    const [ecounting, setEcounting] = useState([]);
-    const [color, setColor] = useState([]);
-    const [size, setSize] = useState([]);
     const url= useSelector(state => state.user.url);
     const [order, setOrders] = useState([]);
-    const [preorders, setPreorders] = useState([]);
     const username = useSelector(state=>state.user);
     const customer_id=username.id;
 
-    const {id} = useParams();
     const [loading, setLoading] = useState(true);
 
     // useEffect(() => {
@@ -31,6 +21,7 @@ const OrderHistory = () => {
     // },[]);
     useEffect(() =>{
         fetchOrderList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
     // const fetchOrderDetail = async () => {

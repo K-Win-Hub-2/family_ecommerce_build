@@ -4,11 +4,8 @@ import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
-import YoutubeSlider from "../components/YoutubeSlider";
 
 import profile from "../slider-images/about1.jpg";
-import client from "../slider-images/human.jpg";
 import group from "../slider-images/about.jpg";
 import board1 from "../slider-images/UWinKoKo.png";
 import board2 from "../slider-images/DawKhinSandarKo.png";
@@ -47,7 +44,6 @@ import pho28 from "../files/factory/f28.jpg";
 import pho29 from "../files/factory/f29.jpg";
 import pho30 from "../files/factory/f30.jpg";
 import pho31 from "../files/factory/f31.jpg";
-import factoryV from "../files/factory.mp4";
 
 import about from "../slider-images/aboutus.png";
 import aboutFactory from "../slider-images/factory.png";
@@ -105,15 +101,7 @@ import {
   FaEye,
   FaGem,
   FaIndustry,
-  FaLayerGroup,
-  FaPalette,
-  FaVial,
-  FaClock,
-  FaUsers,
   FaHandHoldingUsd,
-  FaCheckCircle,
-  FaShippingFast,
-  FaTshirt,
   FaTools,
   FaBuilding,
   FaNetworkWired,
@@ -217,19 +205,6 @@ const DoctorWrapper = styled.div`
   }
 `;
 
-const DoctorCard = styled.div`
-  width: 600px;
-  height: 350px;
-  background: #1c6ea4;
-  border-radius: 25px;
-  animation: ${slideImage} 1.4s ease forwards;
-  transform: translateY(50px);
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const DoctorImage = styled.img`
   position: absolute;
   bottom: 0;
@@ -256,57 +231,6 @@ const Right = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-  }
-`;
-
-const ClientBadge = styled.div`
-  position: absolute;
-  top: 180px;
-  left: -80px;
-  background: #1c6ea4;
-  color: white;
-  padding: 15px 20px;
-  border: 1px solid #48f542;
-  border-radius: 15px;
-  font-size: 14px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  animation: ${slideImage} 1.4s ease forwards;
-  transform: translateY(50px);
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const ClientWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ClientImage = styled.img`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid #fff;
-  margin-left: -20px;
-
-  &:nth-child(1) {
-    z-index: 4;
-  }
-  &:nth-child(2) {
-    z-index: 3;
-  }
-  &:nth-child(3) {
-    z-index: 2;
-  }
-  &:nth-child(4) {
-    z-index: 1;
-  }
-
-  &:first-child {
-    margin-left: 0;
   }
 `;
 
@@ -510,36 +434,6 @@ const Role = styled.p`
 //     margin-top:14px;
 // `
 
-const Box = styled.div`
-  width: 33.33%;
-`;
-const Circle = styled.div`
-  border-radius: 50%;
-  border: 4px solid #ffffff;
-  width: 200px;
-  height: 200px;
-  margin-bottom: 10px;
-`;
-const CBox = styled.div`
-  width: 200px;
-  height: auto;
-  margin: 10px 30px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: #ffffff;
-  font-weight: bold;
-`;
-const Ul = styled.ul``;
-const Li = styled.li`
-  color: #ffffff;
-  text-align: left;
-  list-style-type: disc;
-  font-size: 18px;
-  padding: 5px 0px;
-`;
 const Image = styled.img`
   width: 100%;
   height: 100%;
@@ -547,41 +441,6 @@ const Image = styled.img`
   object-fit: contain;
   background-color: #ffffff;
 `;
-const SmallBox = styled.div`
-  width: 45%;
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 20px;
-  color: #32549b;
-  text-align: center;
-  margin: 10px;
-  border-radius: 10px;
-`;
-const SmallImgBox = styled.div`
-  width: 230px;
-  height: auto;
-  min-height: 120px;
-  margin-left: 20px;
-`;
-// const Left = styled.div`
-//     width: auto;
-//     display: flex;
-//     align-item: center;
-//     justify-content: center;
-//     flex-direction: column;
-// `
-const Center = styled.div`
-  display: flex;
-  align-item: center;
-  justify-content: center;
-  margin-top: 50px;
-`;
-// const Right = styled.div`
-//     width: auto;
-//     display: flex;
-//     align-item: end;
-//     justify-content: end;
-//     flex-direction: column;
-// `
 const ShowP = styled.span`
   color: #32549b;
   background-color: #ffffff;
@@ -589,18 +448,6 @@ const ShowP = styled.span`
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
-`;
-const FIbox = styled.div`
-  display: flex;
-  align-item: center;
-  flex-direction: row;
-`;
-const FImg = styled.img`
-  width: 100%;
-  max-width: 380px;
-  height: auto;
-  border: 5px solid transparent;
-  border-radius: 12px;
 `;
 const SmallImgBoxP = styled.div`
   width: 150px;
@@ -742,19 +589,6 @@ const Line = styled.div`
   height: 60px;
   background: rgba(255, 255, 255, 0.5);
   margin: 0 auto;
-`;
-
-const Icon = styled.div`
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: #5cc66a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  margin: -10px auto 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const RCard = styled.div`
@@ -1147,12 +981,9 @@ const BottomCurve = styled.img`
 
 const About = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const url = useSelector((state) => state.user.url);
 
-  const [factory, setFactory] = useState(false);
   const [selectedImage, setSelectedImage] = useState(pho7);
   const [clientsExpanded, setClientsExpanded] = useState(false);
-  const [partners, setPartners] = useState(false);
   
   useEffect(() => {
     const handleResize = () => {
@@ -1195,10 +1026,7 @@ const About = () => {
     pho30,
     pho31,
   ];
-  const [startIndex, setStartIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const visibleImages = factoryImages.slice(startIndex, startIndex + 5);
 
   const handleNext = () => {
     if (currentIndex < factoryImages.length - 5) {
@@ -1210,20 +1038,6 @@ const About = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
-  };
-
-  const ShowAllPartners = () => {
-    setPartners(true);
-  };
-  const HideAllPartners = () => {
-    setPartners(false);
-  };
-
-  const ShowFactory = () => {
-    setFactory(true);
-  };
-  const HideFactory = () => {
-    setFactory(false);
   };
 
   const ShowAllClients = () => {

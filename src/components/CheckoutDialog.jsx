@@ -719,7 +719,7 @@ export default function CheckoutDialog(props) {
   const [deliveryType, setDeliveryType] = useState("pickup");
   const [, setShowTownshipInput] = useState(false);
   const [showBankInfo, setshowBankInfo] = useState(false);
-  const [banks, setBanks] = useState([]);
+  const [, setBanks] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

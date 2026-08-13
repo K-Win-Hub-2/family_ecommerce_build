@@ -504,6 +504,7 @@ const OrderList = () => {
 
   useEffect(() => {
     fetchOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchOrders = async () => {
@@ -588,6 +589,7 @@ const OrderList = () => {
     if (startDate || endDate) {
       SearchItems();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate, orders]);
 
   // --- NEW MODAL CONTROLLERS ---

@@ -36,11 +36,13 @@ const MessageBubble = ({ msg }) => {
           <ReactMarkdown
             components={{
               hr: () => <hr className="my-2 border-t border-gray-300" />,
-              h3: ({ node, ...props }) => (
+              h3: ({ node, children, ...props }) => (
                 <h3
                   className="text-lg font-bold text-green-600 mt-1 mb-0"
                   {...props}
-                />
+                >
+                  {children}
+                </h3>
               ),
               strong: ({ node, ...props }) => (
                 <span className="font-semibold text-amber-600" {...props} />

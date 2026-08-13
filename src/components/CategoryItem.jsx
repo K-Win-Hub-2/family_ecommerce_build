@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {mobile} from "../responsive"
 import { useSelector} from 'react-redux'
@@ -28,30 +27,6 @@ const Image = styled.img`
         height: 50%;
     `}
 `
-const Info = styled.div`
-position: absolute;
-bottom: 0;
-left: 0;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-margin-left: 160px;
-margin-bottom: 30px;
-`
-const Title = styled.h1`
-    color: white;
-    margin-bottom: 20px;
-`
-const Button = styled.button`
-    border: solid 1px;
-    padding: 5px;
-    background-color: white;
-    color: gray;
-    cursor: pointer;
-    font-weight: 600;
-`
-
 const CategoryItem = ({item, isLast}) => {
     const url= useSelector(state => state.user.url);
   return (

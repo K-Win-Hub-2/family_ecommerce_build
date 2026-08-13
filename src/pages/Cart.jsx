@@ -1665,7 +1665,7 @@ const Cart = () => {
   const [banks, setBanks] = useState([]);
   const [selectedBank, setSelectedBank] = useState("");
   const [deliveryType, setDeliveryType] = useState("pickup");
-  const [showTownshipInput, setShowTownshipInput] = useState(false);
+  const [, setShowTownshipInput] = useState(false);
   const [township, setTownship] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
   const [paymentScreenshot, setPaymentScreenshot] = useState(null);

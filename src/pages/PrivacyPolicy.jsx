@@ -2,14 +2,9 @@
 import React  from 'react';
 import styled from 'styled-components';
 import {mobile} from "../responsive";
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import ColorNav from '../components/ColorNav';
 import Footer from '../components/Footer';
-import emailjs from '@emailjs/browser';
-import { useSelector} from 'react-redux'
 
 const Div = styled.div`
     margin-top: 65px;
@@ -26,89 +21,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     ${mobile({padding: '50'})}
 `
-const Title = styled.h2`
-    margin-bottom: 20px;
-    text-align: center;
-`
-const Description = styled.div`
-    width: 70%;
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 20px;
-    text-align: center;
-    ${mobile({textAlign: "center"})}
-`
-const Form = styled.form`
-    width: 400px;
-    display: flex;
-    align-item: center;
-    justify-content: center;
-    flex-direction: column;
-`
-const Input = styled.input`
-    flex: 1;
-    min-width: 40%;
-    min-height: 30px;
-    margin: 10px 0px;
-    padding: 5px;
-`
-const Message = styled.textarea`
-    flex: 1;
-    min-width: 40%;
-    min-height: 130px;
-    margin: 10px 0px;
-    padding: 5px;
-`
-const Check = styled.input`
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    margin-top: 20px;
-    margin-right: 10px;
-`
-const Button = styled.button`
-    width: 100%;
-    height: 40px;
-    border: none;
-    background-color: #32549b;
-    color: white;
-    cursor: pointer;
-    margin-top: 20px;
-`
-
 const Contact = () => {
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
-    const [subscribe, setSubscribe] = useState('');
-    const url= useSelector(state => state.user.url);
-
-    const didSubscribe = subscribe == 'checked' ? '1' : '0';
-
-    const data = {
-        name: name,
-        email :email,
-        message: message,
-        subscribe_flag: didSubscribe
-    }
-
-
-    const SendMessage = (e) => {
-        e.preventDefault();
-        axios.post(url+'/api/contact_message', data)
-
-        emailjs.sendForm('service_79e361n', 'template_pt919ms', e.target, 'plkqX8v0BRW5x7pd8')
-            .then((result) => {
-                alert('Email sent successfully');
-                setName('');
-                setEmail('');
-                setMessage('');
-                setSubscribe('');
-            }, (error) => {
-                alert('Fail to send email');
-            });
-    }
 
     return (
 

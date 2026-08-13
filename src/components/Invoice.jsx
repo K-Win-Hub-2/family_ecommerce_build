@@ -1,71 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
-import { Navigate, useNavigate, Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import Dialog from "@mui/material/Dialog";
 //  import html2pdf from "..//html2pdf.node";
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar';
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-
-const Div = styled.div`
-  padding: 20px;
-`;
 const Img = styled.img`
   width: 400px;
-`;
-const Address = styled.p`
-  margin-top: 20px;
-`;
-const Title = styled.h5`
-  justify-content: center;
-  color: secondary;
-  font-weight: bold;
-`;
-
-const Name = styled.span`
-  color: secondary;
-`;
-const Phone = styled.span`
-  float: right;
-  color: secondary;
-`;
-
-const FilterOption = styled.option``;
-
-const Table = styled.table`
-  width: 70%;
-  height: auto;
-  padding: 200px;
-  margin-top: 20px;
-  border-radius: 20px;
-  border: 1px solid rgba(2, 127, 157, 1);
-`;
-const Tr = styled.tr`
-  width: 70%;
-`;
-const Th = styled.th`
-  text-align: center;
-`;
-const Td = styled.td`
-  text-align: center;
 `;
 export default function Invoice() {
   let total_amount = 0;
 
   const path = useLocation();
-  const [orders, setOrders] = useState({});
-  const [preorders, setPreorders] = useState([]);
-  const [active, setActive] = useState(0);
   const [name, setName] = useState("");
   const [order_date, setOrderDate] = useState("");
   const [discount, setDiscountAmount] = useState("");
@@ -80,14 +30,9 @@ export default function Invoice() {
   const [ecounting, setEcounting] = useState([]);
   const [color, setColor] = useState([]);
   const [size, setSize] = useState([]);
-  const [attachs, setAttachs] = useState([]);
-  const [showDialog, setShowDialog] = useState(false);
-  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [orderId, setOrderId] = useState("");
+  const [, setAttachs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const username = useSelector((state) => state.user);
-  const customer_id = username.id;
   const url = useSelector((state) => state.user.url);
   // console.log("daaaa",path);
   const id = path.pathname.split("/order_invoice/")[1];
@@ -123,15 +68,11 @@ export default function Invoice() {
         console.error("Error fetching invoice data:", error);
         setLoading(false);
       });
-  }, []);
+  }, [url, id]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
-  const downloadPDF = () => {
-    const element = document.getElementById("invoice");
-    //  html2pdf(element);
-  };
 
   return (
     <>
@@ -287,7 +228,7 @@ export default function Invoice() {
               <tbody>
                 {countingunit.map((unit, index) =>
                   ecounting.map((ec, i) =>
-                    unit.id == ec.counting_unit_id ? (
+                    unit.id === ec.counting_unit_id ? (
                       
                       <tr key={unit.id}>
                         <td
@@ -530,7 +471,7 @@ export default function Invoice() {
             </table>
             <div className="d-flex justify-content-between align-items-left my-5 px-3">
               <div className="">
-                <h4 className="font-weight-bold"></h4>
+                <h4 className="font-weight-bold">Payment Details</h4>
 
                 <table className="table table-borderless">
                   <thead>
