@@ -154,6 +154,55 @@ const SectionTitle = styled.div`
   })}
 `;
 
+const SectionTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  ${SectionTitle} {
+    margin-bottom: 0;
+  }
+`;
+
+const SizeChartToggle = styled.button`
+  padding: 6px 14px;
+  border: 1px solid #156ea8;
+  border-radius: 8px;
+  background: ${({ active }) => (active ? "#156ea8" : "#fafafa")};
+  color: ${({ active }) => (active ? "#fff" : "#156ea8")};
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #4f9ee8;
+    color: #fff;
+  }
+`;
+
+const SizeChartImage = styled.img`
+  width: 100%;
+  max-width: 320px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  display: block;
+`;
+
+const SizeChartPdf = styled.iframe`
+  width: 100%;
+  max-width: 420px;
+  height: 300px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  display: block;
+`;
+
 const ColorRow = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 34px);
@@ -394,6 +443,8 @@ const Product = () => {
     const location = useLocation();
     const carouselRef = useRef(null);
     const matchGroupRef = useRef(null);
+    const parentItemRef = useRef(null);
+    const presetAppliedRef = useRef(false);
 
     const url = useSelector((state) => state.user.url);
 
@@ -428,6 +479,7 @@ const Product = () => {
   const [primaryStoreUnit, setPrimaryStoreUnit] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
   const [websiteDisplayName, setWebsiteDisplayName] = useState("");
+  const [showSizeChart, setShowSizeChart] = useState(true);
 
     const [relatedpants, setRelatedPants] = useState([]);
     const [relateditems, setRelatedItems] = useState({ items: [] });
@@ -456,10 +508,80 @@ const Product = () => {
     }, 0);
   }, [allUnits]);
 
+    const preselectUnit = (unitId, loadedUnits) => {
+        if (!unitId || loadedUnits.length === 0) return;
+
+        const targetUnit = loadedUnits.find(
+            (u) => String(u.id) === String(unitId),
+        );
+        if (!targetUnit) return;
+
+        const gender = targetUnit.gender_name;
+        const colour = targetUnit.colour_name;
+        const sizeName = targetUnit.size_name;
+
+        const genderFiltered = loadedUnits.filter(
+            (u) => u.gender_name === gender,
+        );
+        const colorFiltered = genderFiltered.filter(
+            (u) => u.colour_name === colour,
+        );
+
+        setSelectedGender(gender);
+        setFilteredUnits(genderFiltered);
+
+        const uniqueColors = [
+            ...new Map(
+                genderFiltered.map((unit) => [
+                    unit.colour_name,
+                    {
+                        colour_name: unit.colour_name,
+                        colour_description: unit.colour_description || unit.colour_name,
+                        color_hex_code: unit.colour?.color_hex_code || null,
+                    },
+                ])
+            ).values(),
+        ];
+        setFilteredColors(uniqueColors);
+
+        setSelectedColor(colour);
+        setColor(colour);
+
+        setPrimaryStoreUnit(colorFiltered);
+        const sizes = [...new Set(colorFiltered.map((unit) => unit.size_name))];
+        setFilteredSizes(sizes);
+
+        setSelectedSize(sizeName);
+        setPrice(targetUnit.order_price);
+        setStock(targetUnit.current_quantity);
+        setUnitId(targetUnit.id);
+        setUnitName(targetUnit.unit_name);
+        setUnitCode(targetUnit.unit_code);
+        setFabric(targetUnit.fabric_name);
+        setDesign(targetUnit.design_name);
+
+        if (targetUnit.website_display_name) {
+            setWebsiteDisplayName(targetUnit.website_display_name);
+        }
+
+        const unitImage = findUnitImage(targetUnit);
+        if (unitImage) {
+            setSelectedImage(url + unitImage);
+            setUnitImg(unitImage);
+        }
+        setRelatedPants(targetUnit.match_item || []);
+    };
+
     useEffect(() => {
         const getProduct = () => {
+            const unitIdParam = location.state?.unitId;
+
+            const apiUrl = unitIdParam
+                ? url + "/api/item/unit/" + unitIdParam
+                : url + "/api/unitbyid_api/" + id;
+
             axios
-                .get(url + "/api/unitbyid_api/" + id)
+                .get(apiUrl)
                 .then((response) => {
                     setItem(response.data.item || {});
                     setDesign(response.data.item?.item_name || "");
@@ -499,6 +621,14 @@ const Product = () => {
           if (response.data.item?.website_display_name) {
             setWebsiteDisplayName(response.data.item.website_display_name);
           }
+
+          if (unitIdParam) {
+            preselectUnit(unitIdParam, [
+                ...(response.data.counting_unit_all_update || []),
+                ...(response.data.counting_unit_all || []),
+                ...(response.data.counting_units || []),
+            ]);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -509,7 +639,76 @@ const Product = () => {
     };
 
     getProduct();
-  }, [id, url]);
+  }, [id, url, location.state?.unitId]);
+
+  useEffect(() => {
+    presetAppliedRef.current = false;
+  }, [id]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const genderParam = params.get("gender");
+    const colorParam = params.get("color");
+    if (!genderParam || !colorParam) return;
+    if (presetAppliedRef.current || allUnits.length === 0) return;
+
+    const genderFiltered = allUnits.filter(
+      (unit) => unit.gender_name === genderParam,
+    );
+    if (genderFiltered.length === 0) return;
+
+    const colorFiltered = genderFiltered.filter(
+      (unit) => unit.colour_name === colorParam,
+    );
+    if (colorFiltered.length === 0) return;
+
+    setSelectedGender(genderParam);
+    setFilteredUnits(genderFiltered);
+
+    const uniqueColors = [
+      ...new Map(
+        genderFiltered.map((unit) => [
+          unit.colour_name,
+          {
+            colour_name: unit.colour_name,
+            colour_description: unit.colour_description || unit.colour_name,
+            color_hex_code: unit.colour?.color_hex_code || null,
+          },
+        ]),
+      ).values(),
+    ];
+    setFilteredColors(uniqueColors);
+
+    setSelectedColor(colorParam);
+    setColor(colorParam);
+    setPrimaryStoreUnit(colorFiltered);
+    const sizes = [...new Set(colorFiltered.map((unit) => unit.size_name))];
+    setFilteredSizes(sizes);
+    setSelectedSize(null);
+    setPrice(0);
+    setStock(0);
+
+    const targetUnit = colorFiltered[0];
+    const unitImage = findUnitImage(targetUnit);
+    if (unitImage) {
+      setSelectedImage(url + unitImage);
+      setUnitImg(unitImage);
+    }
+      axios
+        .get(url + "/api/counting-unit/" + targetUnit.id)
+        .then((res) => {
+          if (res.data) {
+            if (res.data.image) {
+              setSelectedImage(url + res.data.image);
+              setUnitImg(res.data.image);
+            }
+            setWebsiteDisplayName(res.data.website_display_name || "");
+          }
+        })
+        .catch((err) => console.error(err));
+
+    presetAppliedRef.current = true;
+  }, [allUnits, location.search, url]);
 
   const handleQuantity = (type) => {
     setQuantity((prevQuantity) => {
@@ -555,11 +754,10 @@ const Product = () => {
 
             dispatch(addOrder({ orderid, testname, testqty, testprice }));
         } else {
-            const matchGroupId = `match_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-            matchGroupRef.current = matchGroupId;
-
-            dispatch(
-                addProduct({
+            if (relatedpants && relatedpants.length > 0) {
+                const matchGroupId = `match_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+                matchGroupRef.current = matchGroupId;
+                parentItemRef.current = {
                     unitid,
                     unitname,
                     unitcode,
@@ -572,12 +770,24 @@ const Product = () => {
                     productId: id,
                     matchGroupId,
                     isMatchParent: true
-                })
-            );
-
-            if (relatedpants && relatedpants.length > 0) {
+                };
                 setMatchModalOpen(true);
             } else {
+                dispatch(
+                    addProduct({
+                        unitid,
+                        unitname,
+                        unitcode,
+                        unitimg,
+                        color,
+                        size,
+                        fabric,
+                        quantity,
+                        price,
+                        productId: id
+                    })
+                );
+
                 Swal.fire({
                     title: "Success!",
                     text: "Successfully added to cart.",
@@ -587,37 +797,6 @@ const Product = () => {
                 });
             }
         }
-    };
-
-    const handleAddMatchToCart = () => {
-        const matchGroupId = matchGroupRef.current;
-        (relatedpants || []).forEach((match) => {
-            dispatch(
-                addProduct({
-                    unitid: match.id,
-                    unitname: match.unit_name,
-                    unitcode: match.unit_code,
-                    unitimg: match.image,
-                    color: match.colour_name,
-                    size: formatSizeLabel(match.size_name),
-                    fabric: match.fabric_name,
-                    quantity,
-                    price: match.order_price,
-                    productId: match.item_id,
-                    matchGroupId,
-                    isMatchParent: false
-                })
-            );
-        });
-
-        setMatchModalOpen(false);
-        Swal.fire({
-            title: "Success!",
-            text: "Successfully added to cart.",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false
-        });
     };
 
   const handleWishlistClick = () => {
@@ -682,6 +861,18 @@ const Product = () => {
     setStock(0);
   };
 
+  const findUnitImage = (unit) => {
+    if (unit?.image) return unit.image;
+    const match = units.find(
+      (u) =>
+        u.id === unit.id ||
+        (u.gender_name === unit.gender_name &&
+          u.colour_name === unit.colour_name &&
+          u.size_name === unit.size_name),
+    );
+    return match?.image || "";
+  };
+
   const handleColorChange = (colorObj) => {
     setSelectedColor(colorObj.colour_name);
     setColor(colorObj.colour_name);
@@ -701,9 +892,15 @@ const Product = () => {
     setStock(0);
 
     if (filtered.length > 0) {
-      const targetUnitId = filtered[0].id;
+      const targetUnit = filtered[0];
+      const unitImage = findUnitImage(targetUnit);
+      if (unitImage) {
+        setSelectedImage(url + unitImage);
+        setUnitImg(unitImage);
+      }
+
       axios
-        .get(`${url}/api/counting-unit/${targetUnitId}`)
+        .get(url + "/api/counting-unit/" + targetUnit.id)
         .then((res) => {
           if (res.data) {
             if (res.data.image) {
@@ -738,7 +935,11 @@ const Product = () => {
         setWebsiteDisplayName(selectedUnit.website_display_name || "");
         setRelatedPants(selectedUnit.match_item || []);
         
-        if (!unitimg && item.photo_path) {
+        const unitImage = findUnitImage(selectedUnit);
+        if (unitImage) {
+            setSelectedImage(url + unitImage);
+            setUnitImg(unitImage);
+        } else if (item.photo_path) {
             setUnitImg(`/ecommerce/items/${item.photo_path}`);
         }
     };
@@ -915,7 +1116,33 @@ const Product = () => {
                     )}
 
           <Divider />
-          <SectionTitle>Size</SectionTitle>
+          <SectionTitleRow>
+            <SectionTitle>Size</SectionTitle>
+            {item.size_chart_path && (
+              <SizeChartToggle
+                active={showSizeChart}
+                onClick={() => setShowSizeChart((prev) => !prev)}
+              >
+                {showSizeChart ? "Hide Size Chart" : "Show Size Chart"}
+              </SizeChartToggle>
+            )}
+          </SectionTitleRow>
+          {showSizeChart && item.size_chart_path && (
+            item.size_chart_path.toLowerCase().endsWith(".pdf") ? (
+              <SizeChartPdf
+                src={
+                  url +
+                  `/ecommerce/items/${item.size_chart_path}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0`
+                }
+                title="Size Chart PDF"
+              />
+            ) : (
+              <SizeChartImage
+                src={url + `/ecommerce/items/${item.size_chart_path}`}
+                alt="Size Chart"
+              />
+            )
+          )}
           <SizeRow>
             {filteredSizes.map((sz, index) => (
               <SizeBox
@@ -927,6 +1154,7 @@ const Product = () => {
               </SizeBox>
             ))}
           </SizeRow>
+
 
           <Divider />
           <ProductMeta>
@@ -1069,8 +1297,9 @@ const Product = () => {
                 close={() => setMatchModalOpen(false)}
                 items={relatedpants || []}
                 url={url}
-                onAdd={handleAddMatchToCart}
                 fallbackImage={NoImage}
+                matchGroupId={matchGroupRef.current}
+                parentItem={parentItemRef.current}
             />
         </Container>
     );

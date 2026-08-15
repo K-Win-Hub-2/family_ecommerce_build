@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import html2pdf from "html2pdf.js";
 import Spinner from "../../common/Spinner";
 import Logo from "../../files/logo.png";
 
@@ -240,6 +241,11 @@ const PrintButton = styled.button`
     background: #0d91c5;
   }
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   @media print {
     display: none;
   }
@@ -338,6 +344,7 @@ const Voucher = () => {
 
   const [voucher, setVoucher] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const fetchVoucher = async () => {
@@ -463,6 +470,37 @@ const Voucher = () => {
 
   const formatMoney = (number) =>
     Number(number).toLocaleString("en-US");
+
+  const handleDownloadPDF = async () => {
+    const element = document.getElementById("voucher-print");
+    if (!element) return;
+
+    setIsDownloading(true);
+    try {
+      const options = {
+        margin: [0, 0, 0, 0],
+        filename: `Sale_Voucher_${voucher.invoiceNo || "voucher"}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          windowWidth: 794,
+        },
+        jsPDF: {
+          unit: "px",
+          format: [794, 1123],
+          orientation: "portrait",
+        },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      };
+
+      await html2pdf().set(options).from(element).save();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <>
@@ -621,10 +659,15 @@ const Voucher = () => {
           </CustomerAddress>
         </Remarks>
 
+        {/* ======================== Thank ================= */}
+        <div style={{ textAlign: "center", marginTop: "20px", fontSize: "14px", fontWeight: "600" }}>
+          Thank you for your shopping!
+        </div>
+
         {/* ================= SIGNATURES ================= */}
-        <SignatureSection>
+        {/* <SignatureSection> */}
           {/* PAID BY */}
-          <SignatureBox>
+          {/* <SignatureBox>
             <SignatureTitle>PAID BY</SignatureTitle>
 
             <SignatureRow>
@@ -638,10 +681,10 @@ const Voucher = () => {
             <SignatureRow>
               Position:
             </SignatureRow>
-          </SignatureBox>
+          </SignatureBox> */}
 
           {/* RECEIVED BY */}
-          <SignatureBox>
+          {/* <SignatureBox>
             <SignatureTitle>RECEIVED BY</SignatureTitle>
 
             <SignatureRow>
@@ -655,10 +698,10 @@ const Voucher = () => {
             <SignatureRow>
               Position:
             </SignatureRow>
-          </SignatureBox>
+          </SignatureBox> */}
 
           {/* APPROVED BY */}
-          <SignatureBox>
+          {/* <SignatureBox>
             <SignatureTitle>APPROVED BY</SignatureTitle>
 
             <SignatureRow>
@@ -672,13 +715,13 @@ const Voucher = () => {
             <SignatureRow>
               Position:
             </SignatureRow>
-          </SignatureBox>
-        </SignatureSection>
+          </SignatureBox> */}
+        {/* </SignatureSection> */}
       </VoucherContainer>
 
       <PrintWrap>
-        <PrintButton onClick={() => window.print()}>
-          Print Voucher
+        <PrintButton onClick={handleDownloadPDF} disabled={isDownloading}>
+          {isDownloading ? "Downloading..." : "Download PDF Voucher"}
         </PrintButton>
       </PrintWrap>
     </>

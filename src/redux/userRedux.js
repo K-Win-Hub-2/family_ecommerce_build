@@ -66,7 +66,7 @@ const userSlice = createSlice({
         email: '',
         total_order: 0, // Added total_order field here
         url: 'https://familyuniformapp.medicalworld.com.mm',
-        // url: 'http://192.168.1.11:8000',
+        // url: 'http://192.168.100.220:8000',
         // url: 'http://192.168.1.54:8000',
     },
     reducers: {
