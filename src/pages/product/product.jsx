@@ -175,6 +175,7 @@ const SizeChartToggle = styled.button`
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  margin-bottom: 10px;
 
   &:hover {
     background: #4f9ee8;
@@ -185,22 +186,87 @@ const SizeChartToggle = styled.button`
 const SizeChartImage = styled.img`
   width: 100%;
   max-width: 320px;
-  margin-top: 12px;
   margin-bottom: 12px;
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   display: block;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
+const SizeChartModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+const SizeChartModalContent = styled.div`
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SizeChartModalImage = styled.img`
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+`;
+
+const SizeChartModalPdf = styled.iframe`
+  width: 80vw;
+  height: 85vh;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+`;
+
+const SizeChartModalClose = styled.button`
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+
+  &:hover {
+    background: #eee;
+  }
 `;
 
 const SizeChartPdf = styled.iframe`
   width: 100%;
   max-width: 420px;
   height: 300px;
-  margin-top: 12px;
   margin-bottom: 12px;
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   display: block;
+  flex-shrink: 0;
 `;
 
 const ColorRow = styled.div`
@@ -231,6 +297,16 @@ const SizeRow = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 5px;
+`;
+
+const SizeAndChartRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  ${mobile(`
+    flex-direction: column;
+  `)}
 `;
 
 const SizeBox = styled.button`
@@ -480,6 +556,7 @@ const Product = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [websiteDisplayName, setWebsiteDisplayName] = useState("");
   const [showSizeChart, setShowSizeChart] = useState(true);
+  const [sizeChartModalOpen, setSizeChartModalOpen] = useState(false);
 
     const [relatedpants, setRelatedPants] = useState([]);
     const [relateditems, setRelatedItems] = useState({ items: [] });
@@ -1127,33 +1204,38 @@ const Product = () => {
               </SizeChartToggle>
             )}
           </SectionTitleRow>
-          {showSizeChart && item.size_chart_path && (
-            item.size_chart_path.toLowerCase().endsWith(".pdf") ? (
-              <SizeChartPdf
-                src={
-                  url +
-                  `/ecommerce/items/${item.size_chart_path}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0`
-                }
-                title="Size Chart PDF"
-              />
-            ) : (
-              <SizeChartImage
-                src={url + `/ecommerce/items/${item.size_chart_path}`}
-                alt="Size Chart"
-              />
-            )
-          )}
-          <SizeRow>
-            {filteredSizes.map((sz, index) => (
-              <SizeBox
-                key={index}
-                selected={selectedSize === sz}
-                onClick={() => handleSizeChange(sz)}
-              >
-                {formatSizeLabel(sz)}
-              </SizeBox>
-            ))}
-          </SizeRow>
+          <SizeAndChartRow>
+            <SizeRow>
+              {filteredSizes.map((sz, index) => (
+                <SizeBox
+                  key={index}
+                  selected={selectedSize === sz}
+                  onClick={() => handleSizeChange(sz)}
+                >
+                  {formatSizeLabel(sz)}
+                </SizeBox>
+              ))}
+            </SizeRow>
+            {showSizeChart && item.size_chart_path && (
+              item.size_chart_path.toLowerCase().endsWith(".pdf") ? (
+                <SizeChartPdf
+                  src={
+                    url +
+                    `/ecommerce/items/${item.size_chart_path}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0`
+                  }
+                  title="Size Chart PDF"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setSizeChartModalOpen(true)}
+                />
+              ) : (
+                <SizeChartImage
+                  src={url + `/ecommerce/items/${item.size_chart_path}`}
+                  alt="Size Chart"
+                  onClick={() => setSizeChartModalOpen(true)}
+                />
+              )
+            )}
+          </SizeAndChartRow>
 
 
           <Divider />
@@ -1301,6 +1383,30 @@ const Product = () => {
                 matchGroupId={matchGroupRef.current}
                 parentItem={parentItemRef.current}
             />
+
+            {sizeChartModalOpen && item.size_chart_path && (
+              <SizeChartModalOverlay onClick={() => setSizeChartModalOpen(false)}>
+                <SizeChartModalContent onClick={(e) => e.stopPropagation()}>
+                  <SizeChartModalClose onClick={() => setSizeChartModalOpen(false)}>
+                    &times;
+                  </SizeChartModalClose>
+                  {item.size_chart_path.toLowerCase().endsWith(".pdf") ? (
+                    <SizeChartModalPdf
+                      src={
+                        url +
+                        `/ecommerce/items/${item.size_chart_path}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0`
+                      }
+                      title="Size Chart PDF"
+                    />
+                  ) : (
+                    <SizeChartModalImage
+                      src={url + `/ecommerce/items/${item.size_chart_path}`}
+                      alt="Size Chart"
+                    />
+                  )}
+                </SizeChartModalContent>
+              </SizeChartModalOverlay>
+            )}
         </Container>
     );
 };
