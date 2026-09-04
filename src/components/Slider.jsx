@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 import { sliderItems } from "../data";
@@ -100,6 +101,24 @@ const MobileDescription = styled.p`
   color: white;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   margin-bottom: 20px;
+`;
+
+const MobileShopNowButton = styled(Link)`
+  display: inline-block;
+  padding: 10px 24px;
+  background-color: #2b57b8;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+  &:hover {
+    background-color: #333;
+    color: white;
+  }
 `;
 
 const DotsContainer = styled.div`
@@ -320,6 +339,7 @@ const MobileSlider = () => {
                 <MobileTitle>{item.title}</MobileTitle>
                 <MobileSubtitle>{item.subtitle}</MobileSubtitle>
                 <MobileDescription>{item.desc}</MobileDescription>
+                <MobileShopNowButton to="/products">Shop Now &rarr;</MobileShopNowButton>
               </MobileInfoContainer>
             )}
           </MobileSlide>

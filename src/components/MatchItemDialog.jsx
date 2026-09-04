@@ -195,7 +195,6 @@ const MatchItemDialog = ({ open, close, items, url, fallbackImage, matchGroupId,
                                 <MatchName>{match.website_display_name || match.unit_name}</MatchName>
                                 {match.size_name && <MatchDetail>Size: {formatSizeLabel(match.size_name)}</MatchDetail>}
                                 {match.colour_name && <MatchDetail>Colour: {match.colour_name}</MatchDetail>}
-                                {match.fabric_name && <MatchDetail>Fabric: {match.fabric_name}</MatchDetail>}
                                 {match.gender_name && <MatchDetail>Gender: {formatGenderLabel(match.gender_name)}</MatchDetail>}
                                 {match.order_price && (
                                     <MatchDetail><strong>{Number(match.order_price).toLocaleString()} MMK</strong></MatchDetail>
@@ -205,7 +204,14 @@ const MatchItemDialog = ({ open, close, items, url, fallbackImage, matchGroupId,
                                 <AddCartButton onClick={() => handleAddToCart(match)}>
                                     Add to Cart
                                 </AddCartButton>
-                                <ViewDetailButton to={productUrl} onClick={close}>
+                                <ViewDetailButton
+                                    to={{
+                                        pathname: productUrl,
+                                        search: "?fromMatchView=1",
+                                        state: { fromMatchView: true, unitId: match.id },
+                                    }}
+                                    onClick={close}
+                                >
                                     View Detail
                                 </ViewDetailButton>
                             </ButtonsRow>

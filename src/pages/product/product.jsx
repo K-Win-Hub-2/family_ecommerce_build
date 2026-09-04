@@ -564,6 +564,8 @@ const Product = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [validImages, setValidImages] = useState([]);
 
+    const isMatchView = location.state?.fromMatchView || new URLSearchParams(location.search).get("fromMatchView") === "1";
+
   const id = location.pathname.split("/")[2];
   const visibleItems = 4;
   const totalItems = relateditems?.items?.length || 0;
@@ -831,7 +833,13 @@ const Product = () => {
 
             dispatch(addOrder({ orderid, testname, testqty, testprice }));
         } else {
-            if (relatedpants && relatedpants.length > 0) {
+            if (item.related_item_id && allMatchItems.length === 0) {
+                Swal.fire({
+                    title: "Not Available",
+                    text: "Can't buy this product cause of the match product stock is 0.",
+                    icon: "warning",
+                });
+            } else if (allMatchItems.length > 0) {
                 const matchGroupId = `match_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
                 matchGroupRef.current = matchGroupId;
                 parentItemRef.current = {
@@ -1092,6 +1100,27 @@ const Product = () => {
 
   const displayAvailability = selectedSize ? stock : allStock;
 
+  const allMatchItems = useMemo(() => {
+    const seen = new Set();
+    const result = [];
+    (allUnits || []).forEach((unit) => {
+      if (selectedColor && unit.colour_name !== selectedColor) return;
+      (unit.match_item || []).forEach((match) => {
+        if (!seen.has(match.id)) {
+          seen.add(match.id);
+          result.push(match);
+        }
+      });
+    });
+    return result;
+  }, [allUnits, selectedColor]);
+
+  const hasOutOfStockMatch = useMemo(() => {
+    return allMatchItems.length > 0 && allMatchItems.every(
+      (match) => Number(match.current_quantity || 0) <= 0
+    );
+  }, [allMatchItems]);
+
   if (isLoading) {
     return (
       <Container>
@@ -1247,28 +1276,34 @@ const Product = () => {
           </ProductMeta>
 
           <CartRow>
-            <QtyBox>
-              <QtyButton onClick={() => handleQuantity("dec")}>
-                <Remove />
-              </QtyButton>
-              <QtyValue>{quantity}</QtyValue>
-              <QtyButton
-                onClick={() => handleQuantity("inc")}
-                disabled={
-                  !selectedSize ||
-                  displayAvailability <= 0 ||
-                  quantity >= displayAvailability
-                }
-              >
-                <Add />
-              </QtyButton>
-            </QtyBox>
+            {!isMatchView && (
+              <>
+                <QtyBox>
+                  <QtyButton onClick={() => handleQuantity("dec")}>
+                    <Remove />
+                  </QtyButton>
+                  <QtyValue>{quantity}</QtyValue>
+                  <QtyButton
+                    onClick={() => handleQuantity("inc")}
+                    disabled={
+                      !selectedSize ||
+                      displayAvailability <= 0 ||
+                      quantity >= displayAvailability
+                    }
+                  >
+                    <Add />
+                  </QtyButton>
+                </QtyBox>
 
-                        {instockFlag > 0 ? (
-                            <AddCartButton onClick={handleClick}>Add to cart</AddCartButton>
-                        ) : (
-                            <AddCartButton style={{ opacity: 0.6, cursor: "not-allowed" }}>Stock Unavailable</AddCartButton>
-                        )}
+                {instockFlag > 0 && !hasOutOfStockMatch ? (
+                  <AddCartButton onClick={handleClick}>Add to cart</AddCartButton>
+                ) : (
+                  <AddCartButton style={{ opacity: 0.6, cursor: "not-allowed" }}>
+                    {hasOutOfStockMatch ? "Match Item Out of Stock" : "Stock Unavailable"}
+                  </AddCartButton>
+                )}
+              </>
+            )}
 
             <WishlistButton
               onClick={handleWishlistClick}
@@ -1277,8 +1312,7 @@ const Product = () => {
               <FaRegHeart />
             </WishlistButton>
           </CartRow>
-
-                                        {/* {relatedpants && relatedpants.id && (
+                        {/* {relatedpants && relatedpants.id && (
                         <div style={{ marginTop: "30px" }}>
                             <SectionTitle>Related Pants</SectionTitle>
                             <Link to={`/product/${relatedpants.id}`} style={{ textDecoration: "none" }}>
@@ -1377,7 +1411,7 @@ const Product = () => {
             <MatchItemDialog
                 open={matchModalOpen}
                 close={() => setMatchModalOpen(false)}
-                items={relatedpants || []}
+                items={allMatchItems}
                 url={url}
                 fallbackImage={NoImage}
                 matchGroupId={matchGroupRef.current}

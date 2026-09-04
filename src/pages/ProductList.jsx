@@ -996,10 +996,17 @@ const ProductList = () => {
 
   useEffect(() => {
     if (cate.length > 0 && !selectedCategory) {
-      const familyHospital = cate.find(cat => cat.category_name === "family hospital");
-      if (familyHospital) {
-        setSelectedCategory(familyHospital);
-        getCategoryItems(familyHospital.id);
+      const passedCategory = location.state?.category;
+      let targetCategory;
+      if (passedCategory) {
+        targetCategory = cate.find(cat => cat.id === passedCategory.id);
+      }
+      if (!targetCategory) {
+        targetCategory = cate.find(cat => cat.category_name === "family hospital");
+      }
+      if (targetCategory) {
+        setSelectedCategory(targetCategory);
+        getCategoryItems(targetCategory.id);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

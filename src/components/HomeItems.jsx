@@ -382,6 +382,8 @@ const HomeItems = ({ title, url }) => {
     if (url1 && url) getItems();
   }, [url1, url]);
 
+  if (items.length === 0) return null;
+
   return ( 
     <div>
       <MainContainer>

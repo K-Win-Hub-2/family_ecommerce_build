@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {mobile} from "../responsive"
 import { useSelector} from 'react-redux'
@@ -31,14 +32,9 @@ const CategoryItem = ({item, isLast}) => {
     const url= useSelector(state => state.user.url);
   return (
     <Container isLast={isLast}>
-        {/* <Link to={`/products/${item.id}/${item.category_name}`}> */}
+        <Link to="/products" state={{ category: item }}>
         <Image src={url+`/ecommerce/brands/${item.photo_path}`}/>
-        {/* <Image src={`http://192.168.1.54:8000/ecommerce/brands/${item.photo_path}`} isLast={isLast}/> */}
-        {/* <Image src={`http://localhost:8000/ecommerce/brands/${item.photo_path}`}/>  */}
-        {/* <Info>
-            <Button>Details</Button>
-        </Info> */}
-        {/* </Link> */}
+        </Link>
     </Container>
   )
 }

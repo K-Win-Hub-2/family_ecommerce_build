@@ -85,11 +85,10 @@ const ItemContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    flex: 0 0 48%;
-    min-width: 48%;
+    flex: 0 0 73%;
+    min-width: 73%;
     padding: 0;
     box-sizing: border-box;
-    max-width: 350px;
   }
 `;
 

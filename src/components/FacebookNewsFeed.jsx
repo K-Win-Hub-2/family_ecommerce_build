@@ -86,9 +86,10 @@ const ItemContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    flex: 0 0 50%;
-    min-width: 50%;
-    max-width: 350px;
+    flex: 0 0 52%;
+    min-width: 52%;
+    padding: 0;
+    box-sizing: border-box;
   }
 `;
 
@@ -285,7 +286,7 @@ const FacebookNewsFeed = () => {
                 </div>
             </HeaderContainer>
             <FeedBox ref={feedBoxRef}>
-                <ItemsWrapper style={{ transform: `translateX(-${currentIndex * (isMobile ? containerWidth : 370)}px)` }}>
+                <ItemsWrapper style={{ transform: `translateX(-${currentIndex * (isMobile ? containerWidth * 0.92 + 15 : 370)}px)` }}>
                     {
                         products.map((el) => (
                             <ItemContainer key={el.id}>
