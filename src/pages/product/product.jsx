@@ -524,6 +524,16 @@ const Product = () => {
 
     const url = useSelector((state) => state.user.url);
 
+    const defaultImageUrl = url + "/ecommerce/items/default.png";
+    const isDefaultPhoto = (photoPath) =>
+        !photoPath ||
+        String(photoPath).toLowerCase().includes("default") ||
+        String(photoPath).toLowerCase().includes("noimage");
+    const getItemPhotoUrl = (photoPath) =>
+        isDefaultPhoto(photoPath)
+            ? defaultImageUrl
+            : url + `/ecommerce/items/${photoPath}`;
+
   const [item, setItem] = useState({});
   const [units, setUnits] = useState([]);
   const [allUnits, setAllUnits] = useState([]);
@@ -563,6 +573,8 @@ const Product = () => {
     const [matchModalOpen, setMatchModalOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [validImages, setValidImages] = useState([]);
+    const [fetchedUnitImages, setFetchedUnitImages] = useState([]);
+    const galleryPickedRef = useRef(false);
 
     const isMatchView = location.state?.fromMatchView || new URLSearchParams(location.search).get("fromMatchView") === "1";
 
@@ -589,6 +601,8 @@ const Product = () => {
 
     const preselectUnit = (unitId, loadedUnits) => {
         if (!unitId || loadedUnits.length === 0) return;
+
+        galleryPickedRef.current = false;
 
         const targetUnit = loadedUnits.find(
             (u) => String(u.id) === String(unitId),
@@ -693,9 +707,7 @@ const Product = () => {
                         setRelatedItems({ items: [relatedPantsObj] });
                     }
 
-          setSelectedImage(
-            url + `/ecommerce/items/${response.data.item?.photo_path || ""}`,
-          );
+          setSelectedImage(getItemPhotoUrl(response.data.item?.photo_path));
 
           if (response.data.item?.website_display_name) {
             setWebsiteDisplayName(response.data.item.website_display_name);
@@ -961,6 +973,7 @@ const Product = () => {
   const handleColorChange = (colorObj) => {
     setSelectedColor(colorObj.colour_name);
     setColor(colorObj.colour_name);
+    galleryPickedRef.current = false;
 
     const filtered = allUnits.filter(
       (unit) =>
@@ -1024,13 +1037,20 @@ const Product = () => {
         if (unitImage) {
             setSelectedImage(url + unitImage);
             setUnitImg(unitImage);
-        } else if (item.photo_path) {
-            setUnitImg(`/ecommerce/items/${item.photo_path}`);
+        } else {
+            setSelectedImage(getItemPhotoUrl(item.photo_path));
+            setUnitImg("/ecommerce/items/default.png");
         }
     };
 
   const productImages = useMemo(() => {
-    if (!item?.photo_path || item.photo_path.trim() === "") return [];
+    if (
+      !item?.photo_path ||
+      item.photo_path.trim() === "" ||
+      isDefaultPhoto(item.photo_path)
+    ) {
+      return [{ id: "front", url: defaultImageUrl }];
+    }
 
     const frontUrl = url + `/ecommerce/items/${item.photo_path}`;
     const imagesArray = [{ id: "front", url: frontUrl }];
@@ -1065,7 +1085,91 @@ const Product = () => {
     return imagesArray;
   }, [item, url]);
 
+  const colorUnitImages = useMemo(() => {
+    if (!isMatchView) return [];
+
+    const sourceUnits = [...(allUnits || []), ...(units || [])];
+    const filtered = sourceUnits.filter(
+      (u) => u.colour_name === selectedColor,
+    );
+
+    const seen = new Set();
+    const images = [];
+    filtered.forEach((u) => {
+      const img = u.image;
+      if (img && !seen.has(img)) {
+        seen.add(img);
+        images.push({ id: img, url: url + img });
+      }
+    });
+    return images;
+  }, [allUnits, units, selectedColor, isMatchView, url]);
+
   useEffect(() => {
+    if (!isMatchView || !selectedColor) {
+      setFetchedUnitImages([]);
+      return;
+    }
+
+    let cancelled = false;
+    const sourceUnits = allUnits.length > 0 ? allUnits : units;
+    const seenUnits = new Set();
+    const unitIds = [];
+    sourceUnits.forEach((u) => {
+      if (u?.colour_name !== selectedColor) return;
+      const uid = u?.id;
+      if (uid && !seenUnits.has(uid)) {
+        seenUnits.add(uid);
+        unitIds.push(uid);
+      }
+    });
+
+    if (unitIds.length === 0) return;
+
+    Promise.allSettled(
+      unitIds.map((uid) => axios.get(url + "/api/counting-unit/" + uid)),
+    ).then((results) => {
+      if (cancelled) return;
+
+      const seen = new Set();
+      const images = [];
+      results.forEach((r) => {
+        const img = r.status === "fulfilled" ? r.value?.data?.image : null;
+        if (img && !seen.has(img)) {
+          seen.add(img);
+          images.push({ id: img, url: url + img });
+        }
+      });
+
+      setFetchedUnitImages(images);
+
+      if (images.length > 0 && !galleryPickedRef.current) {
+        setSelectedImage((prev) =>
+          images.some((im) => im.url === prev) ? prev : images[0].url,
+        );
+        setUnitImg(images[0].url.replace(url, ""));
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isMatchView, selectedColor, allUnits, units, url]);
+
+  useEffect(() => {
+    if (isMatchView) {
+      const seen = new Set();
+      const combined = [];
+      [...colorUnitImages, ...fetchedUnitImages].forEach((im) => {
+        if (!seen.has(im.url)) {
+          seen.add(im.url);
+          combined.push(im);
+        }
+      });
+      setValidImages(combined.length > 0 ? combined : productImages);
+      return;
+    }
+
     if (productImages.length === 0) {
       setValidImages([]);
       return;
@@ -1096,7 +1200,7 @@ const Product = () => {
         );
       };
     });
-}, [productImages]);
+}, [productImages, isMatchView, colorUnitImages, fetchedUnitImages]);
 
   const displayAvailability = selectedSize ? stock : allStock;
 
@@ -1142,7 +1246,10 @@ const Product = () => {
                 src={imgObj.url}
                 alt={`thumb-${imgObj.id}`}
                 active={selectedImage === imgObj.url}
-                onClick={() => setSelectedImage(imgObj.url)}
+                onClick={() => {
+                  galleryPickedRef.current = true;
+                  setSelectedImage(imgObj.url);
+                }}
               />
             ))}
           </ThumbnailColumn>
