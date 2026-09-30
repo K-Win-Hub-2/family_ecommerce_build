@@ -474,7 +474,9 @@ const Contact = () => {
                 <FiPhone />
                 <div>
                   <Detail>Hotline</Detail>
-                  <div>+95 94 88 33 457</div> 
+                  <div>+95 9777005856</div> 
+                  <div>+95 9777005862</div>
+                  <div>+95 9777005863</div>
                 </div>
               </InfoRow>
 
