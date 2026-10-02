@@ -767,6 +767,11 @@ const DropdownItem = styled.div`
   cursor: pointer;
   background: ${(props) => (props.active ? "#e2eef7" : "#fff")};
   transition: background 0.2s ease;
+  border-bottom: 1px solid #0b74b5;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
     background-color: #0b74b5;
@@ -1036,7 +1041,7 @@ const ProductList = () => {
       .get(url + "/api/category_all")
       .then((response) => {
         const allCategories = response.data || [];
-        const targetCategories = ["family hospital", "branded", "ecofamily", "NICE", "Arfi Brand"];
+        const targetCategories = ["family hospital", "branded", "ecofamily", "NICE", "Arfi Brand","Classico"];
         const filteredCategories = allCategories.filter(cat => 
           targetCategories.includes(cat.category_name)
         );
@@ -1137,7 +1142,13 @@ const ProductList = () => {
 
   const staticMainBrands = ["family hospital", "branded", "ecofamily", "NICE"];
   const mainRowCategories = cate.filter(cat => staticMainBrands.includes(cat.category_name));
-  const arfiBrandCategory = cate.find(cat => cat.category_name === "Arfi Brand");
+  const otherBrandNames = ["Arfi Brand", "Classico"];
+  const otherBrandCategories = otherBrandNames
+    .map(name => cate.find(cat => cat.category_name === name))
+    .filter(Boolean);
+  const isOtherBrandSelected = otherBrandCategories.some(
+    cat => selectedCategory?.id === cat.id
+  );
 
   return (
     <div>
@@ -1168,25 +1179,26 @@ const ProductList = () => {
 
               <DropdownContainer>
                 <CategoryButton 
-                  active={selectedCategory?.category_name === "Arfi Brand"}
+                  active={isOtherBrandSelected}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   Other Brands ▾
                 </CategoryButton>
                 <DropdownMenu show={isDropdownOpen}>
-                  {arfiBrandCategory && (
+                  {otherBrandCategories.map((brandCat) => (
                     <DropdownItem
-                      active={selectedCategory?.id === arfiBrandCategory.id}
+                      key={brandCat.id}
+                      active={selectedCategory?.id === brandCat.id}
                       onClick={() => {
-                        setSelectedCategory(arfiBrandCategory);
+                        setSelectedCategory(brandCat);
                         setSelectedSubcategory("");
-                        getCategoryItems(arfiBrandCategory.id);
+                        getCategoryItems(brandCat.id);
                         setIsDropdownOpen(false);
                       }}
                     >
-                      {arfiBrandCategory.category_name}
+                      {brandCat.category_name}
                     </DropdownItem>
-                  )}
+                  ))}
                 </DropdownMenu>
               </DropdownContainer>
             </CategoryButtonWrap>
