@@ -682,7 +682,9 @@ const Product = () => {
                         itemObj.related_item ||
                         itemObj.related_pants;
 
+                    const relatedProductsRaw = response.data.related_products;
                     const relatedItemsRaw =
+                        relatedProductsRaw ||
                         response.data.related_items ||
                         response.data.related_item;
                     if (Array.isArray(relatedItemsRaw)) {
@@ -828,7 +830,7 @@ const Product = () => {
       setIsInstock(true);
       const testname = `${item.item_name} ${selectedGender} ${fabric} ${color} ${size}`;
       const testqty = quantity;
-      const testprice = price;
+      const testprice = finalPrice;
       const orderid = unitid;
 
             dispatch(addOrder({ orderid, testname, testqty, testprice }));
@@ -851,7 +853,7 @@ const Product = () => {
                     size,
                     fabric,
                     quantity,
-                    price,
+                    price: finalPrice,
                     productId: id,
                     matchGroupId,
                     isMatchParent: true
@@ -868,7 +870,7 @@ const Product = () => {
                         size,
                         fabric,
                         quantity,
-                        price,
+                        price: finalPrice,
                         productId: id
                     })
                 );
@@ -904,7 +906,7 @@ const Product = () => {
         size,
         fabric,
         quantity,
-        price,
+        price: finalPrice,
         productId: id,
       }),
     );
@@ -1100,6 +1102,15 @@ const Product = () => {
 
   const displayAvailability = selectedSize ? stock : allStock;
 
+  const discountPercent = Number(item?.discount_price || 0);
+
+  const finalPrice = useMemo(() => {
+    const base = Number(price || 0);
+    if (!base) return base;
+    if (!discountPercent || discountPercent <= 0) return base;
+    return Math.round(base - (base * discountPercent) / 100);
+  }, [price, discountPercent]);
+
   const allMatchItems = useMemo(() => {
     const seen = new Set();
     const result = [];
@@ -1270,9 +1281,25 @@ const Product = () => {
           <Divider />
           <ProductMeta>
             <BoldText>Price</BoldText> —{" "}
-            {price
-              ? `${Number(price).toLocaleString()} MMK`
-              : "***Price will show after choosing item***"}
+            {price ? (
+              discountPercent > 0 ? (
+                <span>
+                  <span style={{ textDecoration: "line-through", opacity: 0.6, marginRight: 8 }}>
+                    {Number(price).toLocaleString()} MMK
+                  </span>
+                  <span style={{ color: "#d32f2f" }}>
+                    {Number(finalPrice).toLocaleString()} MMK
+                  </span>
+                  <span style={{ color: "#d32f2f", marginLeft: 8 }}>
+                    ({discountPercent}% off)
+                  </span>
+                </span>
+              ) : (
+                `${Number(price).toLocaleString()} MMK`
+              )
+            ) : (
+              "***Price will show after choosing item***"
+            )}
           </ProductMeta>
 
           <CartRow>
@@ -1386,10 +1413,10 @@ const Product = () => {
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <RelatedImage
-                      src={url + `/ecommerce/items/${it.photo_path}`}
-                      alt={it.item_name}
+                      src={it.image || url + `/ecommerce/items/${it.photo_path}`}
+                      alt={it.name || it.item_name}
                     />
-                    <RelatedName>{it.item_name || it.name}</RelatedName>
+                    <RelatedName>{it.name || it.item_name}</RelatedName>
                   </Link>
                 </RelatedCard>
               ))}
